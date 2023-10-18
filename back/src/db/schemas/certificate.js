@@ -1,11 +1,7 @@
 import { Schema, model } from "mongoose";
 
 const CertificateSchema = new Schema({
-  id: {
-    type: String,
-    required: true,
-  },
-  author: {
+  userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
@@ -21,8 +17,8 @@ const CertificateSchema = new Schema({
     required: true,
   },
   getDate: {
-    // 취득일 (2023-10-18)
-    type: String,
+    // 취득일
+    type: Date,
     required: true,
   },
 });
