@@ -1,38 +1,42 @@
-// import { ProjectModel } from "../schemas/project";
+import { ProjectModel } from "../schemas/project";
 
-// class Project {
-//   static async create({ newProject }) {
-//     const createdNewProject = await ProjectModel.create(newProject);
-//     return createdNewProject;
-//   }
+class Project {
+  static async create(newProject) {
+    const createdNewProject = await ProjectModel.create(newProject);
+    return createdNewProject;
+  }
 
-//   static async findByEmail({ email }) {
-//     const project = await ProjectModel.findOne({ email });
-//     return project;
-//   }
+  static async findByUserId({ userId }) {
+    const project = await ProjectModel.findOne({ userId }).populate("userId");
+    return project;
+  }
 
-//   static async findById({ user_id }) {
-//     const project = await ProjectModel.findOne({ id: user_id });
-//     return project;
-//   }
+  static async findById({ id }) {
+    const project = await ProjectModel.findOne({ id }).populate("userId");
+    return project;
+  }
 
-//   static async findAll() {
-//     const projects = await ProjectModel.find({});
-//     return projects;
-//   }
+  static async findAll() {
+    const projects = await ProjectModel.find({}).populate("userId");
+    return projects;
+  }
 
-//   static async update({ user_id, fieldToUpdate, newValue }) {
-//     const filter = { id: user_id };
-//     const update = { [fieldToUpdate]: newValue };
-//     const option = { returnOriginal: false };
+  static async update({ id, fieldToUpdate, newValue }) {
+    const filter = { id };
+    const update = { [fieldToUpdate]: newValue };
+    const option = { returnOriginal: false };
+    const updatedProject = await ProjectModel.findOneAndUpdate(
+      filter,
+      update,
+      option
+    );
+    return updatedProject;
+  }
 
-//     const updatedUser = await ProjectModel.findOneAndUpdate(
-//       filter,
-//       update,
-//       option
-//     );
-//     return updatedUser;
-//   }
-// }
+  static async delete({ id }) {
+    const result = await ProjectModel.deleteOne({ id });
+    return result;
+  }
+}
 
-// export { Project };
+export { Project };
