@@ -1,18 +1,20 @@
 import { ProjectModel } from "../schemas/project";
 
 class Project {
-  static async create(newProject) {
-    const createdNewProject = await ProjectModel.create(newProject);
+  static async create({ userId, title, content, startDate, endDate }) {
+    console.log("projectcreate", userId, title, content, startDate, endDate);
+    const createdNewProject = await ProjectModel.create({
+      userId,
+      title,
+      content,
+      startDate,
+      endDate,
+    });
     return createdNewProject;
   }
 
   static async findByUserId({ userId }) {
-    const project = await ProjectModel.findOne({ userId }).populate("userId");
-    return project;
-  }
-
-  static async findById({ id }) {
-    const project = await ProjectModel.findOne({ id }).populate("userId");
+    const project = await ProjectModel.find({ id: userId }).populate("userId");
     return project;
   }
 
@@ -21,8 +23,15 @@ class Project {
     return projects;
   }
 
+  // delete의 매개변수가 _id면 update의 매개변수도 _id 또는 objectId로 하는게 좋지 않을 까...
+  static async delete({ _id }) {
+    const result = await ProjectModel.deleteOne({ _id });
+    return result;
+  }
+
+  // 매개변수도 _id 또는 objectId로 하는게 좋지 않을 까...
   static async update({ id, fieldToUpdate, newValue }) {
-    const filter = { id };
+    const filter = { _id: id };
     const update = { [fieldToUpdate]: newValue };
     const option = { returnOriginal: false };
     const updatedProject = await ProjectModel.findOneAndUpdate(
@@ -31,11 +40,6 @@ class Project {
       option
     );
     return updatedProject;
-  }
-
-  static async delete({ id }) {
-    const result = await ProjectModel.deleteOne({ id });
-    return result;
   }
 }
 

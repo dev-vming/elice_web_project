@@ -1,63 +1,141 @@
-// import { Project } from "../db/schemas/project";
-import { User } from "../db/index";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
-import { Project } from "../db/index";
-import { v4 as uuidv4 } from "uuid";
+import { projectService } from "../services/projectService";
+import is from "@sindresorhus/is";
 
 const projectRouter = Router();
 
-// create project
-projectRouter.post("/", login_required, async (req, res) => {
-  // document 구성
-  const id = uuidv4();
-  const userId = await User.findById({ user_id: req.currentUserId });
-  const newProject = { id, userId, ...req.body };
-  // document 생성
-  const projects = await Project.create(newProject);
-  res.status(201).json(projects);
-});
+// post 요청: 프로젝트 추가
+projectRouter.post(
+  "/:userId/projects",
+  login_required,
+  async (req, res, next) => {
+    try {
+      console.log("특정 유저의 프로젝트 추가 실행");
+      if (is.emptyObject(req.body)) {
+        throw new Error(
+          "headers의 Content-Type을 application/json으로 설정해주세요"
+        );
+      }
 
-//read project
-projectRouter.get("/", login_required, async (req, res) => {
-  const projects = await Project.findAll();
-  res.status(201).json(projects);
-});
+      const { userId } = req.params;
+      const current_user_id = req.currentUserId;
+      if (userId !== current_user_id) {
+        throw new Error("자격증 추가 권한이 없습니다");
+      }
 
-// read project by id
-projectRouter.get("/:userId", login_required, async (req, res) => {
-  const userId = await User.findById({ user_id: req.params.userId });
-  const projects = await Project.findByUserId({ userId });
-  res.status(201).json(projects);
-});
+      // req (request) 에서 데이터 가져오기
+      const title = req.body.title;
+      const content = req.body.content;
+      const startDate = req.body.startDate;
+      const endDate = req.body.endDate;
 
-// update project by id(uuid)
-projectRouter.put("/:id", login_required, async (req, res) => {
-  // 우선 해당 id 의 유저가 db에 존재하는지 여부 확인
-  let id = req.params.id;
-  console.log("id", id);
-  let toUpdate = req.body;
-  console.log("toUpdate", toUpdate);
-  let updatedProject;
-
-  for (let v in toUpdate) {
-    if (toUpdate[v]) {
-      console.log("업데이트 되라..", id, v, toUpdate[v]);
-      updatedProject = await Project.update({
-        id,
-        fieldToUpdate: v,
-        newValue: toUpdate[v],
+      // 위 데이터를 db에 추가하기
+      // user_id 는 uuid
+      const newProject = await projectService.addProject({
+        user_id: userId,
+        title,
+        content,
+        startDate,
+        endDate,
       });
+
+      if (newProject.errorMessage) {
+        throw new Error(newUser.errorMessage);
+      }
+
+      res.status(201).json(newProject);
+    } catch (err) {
+      next(err);
     }
   }
-  res.status(201).json(updatedProject);
+);
+
+// get 요청: 모든 프로젝트 조회
+projectRouter.get("/projects", login_required, async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const current_user_id = req.currentUserId;
+
+    if (userId !== current_user_id) {
+      throw new Error("자격증 추가 권한이 없습니다");
+    }
+
+    console.log("전체 프로젝트 조회 실행");
+    const projects = await projectService.getProjects({});
+    res.status(201).json(projects);
+  } catch (err) {
+    next(err);
+  }
 });
 
+// get 요청: 특정 유저의 자격증 조회
+projectRouter.get(
+  "/:userId/projects",
+  login_required,
+  async (req, res, next) => {
+    try {
+      const { userId } = req.params;
+      const current_user_id = req.currentUserId;
+      if (userId !== current_user_id) {
+        throw new Error("자격증 추가 권한이 없습니다");
+      }
+      console.log("특정 유저의 자격증 조회 실행");
+      const projects = await projectService.getProjects({ userId });
+      res.status(201).json(projects);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+// update project by id(uuid)
+projectRouter.put(
+  "/:userId/projects/:id",
+  login_required,
+  async (req, res, next) => {
+    // 우선 해당 id 의 유저가 db에 존재하는지 여부 확인
+    try {
+      const { userId } = req.params;
+      const current_user_id = req.currentUserId;
+
+      if (userId !== current_user_id) {
+        throw new Error("자격증 추가 권한이 없습니다");
+      }
+
+      console.log("특정 유저의 자격증 수정 실행");
+      const id = req.params.id;
+      const toUpdate = req.body;
+      console.log("project router, update", id, toUpdate);
+      const result = await projectService.updateProject(id, toUpdate);
+      res.status(201).json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 // delete project by id
-projectRouter.delete("/:id", login_required, async (req, res) => {
-  const id = req.params.id;
-  const result = await Project.delete({ id });
-  res.status(201).json(result);
-});
+projectRouter.delete(
+  "/:userId/projects/:id",
+  login_required,
+  async (req, res, next) => {
+    try {
+      const { userId } = req.params;
+      const current_user_id = req.currentUserId;
+
+      if (userId !== current_user_id) {
+        throw new Error("자격증 추가 권한이 없습니다");
+      }
+
+      console.log("특정 유저의 자격증 삭제 실행");
+      const id = req.params.id;
+      const result = await projectService.deleteProject({ _id: id });
+      res.status(201).json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
 export { projectRouter };
