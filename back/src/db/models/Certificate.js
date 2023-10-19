@@ -6,19 +6,19 @@ class Certificate {
     return createdNewCertificate;
   }
   // 조회 (userId)
-  static async findByUser(author) {
-    const certificates = await CertificateModel.find({ author });
+  static async findByUser(userId) {
+    const certificates = await CertificateModel.find({ userId });
     return certificates;
   }
   // delete
-  static async delete({ id }) {
-    const certificates = await CertificateModel.findOneAndDelete({ id });
+  static async delete({ _id }) {
+    const certificates = await CertificateModel.findOneAndDelete({ _id });
     return certificates;
   }
 
   // udpate
   static async update(id, newValue) {
-    const filter = { id: id };
+    const filter = { _id: id };
     const option = { returnOriginal: false };
 
     const updateData = {
@@ -26,13 +26,11 @@ class Certificate {
       issuingOrganization: newValue.issuingOrganization,
       getDate: newValue.getDate,
     };
-    console.log("!", id, updateData);
     const updateCertificate = await CertificateModel.findOneAndUpdate(
       filter,
       updateData,
       option
     );
-    console.log(updateCertificate);
     return updateCertificate;
   }
 }
