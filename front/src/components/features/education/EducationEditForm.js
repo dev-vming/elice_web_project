@@ -55,7 +55,7 @@ import PeriodCalendar from "../../common/calendar/PeriodCalendar";
         />
       </Form.Group>
 
-      <Form key={`inline-radio`} controlId="formBasicGraduationStatus" className="mt-3">
+      <Form.Group key={`inline-radio`} controlId="formBasicGraduationStatus" className="mt-3">
         <Form.Check
           inline
           type="radio"
@@ -96,7 +96,7 @@ import PeriodCalendar from "../../common/calendar/PeriodCalendar";
           checked={graduationStatus === "박사졸업"}
           onChange={(e) => setGraduationStatus(e.target.value)}
         />
-      </Form>
+      </Form.Group>
 
 
       <Form.Group controlId="formBasicgetsYear" className="mt-3 text-center">

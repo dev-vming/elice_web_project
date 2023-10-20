@@ -11,13 +11,12 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding }) 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    e.stopPropagation();
 
     // portfolioOwnerId를 user_id 변수에 할당함.
     const user_id = portfolioOwnerId;
 
     // "award/create" 엔드포인트로 post요청함.
-    await Api.post("certificate/create", {
+     Api.post("certificate/create", {
       user_id: portfolioOwnerId,
       title,
       description,
@@ -51,7 +50,7 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding }) 
         />
       </Form.Group>
 
-      <Form.Group controlId="formBasicgetsYear" className="mt-3 text-left">
+      <Form.Group controlId="formBasicgetsDate" className="mt-3 text-left">
         자격증 획득일
       <Calendar/>
       </Form.Group>

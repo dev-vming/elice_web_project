@@ -5,12 +5,12 @@ import Form from "react-bootstrap/Form";
 import { ko } from "date-fns/esm/locale";
 
 const Calendar = () => {
-  const [startDate, setStartDate] = useState();
+  const [getDate, setGetDate] = useState();
   return (
     <DatePicker 
     placeholderText="년-월-일"    	
-    selected={startDate}
-      onChange={(date) => setStartDate(date)}
+    selected={getDate}
+      onChange={(date) => setGetDate(date)}
       locale={ko}                   // 한글로 변경
       dateFormat="yyyy년 MM월 dd일" // 시간 포맷 변경
       // label={"년-월-일"}
