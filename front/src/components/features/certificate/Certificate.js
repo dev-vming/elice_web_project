@@ -9,14 +9,14 @@ function Certificate({ certificate, setCertificates, isEditable, setIsVisibility
     <>
       {isEditing ? (
         <CertificateEditForm
-          currentAward={certificate}
-          setAwards={setCertificates}
+          currentCertificate={certificate}
+          setCertificates={setCertificates}
           setIsEditing={setIsEditing}
           setIsVisibility={setIsVisibility}
         />
       ) : (
         <CertificateCard
-          award={certificate}
+          certificate={certificate}
           isEditable={isEditable}
           setIsEditing={setIsEditing}
         />

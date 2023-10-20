@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import * as Api from "../../../api";
-import Calendar from "../../common/calendar/Calendar";
 
 function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding, setIsVisibility }) {
   //useState로 title 상태를 생성함.
-  const [title, setTitle] = useState("");
+  const [name, setName] = useState("");
   //useState로 description 상태를 생성함.
-  const [description, setDescription] = useState("");
+  const [issuingOrganization, setIssuingOrganization] = useState("");
   //useState로 getDate 상태를 생성함.
-  const [ getDate, setGetDate ] = useState('');
+  const [getDate, setGetDate] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    e.stopPropagation();
 
     // portfolioOwnerId를 user_id 변수에 할당함.
-    const user_id = portfolioOwnerId;
+  const user_id = portfolioOwnerId;
 
     // "award/create" 엔드포인트로 post요청함.
     await Api.post(`${user_id}/certificates`, {
       user_id: portfolioOwnerId,
-      title,
-      description,
+      name,
+      issuingOrganization,
       getDate,
     });
 
@@ -35,29 +35,30 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding, se
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="formBasicTitle">
+      <Form.Group controlId="formBasicName">
         <Form.Control
           type="text"
           placeholder="자격증 내역"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
       </Form.Group>
 
-      <Form.Group controlId="formBasicDescription" className="mt-3">
+      <Form.Group controlId="formBasicIssuingOrganization" className="mt-3">
         <Form.Control
           type="text"
           placeholder="상세 내역"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={issuingOrganization}
+          onChange={(e) => setIssuingOrganization(e.target.value)}
         />
       </Form.Group>
 
       <Form.Group controlId="formBasicgetsDate" className="mt-3 text-left">
         자격증 획득일
-        <Calendar
-          getDate={getDate}
-          setGetDate={setGetDate}
+        <Form.Control
+            type ="Date"
+            value={getDate}
+            onChange={(e)=>setGetDate(e.target.value)}
         />
       </Form.Group>
 
@@ -79,3 +80,4 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding, se
 }
 
 export default CertificateAddForm;
+

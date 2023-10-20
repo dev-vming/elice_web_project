@@ -25,7 +25,8 @@ function EducationCard({ education, isEditable, setIsEditing }) {
                 )}
             </Row>
         </Card.Text>
-    )
+    );
 }
 
 export default EducationCard
+

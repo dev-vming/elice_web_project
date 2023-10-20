@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import * as Api from "../../../api";
-import Calendar from "../../common/calendar/Calendar";
 
 function AwardEditForm({ currentAward, setAwards, setIsEditing, setIsVisibility}) {
   //useState로 name 상태를 생성함.
@@ -9,7 +8,7 @@ function AwardEditForm({ currentAward, setAwards, setIsEditing, setIsVisibility}
   //useState로 organization 상태를 생성함.
   const [ organization, setOrganization ] = useState(currentAward.organization);
   //useState로 getDate 상태를 생성함.
-  const [ getDate, setGetDate ] = useState(currentAward.getDate);
+  const [ getDate, setGetDate ] = useState(currentAward.getDate.split('T')[0]);
   //useState로 awardinfo 상태를 생성함.
   const [ awardInfo, setAwardInfo ] = useState(currentAward.awardInfo);
 
@@ -18,10 +17,10 @@ function AwardEditForm({ currentAward, setAwards, setIsEditing, setIsVisibility}
     e.stopPropagation();
 
     // currentAward의 user_id를 user_id 변수에 할당함.
-    const user_id = currentAward.user_id;
+    const user_id = currentAward.userId;
 
     // "awards/수상 id" 엔드포인트로 PUT 요청함.
-    await Api.put(`${user_id}/awards/${currentAward.id}`, {
+    await Api.put(`${user_id}/awards/${currentAward._id}`, {
       user_id,
       name,
       organization,
@@ -30,7 +29,7 @@ function AwardEditForm({ currentAward, setAwards, setIsEditing, setIsVisibility}
     });
 
     // "awardlist/유저id" 엔드포인트로 GET 요청함.
-    const res = await Api.get(`${user_id}/awards/${currentAward.id}`);
+    const res = await Api.get(`${user_id}/awards/${currentAward._id}`);
     // awards를 response의 data로 세팅함.
     setAwards(res.data);
     // 편집 과정이 끝났으므로, isEditing을 false로 세팅함.
@@ -60,9 +59,11 @@ function AwardEditForm({ currentAward, setAwards, setIsEditing, setIsVisibility}
 
       <Form.Group controlid="formBasicgetDate" className="mt-3">
         <Form.Label>수상 일자</Form.Label>
-          <Calendar
-            getDate={getDate}
-            setGetDate={setGetDate}
+          <Form.Control
+            type = "Date"
+            placeholder={currentAward.getDate}
+            value={getDate}
+            onChange={(e)=>setGetDate(e.target.value)}
             />
         </Form.Group>
 

@@ -22,7 +22,7 @@ function Educations({portfolioOwnerId, isEditable}) {
             <Card.Title>학력</Card.Title>
             {educations.map((education) => (
                 <Education
-                    key={education.id}
+                    key={education._id}
                     education={education}
                     setEducations={setEducations}
                     isEditable={isEditable}
@@ -52,3 +52,4 @@ function Educations({portfolioOwnerId, isEditable}) {
 }
 
 export default Educations;
+

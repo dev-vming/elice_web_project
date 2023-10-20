@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import * as Api from "../../../api";
-import Calendar from "../../common/calendar/Calendar";
+
 
 function AwardAddForm({ portfolioOwnerId, setAwards, setIsAdding, setIsVisibility }) {
   //useState로 name 상태를 생성함.
@@ -9,7 +9,7 @@ function AwardAddForm({ portfolioOwnerId, setAwards, setIsAdding, setIsVisibilit
   //useState로 organization 상태를 생성함.
   const [organization, setOrganization] = useState("");
   //useState로 getDate 상태를 생성함.
-  const [ getDate, setGetDate ] = useState('');
+  const [ getDate, setGetDate ] = useState();
   //useState로 awardinfo 상태를 생성함.
   const [ awardInfo, setAwardInfo ] = useState("");
 
@@ -60,9 +60,10 @@ function AwardAddForm({ portfolioOwnerId, setAwards, setIsAdding, setIsVisibilit
 
       <Form.Group controlid="formBasicgetDate" className="mt-3">
         <Form.Label>수상 일자</Form.Label>
-          <Calendar
-            getDate={getDate}
-            setGetDate={setGetDate}
+          <Form.Control
+            type ="Date"
+            value={getDate}
+            onChange={(e)=>setGetDate(e.target.value)}
             />
         </Form.Group>
 
@@ -94,3 +95,4 @@ function AwardAddForm({ portfolioOwnerId, setAwards, setIsAdding, setIsVisibilit
 }
 
 export default AwardAddForm;
+

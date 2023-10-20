@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, Col, Row, DropdownButton } from "react-bootstrap";
 import * as Api from "../../../api";
-import PeriodCalendar from "../../common/calendar/PeriodCalendar";
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
 
 
@@ -77,13 +76,19 @@ function EducationAddForm({ portfolioOwnerId, setEducations, setIsAdding , setIs
       <br/>      
       
       <Form.Group controlid="formBasicgetDate" className="mt-3">
-        <Form.Label>재학 기간</Form.Label>
-          <PeriodCalendar 
-            startDate={startDate}
-            endDate={endDate}
-            setStartDate={setStartDate}
-            setEndDate={setEndDate}
-            />
+          <Form.Label>입학 일자</Form.Label>
+          <Form.Control
+              type ="Date"
+              value={startDate}
+              onChange={(e)=>setStartDate(e.target.value)}
+          />
+          <br/>
+          <Form.Label>졸업 일자</Form.Label>
+          <Form.Control
+              type ="Date"
+              value={endDate}
+              onChange={(e)=>setEndDate(e.target.value)}
+          />
         </Form.Group>
 
       <Form.Group as={Row} className="mt-3 text-center">

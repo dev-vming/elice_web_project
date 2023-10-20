@@ -22,14 +22,14 @@ function Certificates({ portfolioOwnerId, isEditable }) {
         <Card.Title>자격증 이력</Card.Title>
         {certificates.map((certificate) => (
           <Certificate
-            key={certificate.id}
-            award={certificate}
-            setAwards={setCertificates}
+            key={certificate._id}
+            certificate={certificate}
+            setCertificates={setCertificates}
             isEditable={isEditable}
             setIsVisibility={setIsVisibility}
           />
         ))}
-        {isEditable && (
+        {isEditable && isVisibility && (
           <Row className="mt-3 text-center mb-4">
             <Col sm={{ span: 20 }}>
               <Button onClick={() => {
@@ -41,7 +41,7 @@ function Certificates({ portfolioOwnerId, isEditable }) {
         {isAdding && (
           <CertificateAddForm
             portfolioOwnerId={portfolioOwnerId}
-            setAwards={setCertificates}
+            setCertificates={setCertificates}
             setIsAdding={setIsAdding}
             setIsVisibility={setIsVisibility}
           />

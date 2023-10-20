@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, Col, Row, DropdownButton } from "react-bootstrap";
 import * as Api from "../../../api";
-import PeriodCalendar from "../../common/calendar/PeriodCalendar";
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
 
 
@@ -11,10 +10,10 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing , set
   //useState로 major 상태를 생성함.
   const [major, setMajor] = useState(currentEducation.major);
   //useState로 educationLevel 상태를 생성함.
-  const [educationlevel, setEducationlevel] = useState("졸업 정보");
+  const [educationlevel, setEducationlevel] = useState(currentEducation.educationlevel);
   //useState로 startDate,endDate 상태를 생성함.
-  const [ startDate, setStartDate ] = useState(currentEducation.startDate);
-  const [ endDate, setEndDate ] = useState(currentEducation.endDate);
+  const [ startDate, setStartDate ] = useState(currentEducation.startDate.split('T')[0]);
+  const [ endDate, setEndDate ] = useState(currentEducation.endDate.split('T')[0]);
 
 
   const handleSubmit = async (e) => {
@@ -24,7 +23,7 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing , set
     const user_id = currentEducation.userId;
 
     // "education/유저id" 엔드포인트로 put 요청함.
-    await Api.put(`${user_id}/educations/${currentEducation.id}`, {
+    await Api.put(`${user_id}/educations/${currentEducation._id}`, {
       user_id,
       school,
       major,
@@ -34,7 +33,7 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing , set
     });
 
     // "educationlist/유저id" 엔드포인트로 get요청함.
-    const res = await Api.get(`${user_id}/educations/${currentEducation.id}`);
+    const res = await Api.get(`${user_id}/educations/${currentEducation._id}`);
     // educations를 response의 data로 세팅함.
     setEducations(res.data);
     // 편집 과정이 끝났으므로, isEditing을 false로 세팅함.
@@ -75,13 +74,21 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing , set
       <br/>
 
       <Form.Group controlid="formBasicgetDate" className="mt-3">
-        <Form.Label>재학 기간</Form.Label>
-          <PeriodCalendar 
-            startDate={startDate}
-            endDate={endDate}
-            setStartDate={setStartDate}
-            setEndDate={setEndDate}
-            />
+        <Form.Label>입학 일자</Form.Label>
+          <Form.Control
+              type ="Date"
+              value={startDate}
+              placeholder={startDate}
+              onChange={(e)=>setStartDate(e.target.value)}
+          />
+          <br/>
+          <Form.Label>졸업 일자</Form.Label>
+          <Form.Control
+              type ="Date"
+              value={endDate}
+              placeholder={endDate}
+              onChange={(e)=>setEndDate(e.target.value)}
+          />
         </Form.Group>
 
       <Form.Group as={Row} className="mt-3 text-center">
