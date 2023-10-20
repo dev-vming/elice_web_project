@@ -18,14 +18,15 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding, se
     const user_id = portfolioOwnerId;
 
     // "award/create" 엔드포인트로 post요청함.
-     Api.post("certificate/create", {
+    await Api.post(`${user_id}/certificates`, {
       user_id: portfolioOwnerId,
       title,
       description,
+      getDate,
     });
 
     // "awardlist/유저id" 엔드포인트로 get요청함.
-    const res = await Api.get("certificatelist", user_id);
+    const res = await Api.get(`${user_id}/certificates`);
     // awards를 response의 data로 세팅함.
     setCertificates(res.data);
     // award를 추가하는 과정이 끝났으므로, isAdding을 false로 세팅함.

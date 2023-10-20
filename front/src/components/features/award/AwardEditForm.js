@@ -5,9 +5,9 @@ import Calendar from "../../common/calendar/Calendar";
 
 function AwardEditForm({ currentAward, setAwards, setIsEditing, setIsVisibility}) {
   //useState로 name 상태를 생성함.
-  const [ name, setName ] = useState("");
+  const [ name, setName ] = useState(currentAward.name);
   //useState로 organization 상태를 생성함.
-  const [ organization, setOrganization ] = useState("");
+  const [ organization, setOrganization ] = useState(currentAward.organization);
   //useState로 getDate 상태를 생성함.
   const [ getDate, setGetDate ] = useState(currentAward.getDate);
   //useState로 awardinfo 상태를 생성함.
@@ -21,7 +21,7 @@ function AwardEditForm({ currentAward, setAwards, setIsEditing, setIsVisibility}
     const user_id = currentAward.user_id;
 
     // "awards/수상 id" 엔드포인트로 PUT 요청함.
-    await Api.put(`awards/${currentAward.id}`, {
+    await Api.put(`${user_id}/awards/${currentAward.id}`, {
       user_id,
       name,
       organization,
@@ -30,7 +30,7 @@ function AwardEditForm({ currentAward, setAwards, setIsEditing, setIsVisibility}
     });
 
     // "awardlist/유저id" 엔드포인트로 GET 요청함.
-    const res = await Api.get("awardlist", user_id);
+    const res = await Api.get(`${user_id}/awards/${currentAward.id}`);
     // awards를 response의 data로 세팅함.
     setAwards(res.data);
     // 편집 과정이 끝났으므로, isEditing을 false로 세팅함.

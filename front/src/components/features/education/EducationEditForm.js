@@ -11,7 +11,7 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing , set
   //useState로 major 상태를 생성함.
   const [major, setMajor] = useState(currentEducation.major);
   //useState로 educationLevel 상태를 생성함.
-  const [educationLevel, setEducationLevel] = useState("졸업 정보");
+  const [educationlevel, setEducationlevel] = useState("졸업 정보");
   //useState로 startDate,endDate 상태를 생성함.
   const [ startDate, setStartDate ] = useState(currentEducation.startDate);
   const [ endDate, setEndDate ] = useState(currentEducation.endDate);
@@ -24,17 +24,17 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing , set
     const user_id = currentEducation.userId;
 
     // "education/유저id" 엔드포인트로 put 요청함.
-    await Api.put(`education/${currentEducation.id}`, {
+    await Api.put(`${user_id}/educations/${currentEducation.id}`, {
       user_id,
       school,
       major,
-      educationLevel,
+      educationlevel,
       startDate,
       endDate,
     });
 
     // "educationlist/유저id" 엔드포인트로 get요청함.
-    const res = await Api.get("educationlist", user_id);
+    const res = await Api.get(`${user_id}/educations/${currentEducation.id}`);
     // educations를 response의 data로 세팅함.
     setEducations(res.data);
     // 편집 과정이 끝났으므로, isEditing을 false로 세팅함.
@@ -64,7 +64,7 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing , set
 
       <br/>
       <Form.Group controlId="formBasicEducationLevel">
-          <DropdownButton id="EducationLevel" title={educationLevel} onSelect={(eventKey)=>setEducationLevel(eventKey)}>
+          <DropdownButton id="Educationlevel" title={educationlevel} onSelect={(eventKey)=>setEducationlevel(eventKey)}>
             <DropdownItem eventKey="졸업">졸업</DropdownItem>
             <DropdownItem eventKey="재학중">재학중</DropdownItem>
             <DropdownItem eventKey="학사 졸업">학사 졸업</DropdownItem>

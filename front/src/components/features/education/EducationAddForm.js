@@ -11,7 +11,7 @@ function EducationAddForm({ portfolioOwnerId, setEducations, setIsAdding , setIs
   //useState로 major 상태를 생성함.
   const [major, setMajor] = useState("");
   //useState로 educationLevel 상태를 생성함.
-  const [educationLevel, setEducationLevel] = useState("졸업 정보");
+  const [educationlevel, setEducationlevel] = useState("졸업 정보");
   //useState로 StartDate, endDate 상태를 생성함
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -24,18 +24,18 @@ function EducationAddForm({ portfolioOwnerId, setEducations, setIsAdding , setIs
     // portfolioOwnerId를 user_id 변수에 할당함.
     const user_id = portfolioOwnerId;
 
-    // "award/create" 엔드포인트로 post요청함.
-  Api.post("education/create", {
+    // "education/write" 엔드포인트로 post요청함.
+  await Api.post(`${user_id}/educations`, {
       user_id: portfolioOwnerId,
       school,
       major,
-      educationLevel,
+      educationlevel,
       startDate,
       endDate
     });
 
     // "educationlist/유저id" 엔드포인트로 get요청함.
-    const res = await Api.get("educationlist", user_id);
+    const res = await Api.get(`${user_id}/educations`);
     // awards를 response의 data로 세팅함.
     setEducations(res.data);
     // award를 추가하는 과정이 끝났으므로, isAdding을 false로 세팅함.
@@ -66,7 +66,7 @@ function EducationAddForm({ portfolioOwnerId, setEducations, setIsAdding , setIs
 
       <br/>
       <Form.Group controlId="formBasicEducationLevel">
-          <DropdownButton id="EducationLevel" title={educationLevel} onSelect={(eventKey)=>setEducationLevel(eventKey)}>
+          <DropdownButton id="Educationlevel" title={educationlevel} onSelect={(eventKey)=>setEducationlevel(eventKey)}>
             <DropdownItem eventKey="졸업">졸업</DropdownItem>
             <DropdownItem eventKey="재학중">재학중</DropdownItem>
             <DropdownItem eventKey="학사 졸업">학사 졸업</DropdownItem>
