@@ -114,29 +114,14 @@ educationRouter.post(
   }
 );
 
-// 전체 학력 목록 조회 기능
 educationRouter.get(
   "/:userId/educations",
   login_required,
   async function (req, res, next) {
     try {
-      // 전체 사용자 목록을 얻음
-      const users = await educationService.getEducations();
-      res.status(200).send(users);
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-
-educationRouter.get(
-  "/:userId/educations/:education_id",
-  login_required,
-  async function (req, res, next) {
-    try {
       const { userId } = req.params;
       const educationInfo = await educationService.getEducationInfo({
-        userId,
+        user_id: userId,
       });
 
       if (educationInfo.errorMessage) {

@@ -6,11 +6,9 @@ class Education {
     return createdNewEducation;
   }
 
-  static async findByUserId({ userId }) {
-    const education = await EducationModel.find({ id: userId }).populate(
-      "userId"
-    );
-
+  static async findByUserId(userId) {
+    console.log("userId", userId);
+    const education = await EducationModel.find({ userId });
     return education;
   }
 
@@ -35,7 +33,7 @@ class Education {
   // delete
   static async delete({ education_id }) {
     const deletedEducation = await EducationModel.findOneAndDelete({
-      education_id,
+      _id: education_id,
     });
     return deletedEducation;
   }

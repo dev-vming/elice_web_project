@@ -28,51 +28,10 @@ class educationService {
     return createdNewEducation;
   }
 
-  static async getEducation({ email, password }) {
-    // 이메일 db에 존재 여부 확인
-    const education = await Education.findByEmail({ email });
-    if (!education) {
-      const errorMessage =
-        "해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
-      return { errorMessage };
-    }
-
-    // 비밀번호 일치 여부 확인
-    const correctPasswordHash = education.password;
-    const isPasswordCorrect = await bcrypt.compare(
-      password,
-      correctPasswordHash
-    );
-    if (!isPasswordCorrect) {
-      const errorMessage =
-        "비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.";
-      return { errorMessage };
-    }
-
-    // 로그인 성공 -> JWT 웹 토큰 생성
-    const secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
-    const token = jwt.sign({ user_id: user.id }, secretKey);
-
-    // 반환할 loginuser 객체를 위한 변수 설정
-    const id = education.id;
-    const name = education.name;
-    const description = education.description;
-
-    const loginUser = {
-      token,
-      id,
-      email,
-      name,
-      description,
-      errorMessage: null,
-    };
-
-    return loginUser;
-  }
-
-  static async getEducationInfo(userId) {
+  static async getEducationInfo({ user_id }) {
     console.log("특정 유저의 특정 학력 항목 조회 서비스 실행");
-    const education = await Education.findByUserId({ userId });
+    const findUser = await User.findById({ user_id });
+    const education = await Education.findByUserId(findUser);
     return education;
   }
 
@@ -81,8 +40,6 @@ class educationService {
     return education;
   }
   static async updateEducation(education_id, toUpdate) {
-    const tempValue = toUpdate.educationlevel;
-
     let education;
 
     // 업데이트 대상에 최종학력(educationlevel) 있다면, 즉 educationlevel 값이 null 이 아니라면 업데이트 진행
