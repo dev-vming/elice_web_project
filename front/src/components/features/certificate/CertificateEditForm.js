@@ -11,12 +11,12 @@ function CertificateEditForm({ currentCertificate, setCertificates, setIsEditing
   //useState로 getDate 상태를 생성함.
   const [ getDate, setGetDate ] = useState(currentCertificate.getDate.split('T')[0]);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    e.stopPropagation();
 
     // currentCertificate의 user_id를 user_id 변수에 할당함.
-    const user_id = currentCertificate.user_id;
+    const user_id = currentCertificate.userId;
 
     // "awards/수상 id" 엔드포인트로 PUT 요청함.
     await Api.put(`${user_id}/certificates/${currentCertificate._id}`, {
@@ -28,6 +28,7 @@ function CertificateEditForm({ currentCertificate, setCertificates, setIsEditing
 
     // "awardlist/유저id" 엔드포인트로 GET 요청함.
     const res = await Api.get(`${user_id}/certificates/${currentCertificate._id}`);
+
     // awards를 response의 data로 세팅함.
     setCertificates(res.data);
     // 편집 과정이 끝났으므로, isEditing을 false로 세팅함.

@@ -18,7 +18,6 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing , set
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    e.stopPropagation();
 
     const user_id = currentEducation.userId;
 

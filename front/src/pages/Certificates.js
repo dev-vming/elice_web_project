@@ -12,7 +12,6 @@ function Certificates({ portfolioOwnerId, isEditable }) {
   const [ isVisibility, setIsVisibility ] = useState(true);
 
   useEffect(() => {
-    // "awardlist/유저id"로 GET 요청하고, response의 data로 awards를 세팅함.
     Api.get(`${portfolioOwnerId}/certificates`).then((res) => setCertificates(res.data));
   }, [portfolioOwnerId]);
 
