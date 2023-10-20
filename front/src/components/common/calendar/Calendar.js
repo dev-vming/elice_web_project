@@ -4,8 +4,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import Form from "react-bootstrap/Form";
 import { ko } from "date-fns/esm/locale";
 
-const Calendar = () => {
-  const [getDate, setGetDate] = useState();
+const Calendar = ({ getDate, setGetDate }) => {
+
   return (
     <DatePicker 
     placeholderText="년-월-일"    	
