@@ -11,9 +11,10 @@ function Awards({ portfolioOwnerId, isEditable }) {
   //useState로 isVisibility 상태를 생성함.
   const [ isVisibility, setIsVisibility ] = useState(true);
 
+
   useEffect(() => {
     // "awardlist/유저id"로 GET 요청하고, response의 data로 awards를 세팅함.
-    Api.get("awardlist", portfolioOwnerId).then((res) => setAwards(res.data));
+    Api.get(`${portfolioOwnerId}/awards`).then((res) => setAwards(res.data));
   }, [portfolioOwnerId]);
 
   return (

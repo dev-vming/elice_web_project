@@ -13,7 +13,7 @@ function Educations({portfolioOwnerId, isEditable}) {
 
     useEffect(() => {
         // "educationlist/유저id"로 GET 요청하고, response의 data로 educations를 세팅함.
-        Api.get("educationlist", portfolioOwnerId).then((res) => setEducations(res.data));
+        Api.get(`${portfolioOwnerId}/educations`).then((res) => setEducations(res.data));
     }, [portfolioOwnerId]);
 
     return (
@@ -22,11 +22,11 @@ function Educations({portfolioOwnerId, isEditable}) {
             <Card.Title>학력</Card.Title>
             {educations.map((education) => (
                 <Education
-                key={education.id}
-                education={education}
-                setEducations={setEducations}
-                isEditable={isEditable}
-                setIsVisibility={setIsVisibility}
+                    key={education.id}
+                    education={education}
+                    setEducations={setEducations}
+                    isEditable={isEditable}
+                    setIsVisibility={setIsVisibility}
                 />
             ))}
             {isEditable && isVisibility && (
