@@ -1,6 +1,7 @@
 import { ProjectModel } from "../schemas/project";
 
 class Project {
+  // 생성
   static async create({ userId, title, content, startDate, endDate }) {
     console.log("projectcreate", userId, title, content, startDate, endDate);
     const createdNewProject = await ProjectModel.create({
@@ -13,23 +14,25 @@ class Project {
     return createdNewProject;
   }
 
+  // 조회 (userId : objectId)
   static async findByUserId({ userId }) {
-    const project = await ProjectModel.find({ id: userId }).populate("userId");
+    const project = await ProjectModel.find({ userId }).populate("userId");
     return project;
   }
 
+  // 모두 조회
   static async findAll() {
     const projects = await ProjectModel.find({}).populate("userId");
     return projects;
   }
 
-  // delete의 매개변수가 _id면 update의 매개변수도 _id 또는 objectId로 하는게 좋지 않을 까...
+  // 삭제
   static async delete({ _id }) {
     const result = await ProjectModel.deleteOne({ _id });
     return result;
   }
 
-  // 매개변수도 _id 또는 objectId로 하는게 좋지 않을 까...
+  // 수정
   static async update({ id, fieldToUpdate, newValue }) {
     const filter = { _id: id };
     const update = { [fieldToUpdate]: newValue };

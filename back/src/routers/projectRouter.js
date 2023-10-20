@@ -92,6 +92,29 @@ projectRouter.get(
   }
 );
 
+// delete project by id
+projectRouter.delete(
+  "/:userId/projects/:id",
+  login_required,
+  async (req, res, next) => {
+    try {
+      const { userId } = req.params;
+      const current_user_id = req.currentUserId;
+
+      if (userId !== current_user_id) {
+        throw new Error("자격증 추가 권한이 없습니다");
+      }
+
+      console.log("특정 유저의 자격증 삭제 실행");
+      const id = req.params.id;
+      const result = await projectService.deleteProject({ _id: id });
+      res.status(201).json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 // update project by id(uuid)
 projectRouter.put(
   "/:userId/projects/:id",
@@ -112,29 +135,6 @@ projectRouter.put(
 
       console.log("project router, update", id, toUpdate);
       const result = await projectService.updateProject(id, toUpdate);
-      res.status(201).json(result);
-    } catch (err) {
-      next(err);
-    }
-  }
-);
-
-// delete project by id
-projectRouter.delete(
-  "/:userId/projects/:id",
-  login_required,
-  async (req, res, next) => {
-    try {
-      const { userId } = req.params;
-      const current_user_id = req.currentUserId;
-
-      if (userId !== current_user_id) {
-        throw new Error("자격증 추가 권한이 없습니다");
-      }
-
-      console.log("특정 유저의 자격증 삭제 실행");
-      const id = req.params.id;
-      const result = await projectService.deleteProject({ _id: id });
       res.status(201).json(result);
     } catch (err) {
       next(err);
