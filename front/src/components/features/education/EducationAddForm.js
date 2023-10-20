@@ -24,7 +24,7 @@ function EducationAddForm({ portfolioOwnerId, setEducations, setIsAdding }) {
     const user_id = portfolioOwnerId;
 
     // "award/create" 엔드포인트로 post요청함.
-  Api.post("education/create", {
+  Api.post(`${user_id}/educations`, {
       user_id: portfolioOwnerId,
       school,
       major,

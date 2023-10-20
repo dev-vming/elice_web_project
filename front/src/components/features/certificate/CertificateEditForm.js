@@ -1,31 +1,29 @@
 import React, { useState } from "react";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import * as Api from "../../../api";
-import Calendar from "../../common/calendar/Calendar";
 
 
 function CertificateEditForm({ currentCertificate, setCertificates, setIsEditing }) {
   //useState로 title 상태를 생성함.
-  const [title, setTitle] = useState(currentCertificate.title);
+  const [name, setName] = useState(currentCertificate.name);
   //useState로 description 상태를 생성함.
-  const [description, setDescription] = useState(currentCertificate.description);
+  const [issuingOrganization, setIssuingOrganization] = useState(currentCertificate.issuingOrganization);
+  const [getDate, setGetDate] = useState("")
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    e.stopPropagation();
 
     // currentCertificate의 user_id를 user_id 변수에 할당함.
-    const user_id = currentCertificate.user_id;
+    const user_id = currentCertificate.userId;
 
     // "awards/수상 id" 엔드포인트로 PUT 요청함.
-    await Api.put(`awards/${currentCertificate.id}`, {
+ Api.put(`certificates/${currentCertificate.id}`, {
       user_id,
-      title,
-      description,
+      name,
+      issuingOrganization,
     });
 
-    // "awardlist/유저id" 엔드포인트로 GET 요청함.
-    const res = await Api.get("certificatelist", user_id);
+    const res = await Api.get(`${user_id}/certificates`, user_id);
     // awards를 response의 data로 세팅함.
     setCertificates(res.data);
     // 편집 과정이 끝났으므로, isEditing을 false로 세팅함.
@@ -38,8 +36,8 @@ function CertificateEditForm({ currentCertificate, setCertificates, setIsEditing
         <Form.Control
           type="text"
           placeholder="자격증 내역"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
       </Form.Group>
 
@@ -47,14 +45,18 @@ function CertificateEditForm({ currentCertificate, setCertificates, setIsEditing
         <Form.Control
           type="text"
           placeholder="상세 내역"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={issuingOrganization}
+          onChange={(e) => setIssuingOrganization(e.target.value)}
         />
       </Form.Group>
 
-      <Form.Group controlId="formBasicgetsYear" className="mt-3 text-center">
-      자격증 획득일
-      <Calendar />
+      <Form.Group controlId="formBasicgetsDate" className="mt-3 text-left">
+      <Form.Control
+          type="date"
+          placeholder="년-월-일"
+          value={getDate}
+          onChange={(e) => setGetDate(e.target.value)}
+        />
       </Form.Group>
 
 

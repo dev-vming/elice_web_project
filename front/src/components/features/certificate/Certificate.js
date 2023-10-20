@@ -9,13 +9,13 @@ function Certificate({ certificate, setCertificates, isEditable }) {
     <>
       {isEditing ? (
         <CertificateEditForm
-          currentAward={certificate}
-          setAwards={setCertificates}
+          currentCertificate={certificate}
+          setCertificates={setCertificates}
           setIsEditing={setIsEditing}
         />
       ) : (
         <CertificateCard
-          award={certificate}
+          certificate={certificate}
           isEditable={isEditable}
           setIsEditing={setIsEditing}
         />

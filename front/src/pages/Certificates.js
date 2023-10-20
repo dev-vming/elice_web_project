@@ -10,8 +10,7 @@ function Certificates({ portfolioOwnerId, isEditable }) {
   const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
-    // "awardlist/유저id"로 GET 요청하고, response의 data로 awards를 세팅함.
-    Api.get("certificatelist", portfolioOwnerId).then((res) => setCertificates(res.data));
+    Api.get(`${portfolioOwnerId}/certificates`).then((res) => setCertificates(res.data));
   }, [portfolioOwnerId]);
 
   return (
@@ -21,8 +20,8 @@ function Certificates({ portfolioOwnerId, isEditable }) {
         {certificates.map((certificate) => (
           <Certificate
             key={certificate.id}
-            award={certificate}
-            setAwards={setCertificates}
+            certificate={certificate}
+            setCertificates={setCertificates}
             isEditable={isEditable}
           />
         ))}
@@ -36,7 +35,7 @@ function Certificates({ portfolioOwnerId, isEditable }) {
         {isAdding && (
           <CertificateAddForm
             portfolioOwnerId={portfolioOwnerId}
-            setAwards={setCertificates}
+            setCertificates={setCertificates}
             setIsAdding={setIsAdding}
           />
         )}
