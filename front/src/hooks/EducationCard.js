@@ -5,9 +5,11 @@ function EducationCard({ education, isEditable, setIsEditing }) {
         <Card.Text>
             <Row className="align-items-center">
                 <Col>
-                    <span>{education.title}</span>
+                    <span>{education.school}</span>
                     <br />
-                    <span className="text-muted">{education.description}</span>
+                    <span>{education.major} ({education.educationLevel})</span>
+                    <br />
+                    <span className="text-muted">{education.startDate}~{education.endDate}</span>
                 </Col>
                 {isEditable && (
                     <Col xs lg="1">

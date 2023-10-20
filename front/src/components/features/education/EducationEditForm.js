@@ -4,13 +4,16 @@ import * as Api from "../../../api";
 import PeriodCalendar from "../../common/calendar/PeriodCalendar";
 
 
- function EducationEditForm({ currentEducation, setEducations, setIsEditing }) {
+function EducationEditForm({ currentEducation, setEducations, setIsEditing , setIsVisibility }) {
     //useState로 school 상태를 생성함.
     const [school, setSchool] = useState(currentEducation.school);
     //useState로 major 상태를 생성함.
     const [major, setMajor] = useState(currentEducation.major);
     //useState로 graduationstatus 상태를 생성함.
     const [graduationStatus, setGraduationStatus] = useState(currentEducation.graduationStatus);
+    //useState로 startDate,endDate 상태를 생성함.
+    const [ startDate, setStartDate ] = useState(currentEducation.startDate);
+    const [ endDate, setEndDate ] = useState(currentEducation.endDate);
 
 
   const handleSubmit = async (e) => {
@@ -24,7 +27,9 @@ import PeriodCalendar from "../../common/calendar/PeriodCalendar";
       user_id,
       school,
       major,
-      graduationStatus,
+      educationLevel,
+      startDate,
+      endDate,
     });
 
     // "educationlist/유저id" 엔드포인트로 get요청함.
@@ -38,9 +43,10 @@ import PeriodCalendar from "../../common/calendar/PeriodCalendar";
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group controlId="formBasicSchool">
+        <Form.Label>학교</Form.Label>
         <Form.Control
           type="text"
-          placeholder="학교"
+          placeholder="학교명을 입력하세요."
           value={school}
           onChange={(e) => setSchool(e.target.value)}
         />
@@ -49,69 +55,43 @@ import PeriodCalendar from "../../common/calendar/PeriodCalendar";
       <Form.Group controlId="formBasicMajor" className="mt-3">
         <Form.Control
           type="text"
-          placeholder="전공"
+          placeholder="전공/계열을 입력하세요."
           value={major}
           onChange={(e) => setMajor(e.target.value)}
         />
       </Form.Group>
 
-      <Form.Group key={`inline-radio`} controlId="formBasicGraduationStatus" className="mt-3">
-        <Form.Check
-          inline
-          type="radio"
-          value= "재학중"
-          label= "재학중"
-          name="graduationStatus"
-          id= 'graduation1'
-          checked={graduationStatus === "재학중"}
-          onChange={(e) => setGraduationStatus(e.target.value)}
-        />
-        <Form.Check
-          inline
-          type="radio"
-          value= "학사졸업"
-          label= "학사졸업"
-          name="graduationStatus"
-          id= 'graduation2'
-          checked={graduationStatus === "학사졸업"}
-          onChange={(e) => setGraduationStatus(e.target.value)}
-        />
-        <Form.Check
-          inline
-          type="radio"
-          value= "석사졸업"
-          label= "석사졸업"
-          name="graduationStatus"
-          id= 'graduation3'
-          checked={graduationStatus === "석사졸업"}
-          onChange={(e) => setGraduationStatus(e.target.value)}
-        />
-        <Form.Check
-          inline
-          type="radio"
-          value= "박사졸업"
-          label= "박사졸업"
-          name="graduationStatus"
-          id= 'graduation4'
-          checked={graduationStatus === "박사졸업"}
-          onChange={(e) => setGraduationStatus(e.target.value)}
-        />
+      <br/>
+      <Form.Group controlId="formBasicEducationLevel">
+          <DropdownButton id="EducationLevel" title={educationLevel} onSelect={(eventKey)=>setEducationLevel(eventKey)}>
+            <DropdownItem eventKey="졸업">졸업</DropdownItem>
+            <DropdownItem eventKey="재학중">재학중</DropdownItem>
+            <DropdownItem eventKey="학사 졸업">학사 졸업</DropdownItem>
+            <DropdownItem eventKey="석사 졸업">석사 졸업</DropdownItem>
+            <DropdownItem eventKey="박사 졸업">박사 졸업</DropdownItem>
+          </DropdownButton>
       </Form.Group>
+      <br/>
 
-
-      <Form.Group controlId="formBasicgetsYear" className="mt-3 text-center">
-        학력 기간
-      <PeriodCalendar />
-      </Form.Group>
-
-
+      <Form.Group controlid="formBasicgetDate" className="mt-3">
+        <Form.Label>재학 기간</Form.Label>
+          <PeriodCalendar 
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+            />
+        </Form.Group>
 
       <Form.Group as={Row} className="mt-3 text-center">
         <Col sm={{ span: 20 }}>
-          <Button variant="primary" type="submit" className="me-3">
+          <Button variant="primary" type="submit" className="me-3" onClick={()=>setIsVisibility(true)}>
             확인
           </Button>
-          <Button variant="secondary" onClick={() => setIsEditing(false)}>
+          <Button variant="secondary" onClick={() => {
+            setIsEditing(false)
+            setIsVisibility(true)
+            }}>
             취소
           </Button>
         </Col>
