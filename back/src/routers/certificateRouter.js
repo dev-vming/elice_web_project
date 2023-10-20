@@ -25,12 +25,12 @@ certificateRouter.post(
         throw new Error("자격증 추가 권한이 없습니다");
       }
 
-      // req (request) 에서 데이터 가져오기
+      // 추가할 데이터
       const name = req.body.name;
       const issuingOrganization = req.body.issuingOrganization;
       const getDate = req.body.getDate;
 
-      // 위 데이터를 db에 추가하기
+      // 데이터를 db에 추가
       const newCertificate = await certificateService.addCertificate({
         user_id: userId,
         name,
@@ -104,12 +104,14 @@ certificateRouter.post(
         throw new Error("자격증 수정 권한이 없습니다");
       }
 
-      // 변경할 데이터
+      // newValue : 변경할 데이터
       const name = req.body.name;
       const issuingOrganization = req.body.issuingOrganization;
       const getDate = req.body.getDate;
 
       const newValue = { name, issuingOrganization, getDate };
+
+      // 데이터를 db에 추가
       const updatedCertificates = await certificateService.updateCertificates(
         id,
         newValue

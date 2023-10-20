@@ -3,7 +3,7 @@ import { Award } from "../db/models/Award";
 
 class awardService {
   static async addAward({ user_id, name, organization, getDate, awardInfo }) {
-    // user_id를 통해 찾은 user를 저장
+    // userId: user_id를 통해 찾은 user
     const userId = await User.findById({ user_id: user_id });
 
     const newAward = {
@@ -13,6 +13,7 @@ class awardService {
       getDate,
       awardInfo,
     };
+    // db에 추가
     const createdNewAward = await Award.create({ newAward });
     createdNewAward.errorMessage = null;
 

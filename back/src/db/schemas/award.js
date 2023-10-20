@@ -7,22 +7,18 @@ const AwardSchema = new Schema({
     required: true,
   },
   name: {
-    // 수상명
     type: String,
     required: true,
   },
   organization: {
-    // 발행처
     type: String,
     required: true,
   },
   getDate: {
-    // 취득일
     type: Date,
     required: true,
   },
   awardInfo: {
-    // 추가설명
     type: String,
     required: false,
     default: "",

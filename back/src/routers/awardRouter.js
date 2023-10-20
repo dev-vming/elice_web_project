@@ -5,7 +5,7 @@ import { awardService } from "../services/awardService";
 
 const awardRouter = Router();
 
-// post 요청 : 수상경력 추가
+// post : 수상경력 추가
 awardRouter.post(
   "/:userId/awards",
   login_required,
@@ -23,7 +23,7 @@ awardRouter.post(
       if (userId !== current_user_id) {
         throw new Error("수상경력 추가 권한이 없습니다");
       }
-      // req (request) 에서 데이터 가져오기
+      // newAward : 추가할 데이터
       const name = req.body.name;
       const organization = req.body.organization;
       const getDate = req.body.getDate;
@@ -37,7 +37,7 @@ awardRouter.post(
         awardInfo,
       });
 
-      // newAward를 db에 추가
+      // db에 newAward 추가
       if (newAward.errorMessage) {
         throw new Error(newUser.errorMessage);
       }
@@ -49,7 +49,7 @@ awardRouter.post(
   }
 );
 
-// get 요청 : 특정 유저의 수상경력 조회
+// get : 특정 유저의 수상경력 조회
 awardRouter.get(
   "/:userId/awards",
   login_required,
@@ -65,7 +65,7 @@ awardRouter.get(
   }
 );
 
-// delete 요청: 특정 수상경력 삭제
+// delete : 특정 수상경력 삭제
 awardRouter.delete(
   "/:userId/awards/:id",
   login_required,
@@ -89,7 +89,7 @@ awardRouter.delete(
   }
 );
 
-// post 요청: 특정 수상경력 수정
+// post : 특정 수상경력 수정
 awardRouter.post(
   "/:userId/awards/:id",
   login_required,
@@ -103,7 +103,7 @@ awardRouter.post(
         throw new Error("수상경력 수정 권한이 없습니다.");
       }
 
-      // req에서 변경할 데이터를 받아온다
+      // newValue : 변경할 데이터
       const name = req.body.name;
       const organization = req.body.organization;
       const getDate = req.body.getDate;
@@ -113,7 +113,7 @@ awardRouter.post(
 
       const updatedAwards = await awardService.updateAwards(id, newValue);
 
-      // updatedAwards를 db에 추가
+      // db에 updatedAwards를 추가
       res.status(201).json(updatedAwards);
     } catch (err) {
       next(err);

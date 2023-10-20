@@ -7,17 +7,14 @@ const CertificateSchema = new Schema({
     required: true,
   },
   name: {
-    // 자격증명
     type: String,
     required: true,
   },
   issuingOrganization: {
-    // 발행처
     type: String,
     required: true,
   },
   getDate: {
-    // 취득일
     type: Date,
     required: true,
   },

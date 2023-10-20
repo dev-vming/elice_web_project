@@ -3,6 +3,7 @@ import { Certificate } from "../db/models/Certificate";
 
 class certificateService {
   static async addCertificate({ user_id, name, issuingOrganization, getDate }) {
+    // userId: user_id를 통해 찾은 user
     const userId = await User.findById({ user_id });
 
     const newCertificate = {
@@ -11,6 +12,8 @@ class certificateService {
       issuingOrganization,
       getDate,
     };
+
+    //db에 추가
     const createdNewCertificate = await Certificate.create({ newCertificate });
     createdNewCertificate.errorMessage = null;
 

@@ -5,18 +5,18 @@ class Certificate {
     const createdNewCertificate = await CertificateModel.create(newCertificate);
     return createdNewCertificate;
   }
-  // 조회 (userId)
+  // Read
   static async findByUser(userId) {
     const certificates = await CertificateModel.find({ userId });
     return certificates;
   }
-  // delete
+  // Delete
   static async delete({ _id }) {
     const certificates = await CertificateModel.findOneAndDelete({ _id });
     return certificates;
   }
 
-  // udpate
+  // Update
   static async update(id, newValue) {
     const filter = { _id: id };
     const option = { returnOriginal: false };
