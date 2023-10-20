@@ -3,7 +3,7 @@ import { Project } from "../db/index";
 
 class projectService {
   static async addProject({ user_id, title, content, startDate, endDate }) {
-    //userId는 오브젝트아이디
+    //userId : 오브젝트 아이디
     const userId = await User.findById({ user_id });
     const newProject = {
       userId,
@@ -18,7 +18,7 @@ class projectService {
     return createdNewProject;
   }
 
-  static async getProjects({ user_id }) {
+  static async getProjects(user_id) {
     const userId = await User.findById({ user_id });
     const projects = await Project.findByUserId({ userId });
     return projects;
