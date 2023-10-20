@@ -24,52 +24,68 @@ border: 2px solid gray;
 
 function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [content, setcontent] = useState("");
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
   const [editorState, setEditorState] = useState(EditorState.createEmpty()); //비어있는 ContentState 기본 구성으로 새 개체를 반환. 나중에 상태값을 변경하기 위함
+  const [editorSave, setEditorSave] = useState(null)
+  console.log('1. editorState 초기값 addform 열릴때, 2.값 입력되고 64,65,66,68 실행이후 다시 등장. 3. 한번 더 반복. 왜?' + JSON.stringify(editorState))
   const [htmlString, setHtmlString] = useState(""); //test용
+
+  const inputAdder = () => {
+    setEditorSave(() => {
+      editorSave += editorState
+    }); 
+    console.log(setEditorSave)
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    const user_id = portfolioOwnerId;
-    // portfolioOwnerId를 user_id 변수에 할당함.
+    const user_id = portfolioOwnerId; // portfolioOwnerId를 user_id 변수에 할당함.
     const convertedEditorState = convertToRaw(editorState.getCurrentContent());
     // 1. getCurrentContent(): immutable 객체를 ContentState로 만듬
     // 2. convertToRaw로 blockMap과 entityMap만 추출(api로 보내기위해 다듬는 과정)
 
-    await Api.post('/projects', {
+    await Api.post(`${user_id}/projects`, {
       user_id: portfolioOwnerId,
       title,
-      description,
+      content,
       startDate,
       endDate,
       editorState : convertedEditorState
     });
 
-    const res = await Api.get("/projects", user_id);
+    console.log('convertedEditorState : post 보내는 값' + convertedEditorState)
+
+    const res = await Api.get(`${user_id}/projects`);
     setProjects(res.data);
     setIsAdding(false);
   };
 
-  const updateTextDescription = async (state) => { //View를 위해 상태값을 HTML로 변환하는 과정
-    await setEditorState(state);
+  const updateTextcontent = (state) => { //View를 위해 상태값을 HTML로 변환하는 과정
+    setEditorState(state);
+    console.log('updateTextcontent 실행. editorState = ', setEditorState(state))
     const html = draftjsToHtml(convertToRaw(editorState.getCurrentContent())); //1.immutable 객체를 getCurrentContent()로 ContentState로 만듬.
     //2. convertToRaw로 ContentState의 blockMap과 entityMap만 추출
     //3.에디터로 작성한 상태값을 HTML태그로 변환
+    console.log('editorState에서 ContentState로 변환, editorState.getCurrentContent() = ' + editorState.getCurrentContent())
+    console.log('ContentState를 convertToRaw로 원시 js로 변환(blockMap, entityMap 추출된 상태), convertToRaw(editorState.getCurrentContent()) = ' + JSON.stringify(convertToRaw(editorState.getCurrentContent())))
     setHtmlString(html);
+    console.log('<보이는 값>원시 js를 html로, html = ' + html)
+    inputAdder();
   };
 
   const uploadCallback = async (file) => {
     try {
-      const formData = new FormData();
-      formData.append('image', file);
-      const response = await Api.post('/projects', formData);
-      const imageUrl = response.data.imageUrl;
+      const user_id = portfolioOwnerId;
+      const formData = new FormData(); // 객체, 전송용?
+      formData.append('image', file); // 키 : 밸류. 객체에 파일추가
+      const response = await Api.post(`${user_id}/projects`, formData); //응답 저장
+      const imageUrl = response.data.imageUrl; //응답 처리: response에서 imageUrl 추출. 
       console.log('사진 업로드')
-      return { data: { link: imageUrl } };
+      return imageUrl;
     } catch (error) {
       throw new Error('사진 업로드 실패');
     }
@@ -86,12 +102,12 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
         />
       </Form.Group>
 
-      <Form.Group controlId="formBasicDescription" className="mt-3">
+      <Form.Group controlId="formBasiccontent" className="mt-3">
         <Form.Control
           type="text"
           placeholder="프로젝트 요약 및 기술스택을 입력하세요"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={content}
+          onChange={(e) => setcontent(e.target.value)}
         />
       </Form.Group>
 
@@ -122,9 +138,9 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
       <Editor
         placeholder="상세내용을 입력해주세요"
         editorState={editorState}
-        onEditorStateChange={updateTextDescription}
+        onEditorStateChange={updateTextcontent}
         toolbar={{
-        image: { uploadCallback: uploadCallback },
+        image: { uploadCallback},
         }}
         localization={{ locale: "ko" }}
         editorStyle={{
@@ -133,6 +149,7 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
         border: "3px solid lightgray",
         }}
       />
+
       <RowBox>
         <Viewer dangerouslySetInnerHTML={{ __html: htmlString }} />
         <Viewer>{htmlString}</Viewer>

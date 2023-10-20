@@ -25,10 +25,10 @@ border: 2px solid gray;
 
 function ProjectEditForm({ currentProject, setProjects, setIsEditing }) {
   const [title, setTitle] = useState(currentProject.title);
-  const [description, setDescription] = useState(currentProject.description);
+  const [content, setContent] = useState(currentProject.description);
   const [startDate, setStartDate] = useState(currentProject.startDate);
   const [endDate, setEndDate] = useState(currentProject.endDate);
-  const [editorState, setEditorState] = useState(currentProject.editorState); //***저장된 editorState 받아오려고 하는데 이렇게 쓰는게 맞을까요?
+  const [editorState, setEditorState] = useState(currentProject.editorState); 
   const [htmlString, setHtmlString] = useState(""); //test용
 
   
@@ -36,29 +36,29 @@ function ProjectEditForm({ currentProject, setProjects, setIsEditing }) {
     e.preventDefault();
     e.stopPropagation();
 
-    const user_id = currentProject.user_id;
+    const user_id = currentProject.id;
     const convertedEditorState = convertToRaw(editorState.getCurrentContent())
     // 1. getCurrentContent(): immutable 객체를 ContentState로 만듬
     // 2. convertToRaw로 blockMap과 entityMap만 추출(api로 보내기위해 다듬는 과정)
   
-    await Api.put(`/projects/${user_id}`, {
+    await Api.put(`${user_id}/projects/${currentProject.id}`, {
       user_id,
       title,
-      description,
+      content,
       startDate,
       endDate,
       editorState : convertedEditorState
     });
 
-    const res = await Api.get(`/projects/${user_id}`, user_id);
+    const res = await Api.get(`${user_id}/projects/${currentProject.id}`);
     setProjects(res.data);
     setIsEditing(false);
   };
 
-  //기존에 작성된 값을 수정하기 위해서 받은 HTMl값을 draft Editor가 알아볼 수 있도록 변환하는 작업을 밑에서 진행
+ // 기존에 작성된 값을 수정하기 위해서 받은 HTMl값을 draft Editor가 알아볼 수 있도록 변환하는 작업을 밑에서 진행
 
-  const htmlToEditor = editorState //editorState를 원시 js로 변환하려고 사용한 변수
-
+const htmlToEditor = editorState //editorState를 원시 js로 변환하려고 사용한 변수
+  
   useEffect(() => {
     const blocksFromHtml = htmlToDraft(htmlToEditor); //html->js변환 
     if(blocksFromHtml){
@@ -67,9 +67,9 @@ function ProjectEditForm({ currentProject, setProjects, setIsEditing }) {
       const editorState = EditorState.createWithContent(contentState);
       setEditorState(editorState);
     }
-    // eslint-disable-next-line
+    //eslint-disable-next-line
   }, [])
-  // 처음 마운트됐을 때만 실행하려고 빈배열
+      // 처음 마운트됐을 때만 실행하려고 빈배열
 
 
   const updateTextDescription = async (state) => {
@@ -108,8 +108,8 @@ function ProjectEditForm({ currentProject, setProjects, setIsEditing }) {
         <Form.Control
           type="text"
           placeholder="프로젝트 요약 및 기술스택을 입력하세요"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
         />
       </Form.Group>
 
@@ -150,6 +150,7 @@ function ProjectEditForm({ currentProject, setProjects, setIsEditing }) {
         border: "3px solid lightgray",
         }}
       />
+
       <RowBox>
         <Viewer dangerouslySetInnerHTML={{ __html: htmlString }} />
         <Viewer>{htmlString}</Viewer>

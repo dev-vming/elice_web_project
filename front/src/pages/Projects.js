@@ -8,9 +8,12 @@ function Projects({ portfolioOwnerId, isEditable }) {
   const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
-    Api.get("/:userId/projects", portfolioOwnerId).then((res) => setProjects(res.data));
-  }, [portfolioOwnerId]);
-
+    Api.get(`${portfolioOwnerId
+    }/projects`).then((res) => setProjects(res.data));
+  }, [portfolioOwnerId
+  ]);
+  console.log(portfolioOwnerId
+    )
   return (  //추가, 편집 중에 버튼 안보이게, line 27
     <Card>
       <Card.Body>
@@ -32,7 +35,9 @@ function Projects({ portfolioOwnerId, isEditable }) {
         )}
         {isAdding && (
           <ProjectAddForm
-            portfolioOwnerId={portfolioOwnerId}
+          portfolioOwnerId
+            ={portfolioOwnerId
+            }
             setProjects={setProjects}
             setIsAdding={setIsAdding}
           />

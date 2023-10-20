@@ -1,7 +1,7 @@
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-function ProjectCard({ project, isEditable, setIsEditing }) { //백과 navigate 경로 협의하자
+function ProjectCard({ project, isEditable, setIsEditing }) { 
   const navigate = useNavigate();
   
   return (
@@ -10,11 +10,11 @@ function ProjectCard({ project, isEditable, setIsEditing }) { //백과 navigate 
         <Col onClick={ () => navigate('/project/detail')}>
           <span>{project.title}</span>
           <br />
-          <span className="text-muted">{project.description}</span>
+          <span className="text-muted">{project.content}</span>
           <br />
           <span>{project.startDate} ~ {project.endDate}</span>
           <br />
-          <div>{project.editorState.slice(0, 50)}</div>
+          {/* <div>{project.editorState}</div> */}
           
         </Col>
         {isEditable && (
