@@ -5,7 +5,7 @@ import * as Api from "./api";
 import { loginReducer } from "./reducer";
 
 import Header from "./components/common/Header";
-import { LoginPage, SearchPortfolios, RegisterPage , MyPage, } from "./pages";
+import { LoginPage, SearchPortfolios, RegisterPage , MyPage, Certificates, Educations, Awards, Projects } from "./pages";
 
 // import Educations from "./components/education/Educations";
 
@@ -57,13 +57,20 @@ function App() {
         <Router>
           <Header />
           <Routes>
-            <Route path="/" exact element={<MyPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/users/:userId" element={<MyPage />} />
-            <Route path="/network" element={<SearchPortfolios />} />
-            <Route path="*" element={<MyPage />} />
-            {/* <Route path="/:userId/projects" element={<Projects />} /> */}
+            <Route path="user" exact element={<MyPage />} />
+            <Route path="user/login" element={<LoginPage />} />
+            <Route path="user/register" element={<RegisterPage />} />
+            <Route path="users/:userId" element={<MyPage />} />
+            <Route path="projects" element={<SearchPortfolios />} />
+            <Route path="user/current" element={<SearchPortfolios />} />
+            <Route path=":userId/projects" element={<Projects />} />
+            <Route path=":userId/projects/:id" element={<Projects />} />
+            <Route path=":userId/certificates" element={<Certificates />} />
+            <Route path=":userId/certificates/:id" element={<Certificates />} />
+            <Route path=":userId/awards" element={<Awards />} />
+            <Route path=":userId/educations" element={<Awards />} />
+            <Route path=":userId/educations" element={<Educations />} />
+            <Route path=":userId/education/:id" element={<Educations />} />
             
           </Routes>
         </Router>

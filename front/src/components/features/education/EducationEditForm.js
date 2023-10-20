@@ -15,12 +15,11 @@ import PeriodCalendar from "../../common/calendar/PeriodCalendar";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    e.stopPropagation();
 
     const user_id = currentEducation.userId;
 
     // "education/유저id" 엔드포인트로 put 요청함.
-    await Api.put(`education/${currentEducation.id}`, {
+   Api.put(`education/${currentEducation.id}`, {
       user_id,
       school,
       major,
