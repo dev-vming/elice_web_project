@@ -3,11 +3,13 @@ import { Button, Form, Col, Row } from "react-bootstrap";
 import * as Api from "../../../api";
 import Calendar from "../../common/calendar/Calendar";
 
-function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding }) {
+function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding, setIsVisibility }) {
   //useState로 title 상태를 생성함.
   const [title, setTitle] = useState("");
   //useState로 description 상태를 생성함.
   const [description, setDescription] = useState("");
+  //useState로 getDate 상태를 생성함.
+  const [ getDate, setGetDate ] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,16 +54,21 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding }) 
 
       <Form.Group controlId="formBasicgetsDate" className="mt-3 text-left">
         자격증 획득일
-      <Calendar/>
+        <Calendar
+          getDate={getDate}
+          setGetDate={setGetDate}
+        />
       </Form.Group>
 
 
       <Form.Group as={Row} className="mt-3 text-center">
         <Col sm={{ span: 20 }}>
-          <Button variant="primary" type="submit" className="me-3">
+          <Button variant="primary" type="submit" className="me-3" onClick={()=>setIsVisibility(true)}>
             확인
           </Button>
-          <Button variant="secondary" onClick={() => setIsAdding(false)}>
+          <Button variant="secondary" onClick={() => {
+            setIsAdding(false)
+            setIsVisibility(true)}}>
             취소
           </Button>
         </Col>

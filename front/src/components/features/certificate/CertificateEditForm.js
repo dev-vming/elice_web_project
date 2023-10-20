@@ -4,11 +4,13 @@ import * as Api from "../../../api";
 import Calendar from "../../common/calendar/Calendar";
 
 
-function CertificateEditForm({ currentCertificate, setCertificates, setIsEditing }) {
+function CertificateEditForm({ currentCertificate, setCertificates, setIsEditing, setIsVisibility }) {
   //useState로 title 상태를 생성함.
   const [title, setTitle] = useState(currentCertificate.title);
   //useState로 description 상태를 생성함.
   const [description, setDescription] = useState(currentCertificate.description);
+  //useState로 getDate 상태를 생성함.
+  const [ getDate, setGetDate ] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,17 +55,22 @@ function CertificateEditForm({ currentCertificate, setCertificates, setIsEditing
       </Form.Group>
 
       <Form.Group controlId="formBasicgetsYear" className="mt-3 text-center">
-      자격증 획득일
-      <Calendar />
+        자격증 획득일
+        <Calendar
+          getDate={getDate}
+          setGetDate={setGetDate}
+        />
       </Form.Group>
 
 
       <Form.Group as={Row} className="mt-3 text-center mb-4">
         <Col sm={{ span: 20 }}>
-          <Button variant="primary" type="submit" className="me-3">
+          <Button variant="primary" type="submit" className="me-3" onClick={()=>setIsVisibility(true)}>
             확인
           </Button>
-          <Button variant="secondary" onClick={() => setIsEditing(false)}>
+          <Button variant="secondary" onClick={() => {
+            setIsEditing(false)
+            setIsVisibility(true)}}>
             취소
           </Button>
         </Col>
