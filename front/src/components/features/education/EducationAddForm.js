@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Button, Form, Col, Row } from "react-bootstrap";
+import { Button, Form, Col, Row, DropdownButton } from "react-bootstrap";
 import * as Api from "../../../api";
 import PeriodCalendar from "../../common/calendar/PeriodCalendar";
+import DropdownItem from "react-bootstrap/esm/DropdownItem";
 
 
 function EducationAddForm({ portfolioOwnerId, setEducations, setIsAdding , setIsVisibility }) {

@@ -1,19 +1,20 @@
 import React, { useState } from "react";
-import { Button, Form, Col, Row } from "react-bootstrap";
+import { Button, Form, Col, Row, DropdownButton } from "react-bootstrap";
 import * as Api from "../../../api";
 import PeriodCalendar from "../../common/calendar/PeriodCalendar";
+import DropdownItem from "react-bootstrap/esm/DropdownItem";
 
 
 function EducationEditForm({ currentEducation, setEducations, setIsEditing , setIsVisibility }) {
-    //useState로 school 상태를 생성함.
-    const [school, setSchool] = useState(currentEducation.school);
-    //useState로 major 상태를 생성함.
-    const [major, setMajor] = useState(currentEducation.major);
-    //useState로 graduationstatus 상태를 생성함.
-    const [graduationStatus, setGraduationStatus] = useState(currentEducation.graduationStatus);
-    //useState로 startDate,endDate 상태를 생성함.
-    const [ startDate, setStartDate ] = useState(currentEducation.startDate);
-    const [ endDate, setEndDate ] = useState(currentEducation.endDate);
+  //useState로 school 상태를 생성함.
+  const [school, setSchool] = useState(currentEducation.school);
+  //useState로 major 상태를 생성함.
+  const [major, setMajor] = useState(currentEducation.major);
+  //useState로 educationLevel 상태를 생성함.
+  const [educationLevel, setEducationLevel] = useState("졸업 정보");
+  //useState로 startDate,endDate 상태를 생성함.
+  const [ startDate, setStartDate ] = useState(currentEducation.startDate);
+  const [ endDate, setEndDate ] = useState(currentEducation.endDate);
 
 
   const handleSubmit = async (e) => {
