@@ -5,10 +5,16 @@ function AwardCard({ award, isEditable, setIsEditing }) {
     <Card.Text>
       <Row className="align-items-center">
         <Col>
-          <span>{award.title}</span>
+          <span>{award.title} {award.description}</span>
           <br />
-          <span className="text-muted">{award.description}</span>
+          <span className="text-muted">{award.getDate} 취득</span>
+          <br />
         </Col>
+        {award.awardInfo && (
+          <Col>
+            <span className="text-muted">{award.awardInfo}</span>
+          </Col>
+        )}
         {isEditable && (
           <Col xs lg="1">
             <Button
