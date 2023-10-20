@@ -9,7 +9,11 @@ function AwardEditForm({ currentAward, setAwards, setIsEditing, setIsVisibility}
   //useState로 organization 상태를 생성함.
   const [ organization, setOrganization ] = useState(currentAward.organization);
   //useState로 getDate 상태를 생성함.
+<<<<<<< HEAD
   const [ getDate, setGetDate ] = useState(currentAward.getDate);
+=======
+  const [ getDate, setGetDate ] = useState(currentAward.getDate.split('T')[0]);
+>>>>>>> eee820d44be5b448319f0f1151c169aba601ef48
   //useState로 awardinfo 상태를 생성함.
   const [ awardInfo, setAwardInfo ] = useState(currentAward.awardInfo);
 
@@ -18,10 +22,14 @@ function AwardEditForm({ currentAward, setAwards, setIsEditing, setIsVisibility}
     e.stopPropagation();
 
     // currentAward의 user_id를 user_id 변수에 할당함.
-    const user_id = currentAward.user_id;
+    const user_id = currentAward.userId;
 
     // "awards/수상 id" 엔드포인트로 PUT 요청함.
+<<<<<<< HEAD
     await Api.put(`${user_id}/awards/${currentAward.id}`, {
+=======
+    await Api.put(`${user_id}/awards/${currentAward._id}`, {
+>>>>>>> eee820d44be5b448319f0f1151c169aba601ef48
       user_id,
       name,
       organization,
@@ -30,7 +38,11 @@ function AwardEditForm({ currentAward, setAwards, setIsEditing, setIsVisibility}
     });
 
     // "awardlist/유저id" 엔드포인트로 GET 요청함.
+<<<<<<< HEAD
     const res = await Api.get(`${user_id}/awards/${currentAward.id}`);
+=======
+    const res = await Api.get(`${user_id}/awards/${currentAward._id}`);
+>>>>>>> eee820d44be5b448319f0f1151c169aba601ef48
     // awards를 response의 data로 세팅함.
     setAwards(res.data);
     // 편집 과정이 끝났으므로, isEditing을 false로 세팅함.
@@ -60,9 +72,17 @@ function AwardEditForm({ currentAward, setAwards, setIsEditing, setIsVisibility}
 
       <Form.Group controlid="formBasicgetDate" className="mt-3">
         <Form.Label>수상 일자</Form.Label>
+<<<<<<< HEAD
           <Calendar
             getDate={getDate}
             setGetDate={setGetDate}
+=======
+          <Form.Control
+            type = "Date"
+            placeholder={currentAward.getDate}
+            value={getDate}
+            onChange={(e)=>setGetDate(e.target.value)}
+>>>>>>> eee820d44be5b448319f0f1151c169aba601ef48
             />
         </Form.Group>
 

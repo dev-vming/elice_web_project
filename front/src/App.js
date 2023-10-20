@@ -57,7 +57,7 @@ function App() {
         <Router>
           <Header />
           <Routes>
-            <Route path="/" exact element={<MyPage />} />
+          <Route path="/" exact element={<MyPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/users/:userId" element={<MyPage />} />
@@ -65,6 +65,7 @@ function App() {
             <Route path="*" element={<MyPage />} />
             {/* <Route path="/:userId/projects/detail/:id" element={<ProjectDetail />} /> */}
             {/* <Route path="/:userId/projects" element={<Projects />} /> */}
+
             
           </Routes>
         </Router>
