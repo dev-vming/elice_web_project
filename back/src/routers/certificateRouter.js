@@ -101,7 +101,6 @@ certificateRouter.post(
     try {
       console.log("특정 유저의 자격증 수정 실행");
 
-      // userId: 사용자 _id / id: 자격증 _id
       const { userId, id } = req.params;
       const current_user_id = req.currentUserId;
 
@@ -110,19 +109,23 @@ certificateRouter.post(
       }
 
       // newValue : 변경할 데이터
-      const name = req.body.name;
-      const issuingOrganization = req.body.issuingOrganization;
-      const getDate = req.body.getDate;
+      const name = req.body.name ?? null;
+      const issuingOrganization = req.body.issuingOrganization ?? null;
+      const getDate = req.body.getDate ?? null;
 
-      const newValue = { name, issuingOrganization, getDate };
+      const toUpdate = { name, issuingOrganization, getDate };
 
       // 데이터를 db에 추가
-      const updatedCertificates = await certificateService.updateCertificates({
-        _id: id,
-        newValue,
-      });
+      const updatedCertificate = await certificateService.updateCertificate(
+        { _id: id },
+        { toUpdate }
+      );
 
-      res.status(201).json(updatedCertificates);
+      if (updatedCertificate.errorMessage) {
+        throw new Error(updatedCertificate.errorMessage);
+      }
+
+      res.status(201).json(updatedCertificate);
     } catch (err) {
       next(err);
     }

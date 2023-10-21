@@ -16,18 +16,20 @@ class Certificate {
     return certificates;
   }
   // Update
-  static async update({ _id, newValue }) {
+  static async update({ _id }, toUpdate) {
     const filter = { _id };
-    const update = {
-      name: newValue.name,
-      issuingOrganization: newValue.issuingOrganization,
-      getDate: newValue.getDate,
-    };
     const option = { returnOriginal: false };
 
-    const updateCertificate = await CertificateModel.findOneAndUpdate(
+    let realToUpdate = {};
+    for (let u in toUpdate) {
+      if (toUpdate[u]) {
+        realToUpdate[u] = toUpdate[u];
+      }
+    }
+
+    const updateCertificate = await CertificateModel.updateMany(
       filter,
-      update,
+      realToUpdate,
       option
     );
     return updateCertificate;

@@ -30,8 +30,8 @@ class certificateService {
   }
 
   // 자격증 수정
-  static async updateCertificates({ _id, newValue }) {
-    const certificates = await Certificate.update({ _id, newValue });
+  static async updateCertificate({ _id }, { toUpdate }) {
+    const certificates = await Certificate.update({ _id }, { ...toUpdate });
     return certificates;
   }
 }
