@@ -18,23 +18,25 @@ educationRouter.post(
       }
       console.log("학력 항목 추가");
       const { userId } = req.params;
+      console.log("학력 항목 추가 222222222222222");
       const current_user_id = req.currentUserId;
-
+      console.log("학력 항목 추가 333333333333333");
       if (userId !== current_user_id) {
         throw new Error("학력 추가 권한이 없습니다");
       }
-
+      console.log("학력 항목 추가 44444444444444");
       // req (request) 에서 데이터 가져오기
-      const educationlevel = req.body.educationlevel;
+      const educationLevel = req.body.educationLevel;
+      console.log("educationLevel", educationLevel);
       const school = req.body.school;
       const major = req.body.major;
       const startDate = req.body.startDate;
       const endDate = req.body.endDate;
-
+      console.log("school", school);
       // 위 데이터를 유저 db에 추가하기
       const newEducation = await educationService.addEducation({
-        user_id: userId,
-        educationlevel,
+        userId,
+        educationLevel,
         school,
         major,
         startDate,
@@ -59,14 +61,14 @@ educationRouter.delete(
   async function (req, res, next) {
     try {
       const { userId, id } = req.params;
-      const education_id = id;
+      //const education_id = id;
       const current_user_id = req.currentUserId;
 
       if (userId !== current_user_id) {
         throw new Error("학력 항목 삭제 권한이 없습니다.");
       }
       const deletedEducation = await educationService.deleteEducation({
-        education_id,
+        _id: id,
       });
       res.status(201).json(deletedEducation);
     } catch (err) {
@@ -83,7 +85,7 @@ educationRouter.post(
     try {
       console.log("특정 유저의 특정 학력 항목 수정 실행");
       const { userId, id } = req.params;
-      const education_id = id;
+      //const education_id = id;
       const current_user_id = req.currentUserId;
 
       if (userId !== current_user_id) {
@@ -91,21 +93,21 @@ educationRouter.post(
       }
 
       // req에서 변경할 데이터를 받아온다
-      const educationlevel = req.body.educationlevel;
-      const school = req.body.school;
-      const major = req.body.major;
-      const startDate = req.body.startDate;
-      const endDate = req.body.endDate;
+      const educationLevel = req.body.educationLevel ?? null;
+      const school = req.body.school ?? null;
+      const major = req.body.major ?? null;
+      const startDate = req.body.startDate ?? null;
+      const endDate = req.body.endDate ?? null;
 
-      const newValue = { educationlevel, school, major, startDate, endDate };
+      const toUpdate = { educationLevel, school, major, startDate, endDate };
 
       // 위 데이터를 이용하여 유저 db에서 유저 찾기
       const updatedEducation = await educationService.updateEducation(
-        education_id,
-        newValue
+        { _id: id },
+        { toUpdate }
       );
       if (updatedEducation.errorMessage) {
-        throw new Error(user.errorMessage);
+        throw new Error(updatedEducation.errorMessage);
       }
       res.status(201).json(updatedEducation);
     } catch (error) {
@@ -121,7 +123,8 @@ educationRouter.get(
     try {
       const { userId } = req.params;
       const educationInfo = await educationService.getEducationInfo({
-        user_id: userId,
+        //user_id: userId,
+        userId,
       });
 
       if (educationInfo.errorMessage) {

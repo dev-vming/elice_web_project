@@ -6,7 +6,7 @@ class Education {
     return createdNewEducation;
   }
 
-  static async findByUserId(userId) {
+  static async findByUserId({ userId }) {
     console.log("userId", userId);
     const education = await EducationModel.find({ userId });
     return education;
@@ -17,23 +17,32 @@ class Education {
     return education;
   }
 
-  static async update({ education_id, fieldToUpdate, newValue }) {
-    const update = { [fieldToUpdate]: newValue };
-    const filter = { _id: education_id };
+  // Update
+  static async update({ _id }, toUpdate) {
+    const filter = { _id };
     const option = { returnOriginal: false };
 
-    const updatedEducation = await EducationModel.findOneAndUpdate(
+    let realToUpdate = {};
+    for (let u in toUpdate) {
+      if (toUpdate[u]) {
+        realToUpdate[u] = toUpdate[u];
+      }
+    }
+
+    const updatedEducation = await EducationModel.updateMany(
       filter,
-      update,
+      realToUpdate,
       option
     );
     return updatedEducation;
   }
 
   // delete
-  static async delete({ education_id }) {
+  static async delete({ _id }) {
     const deletedEducation = await EducationModel.findOneAndDelete({
-      _id: education_id,
+      _id,
+
+      //education_id: education_id,
     });
     return deletedEducation;
   }
