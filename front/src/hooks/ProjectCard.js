@@ -1,20 +1,25 @@
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import draftjsToHtml from "draftjs-to-html";
+import ProjectDetail from "../pages/ProjectDetail"; 
 
-function ProjectCard({ project, isEditable, setIsEditing }) { 
+function ProjectCard({ portfolioOwnerId, project, isEditable, setIsEditing }) { 
   const navigate = useNavigate();
-  
+  const htmlString = draftjsToHtml(project.editorStateSave[0])
+  console.log(htmlString)
+  const user_id = portfolioOwnerId;
+
   return (
     <Card.Text>
       <Row className="align-items-center">
-        <Col onClick={ () => navigate('/project/detail')}>
+        <Col onClick={() => navigate(`${user_id}/detail/${project.id}`)}>
           <span>{project.title}</span>
           <br />
           <span className="text-muted">{project.content}</span>
           <br />
           <span>{project.startDate} ~ {project.endDate}</span>
           <br />
-          {/* <div>{project.editorState}</div> */}
+          <div dangerouslySetInnerHTML={{ __html: htmlString }} />
           
         </Col>
         {isEditable && (
@@ -30,6 +35,12 @@ function ProjectCard({ project, isEditable, setIsEditing }) {
           </Col>
         )}
       </Row>
+     {!isEditable && (
+      <ProjectDetail 
+          style={{display: 'none' }}
+          project={project} 
+          portfolioOwnerId={portfolioOwnerId}
+        />)}
     </Card.Text>
   );
 }

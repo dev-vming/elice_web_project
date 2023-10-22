@@ -2,15 +2,15 @@ import { ProjectModel } from "../schemas/project";
 
 class Project {
   // 생성
-  static async create({ userId, title, content, startDate, endDate, editorState }) {
-    console.log("projectcreate", userId, title, content, startDate, endDate, editorState);
+  static async create({ userId, title, content, startDate, endDate, editorStateSave }) {
+    console.log("projectcreate", userId, title, content, startDate, endDate, editorStateSave);
     const createdNewProject = await ProjectModel.create({
       userId,
       title,
       content,
       startDate,
       endDate,
-      editorState
+      editorStateSave,
     });
     return createdNewProject;
   }

@@ -23,9 +23,9 @@ const ProjectSchema = new Schema({
     type: Date,
     required: false,
   },
-  editorState: {
-    type: Object,
-    required: false,
+  editorStateSave: {
+    type: Array,
+    required: true,
   }
 });
 

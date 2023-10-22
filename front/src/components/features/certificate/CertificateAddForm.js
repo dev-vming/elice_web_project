@@ -58,6 +58,7 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding, se
             type ="Date"
             value={getDate}
             onChange={(e)=>setGetDate(e.target.value)} />
+      </Form.Group>
 
       <Form.Group as={Row} className="mt-3 text-center">
         <Col sm={{ span: 20 }}>
@@ -73,7 +74,6 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding, se
       </Form.Group>
     </Form>
   );
-}
-
+};
 export default CertificateAddForm;
 

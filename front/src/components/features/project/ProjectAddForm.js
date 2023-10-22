@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import * as Api from "../../../api";
 import styled from "styled-components";
-import { Editor } from "react-draft-wysiwyg"; //라이브러리 사용하려고
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"; //라이브러리 사용하려고
-import { EditorState, convertToRaw } from "draft-js"; //1. EditorState: 객체. obj, editor 상태의 snapshot? 컨텐츠, 커서, undo/redo정보 등 포함
-//2.convertToRaw: editorState 객체가 주어지면 원시 js 구조로 변환
+import { Editor } from "react-draft-wysiwyg"; 
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { EditorState, convertToRaw } from "draft-js"; 
+//convertToRaw: editorState 객체가 주어지면 원시 js 구조로 변환
 import draftjsToHtml from "draftjs-to-html"; //원시 JS 구조를 HTML로 변환(객체가 보이도록 HTML로 변환)
+import axios from "axios";
 
 //텍스트에디터 출력 확인 공간
 const RowBox = styled.div`
@@ -27,26 +28,17 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
   const [content, setcontent] = useState("");
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
-  const [editorState, setEditorState] = useState(EditorState.createEmpty()); //비어있는 ContentState 기본 구성으로 새 개체를 반환. 나중에 상태값을 변경하기 위함
-  const [editorSave, setEditorSave] = useState(null)
-  console.log('1. editorState 초기값 addform 열릴때, 2.값 입력되고 64,65,66,68 실행이후 다시 등장. 3. 한번 더 반복. 왜?' + JSON.stringify(editorState))
-  const [htmlString, setHtmlString] = useState(""); //test용
+  const [editorState, setEditorState] = useState(EditorState.createEmpty()); 
+  const [htmlString, setHtmlString] = useState(""); 
+  const [imgs, setImgs] = useState([]);
+  const [editorStateSave, setEditorStateSave] = useState([]);
+  const user_id = portfolioOwnerId;
 
-  const inputAdder = () => {
-    setEditorSave(() => {
-      editorSave += editorState
-    }); 
-    console.log(setEditorSave)
-  };
+  // const editorBox = [];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    e.stopPropagation();
-
-    const user_id = portfolioOwnerId; // portfolioOwnerId를 user_id 변수에 할당함.
-    const convertedEditorState = convertToRaw(editorState.getCurrentContent());
-    // 1. getCurrentContent(): immutable 객체를 ContentState로 만듬
-    // 2. convertToRaw로 blockMap과 entityMap만 추출(api로 보내기위해 다듬는 과정)
+    e.stopPropagation(); 
 
     await Api.post(`${user_id}/projects`, {
       user_id: portfolioOwnerId,
@@ -54,41 +46,44 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
       content,
       startDate,
       endDate,
-      editorState : convertedEditorState
+      editorStateSave,
+      imgs,
     });
-
-    console.log('convertedEditorState : post 보내는 값' + convertedEditorState)
 
     const res = await Api.get(`${user_id}/projects`);
     setProjects(res.data);
     setIsAdding(false);
   };
 
-  const updateTextcontent = (state) => { //View를 위해 상태값을 HTML로 변환하는 과정
-    setEditorState(state);
-    console.log('updateTextcontent 실행. editorState = ', setEditorState(state))
-    const html = draftjsToHtml(convertToRaw(editorState.getCurrentContent())); //1.immutable 객체를 getCurrentContent()로 ContentState로 만듬.
-    //2. convertToRaw로 ContentState의 blockMap과 entityMap만 추출
-    //3.에디터로 작성한 상태값을 HTML태그로 변환
+  const updateTextcontent = async (state) => {
+    await setEditorState(state);
+    const html = draftjsToHtml(convertToRaw(editorState.getCurrentContent()));
     console.log('editorState에서 ContentState로 변환, editorState.getCurrentContent() = ' + editorState.getCurrentContent())
     console.log('ContentState를 convertToRaw로 원시 js로 변환(blockMap, entityMap 추출된 상태), convertToRaw(editorState.getCurrentContent()) = ' + JSON.stringify(convertToRaw(editorState.getCurrentContent())))
+    // editorBox.push(convertToRaw(editorState.getCurrentContent()));
     setHtmlString(html);
-    console.log('<보이는 값>원시 js를 html로, html = ' + html)
-    inputAdder();
+    setEditorStateSave(convertToRaw(editorState.getCurrentContent()))
   };
 
-  const uploadCallback = async (file) => {
-    try {
-      const user_id = portfolioOwnerId;
-      const formData = new FormData(); // 객체, 전송용?
-      formData.append('image', file); // 키 : 밸류. 객체에 파일추가
-      const response = await Api.post(`${user_id}/projects`, formData); //응답 저장
-      const imageUrl = response.data.imageUrl; //응답 처리: response에서 imageUrl 추출. 
-      console.log('사진 업로드')
-      return imageUrl;
-    } catch (error) {
-      throw new Error('사진 업로드 실패');
-    }
+  const uploadCallback = async (file) => { //공식문서에서 promise 객체 반환하라고 함
+    return new Promise(async (resolve, reject) => {
+      const formData = new FormData();
+      formData.append('image', file);
+      try {
+        const response = await axios.post(`${user_id}/projects`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        resolve({ data: { link: response.data.imageUrl } }).then(setImgs(() => {
+          const imgUrl = response.data.imagUrl;
+          const newImg = [...imgs]
+          newImg.push(imgUrl)
+        }));
+      } catch (error) {
+        reject('이미지 업로드 실패');
+      }
+    });
   };
 
   return (
@@ -140,7 +135,7 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
         editorState={editorState}
         onEditorStateChange={updateTextcontent}
         toolbar={{
-        image: { uploadCallback},
+        image: { uploadCallback },
         }}
         localization={{ locale: "ko" }}
         editorStyle={{

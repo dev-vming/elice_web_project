@@ -30,7 +30,7 @@ projectRouter.post(
       const content = req.body.content;
       const startDate = req.body.startDate;
       const endDate = req.body.endDate;
-      const editorState = req.body.editorState
+      const editorStateSave = req.body.editorStateSave
 
       // 위 데이터를 db에 추가하기
       // user_id 는 uuid
@@ -40,7 +40,7 @@ projectRouter.post(
         content,
         startDate,
         endDate,
-        editorState,
+        editorStateSave,
       });
 
       if (newProject.errorMessage) {
