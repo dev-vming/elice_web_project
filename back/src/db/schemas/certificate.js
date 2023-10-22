@@ -14,7 +14,7 @@ const CertificateSchema = new Schema({
     type: String,
     required: true,
   },
-  certicatedDate: {
+  certificatedDate: {
     type: Date,
     required: true,
   },

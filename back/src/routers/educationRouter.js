@@ -1,7 +1,8 @@
-import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { educationService } from "../services/educationService";
+import { is_request_body } from "../middlewares/is_request_body";
+import { check_permission } from "../middlewares/check_permission";
 
 const educationRouter = Router();
 
@@ -9,21 +10,11 @@ const educationRouter = Router();
 educationRouter.post(
   "/:userId/educations",
   login_required,
+  is_request_body,
+  check_permission,
   async function (req, res, next) {
     try {
-      if (is.emptyObject(req.body)) {
-        throw new Error(
-          "headers의 Content-Type을 application/json으로 설정해주세요"
-        );
-      }
-
       const { userId } = req.params;
-      const current_user_id = req.currentUserId;
-
-      if (userId !== current_user_id) {
-        throw new Error("학력 추가 권한이 없습니다");
-      }
-
       // req (request) 에서 데이터 가져오기
       const { educationLevel, school, major, startDate, endDate } = req.body;
       // 위 데이터를 유저 db에 추가하기
@@ -51,15 +42,10 @@ educationRouter.post(
 educationRouter.delete(
   "/:userId/educations/:id",
   login_required,
+  check_permission,
   async function (req, res, next) {
     try {
-      const { userId, id } = req.params;
-      //const education_id = id;
-      const current_user_id = req.currentUserId;
-
-      if (userId !== current_user_id) {
-        throw new Error("학력 항목 삭제 권한이 없습니다.");
-      }
+      const { id } = req.params;
       const deletedEducation = await educationService.deleteEducation({
         _id: id,
       });
@@ -74,16 +60,11 @@ educationRouter.delete(
 educationRouter.post(
   "/:userId/educations/:id",
   login_required,
+  check_permission,
   async function (req, res, next) {
     try {
       console.log("특정 유저의 특정 학력 항목 수정 실행");
-      const { userId, id } = req.params;
-      const current_user_id = req.currentUserId;
-
-      if (userId !== current_user_id) {
-        throw new Error("학력 항목 수정 권한이 없습니다.");
-      }
-
+      const { id } = req.params;
       // req에서 변경할 데이터를 받아온다
       const educationLevel = req.body.educationLevel ?? null;
       const school = req.body.school ?? null;
@@ -111,6 +92,7 @@ educationRouter.post(
 educationRouter.get(
   "/:userId/educations",
   login_required,
+  check_permission,
   async function (req, res, next) {
     try {
       const { userId } = req.params;
@@ -119,9 +101,6 @@ educationRouter.get(
         userId,
       });
 
-      if (educationInfo.errorMessage) {
-        throw new Error(educationInfo.errorMessage);
-      }
       res.status(201).json(educationInfo);
     } catch (error) {
       next(error);

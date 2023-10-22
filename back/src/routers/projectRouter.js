@@ -2,6 +2,7 @@ import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { projectService } from "../services/projectService";
 import is from "@sindresorhus/is";
+import { is_request_body } from "../middlewares/is_request_body";
 
 const projectRouter = Router();
 
@@ -9,14 +10,10 @@ const projectRouter = Router();
 projectRouter.post(
   "/:userId/projects",
   login_required,
+  is_request_body,
   async (req, res, next) => {
     try {
       console.log("특정 유저의 프로젝트 추가 실행");
-      if (is.emptyObject(req.body)) {
-        throw new Error(
-          "headers의 Content-Type을 application/json으로 설정해주세요"
-        );
-      }
 
       const { userId } = req.params;
       const current_user_id = req.currentUserId;

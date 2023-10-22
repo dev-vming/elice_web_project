@@ -12,7 +12,7 @@ class Certificate {
   }
   // Delete
   static async delete({ _id }) {
-    const result = CertificateModel.deleteOne({ _id });
+    const result = await CertificateModel.deleteOne({ _id });
     console.log(result);
     return;
   }

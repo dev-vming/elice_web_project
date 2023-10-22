@@ -2,35 +2,34 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { userAuthService } from "../services/userService";
+import { is_request_body } from "../middlewares/is_request_body";
 
 const userAuthRouter = Router();
 
-userAuthRouter.post("/user/register", async function (req, res, next) {
-  try {
-    if (is.emptyObject(req.body)) {
-      throw new Error(
-        "headers의 Content-Type을 application/json으로 설정해주세요"
-      );
+userAuthRouter.post(
+  "/user/register",
+  is_request_body,
+  async function (req, res, next) {
+    try {
+      // req (request) 에서 데이터 가져오기
+      const { name, email, password } = req.body;
+      // 위 데이터를 유저 db에 추가하기
+      const newUser = await userAuthService.addUser({
+        name,
+        email,
+        password,
+      });
+
+      if (newUser.errorMessage) {
+        throw new Error(newUser.errorMessage);
+      }
+
+      res.status(201).json(newUser);
+    } catch (error) {
+      next(error);
     }
-
-    // req (request) 에서 데이터 가져오기
-    const { name, email, password } = req.body;
-    // 위 데이터를 유저 db에 추가하기
-    const newUser = await userAuthService.addUser({
-      name,
-      email,
-      password,
-    });
-
-    if (newUser.errorMessage) {
-      throw new Error(newUser.errorMessage);
-    }
-
-    res.status(201).json(newUser);
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 userAuthRouter.post("/user/login", async function (req, res, next) {
   try {

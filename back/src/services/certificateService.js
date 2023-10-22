@@ -5,13 +5,13 @@ class certificateService {
     userId,
     name,
     issuingOrganization,
-    certicatedDate,
+    certificatedDate,
   }) {
     const newCertificate = {
       userId,
       name,
       issuingOrganization,
-      certicatedDate,
+      certificatedDate,
     };
     //db에 추가
     const createdNewCertificate = await Certificate.create({ newCertificate });

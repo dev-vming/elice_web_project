@@ -2,6 +2,8 @@ import { Router } from "express";
 import is from "@sindresorhus/is";
 import { login_required } from "../middlewares/login_required";
 import { awardService } from "../services/awardService";
+import { is_request_body } from "../middlewares/is_request_body";
+import { check_permission } from "../middlewares/check_permission";
 
 const awardRouter = Router();
 
@@ -9,22 +11,13 @@ const awardRouter = Router();
 awardRouter.post(
   "/:userId/awards",
   login_required,
+  is_request_body,
+  check_permission,
   async function (req, res, next) {
     try {
       console.log("특정 유저의 수상경력 추가 실행");
 
-      if (is.emptyObject(req.body)) {
-        throw new Error(
-          "headers의 Content-Type을 application/json으로 설정해주세요"
-        );
-      }
-
       const { userId } = req.params;
-      const current_user_id = req.currentUserId;
-
-      if (userId !== current_user_id) {
-        throw new Error("수상경력 추가 권한이 없습니다");
-      }
 
       //DB에 데이터 추가
       const { name, organization, awardedDate, Info } = req.body;
@@ -51,6 +44,7 @@ awardRouter.post(
 awardRouter.get(
   "/:userId/awards",
   login_required,
+  check_permission,
   async function (req, res, next) {
     try {
       console.log("특정 유저의 수상경력 조회 실행");
@@ -67,16 +61,11 @@ awardRouter.get(
 awardRouter.delete(
   "/:userId/awards/:id",
   login_required,
+  check_permission,
   async function (req, res, next) {
     try {
       console.log("특정 유저의 수상경력 삭제 실행");
-      const { userId, id } = req.params;
-      const current_user_id = req.currentUserId;
-
-      if (userId !== current_user_id) {
-        throw new Error("수상경력 삭제 권한이 없습니다.");
-      }
-
+      const { id } = req.params;
       const awards = await awardService.deleteAward({
         _id: id,
       });
@@ -91,17 +80,11 @@ awardRouter.delete(
 awardRouter.post(
   "/:userId/awards/:id",
   login_required,
+  check_permission,
   async function (req, res, next) {
     try {
       console.log("특정 유저의 수상경력 수정 실행");
-
-      const { userId, id } = req.params;
-      const current_user_id = req.currentUserId;
-
-      if (userId !== current_user_id) {
-        throw new Error("수상경력 수정 권한이 없습니다.");
-      }
-
+      const { id } = req.params;
       // newValue : 변경할 데이터
       const name = req.body.name ?? null;
       const organization = req.body.organization ?? null;
