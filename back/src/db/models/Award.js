@@ -12,8 +12,9 @@ class Award {
   }
   // Delete
   static async delete({ _id }) {
-    const awrads = await AwardModel.findOneAndDelete({ _id });
-    return awrads;
+    const result = await AwardModel.deleteOne({ _id });
+    console.log(result);
+    return;
   }
   // Update
   static async update({ _id }, toUpdate) {

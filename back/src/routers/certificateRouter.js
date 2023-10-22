@@ -27,16 +27,14 @@ certificateRouter.post(
       }
 
       // 추가할 데이터
-      const name = req.body.name;
-      const issuingOrganization = req.body.issuingOrganization;
-      const getDate = req.body.getDate;
+      const { name, issuingOrganization, certicatedDate } = req.body;
 
       // 데이터를 db에 추가
       const newCertificate = await certificateService.addCertificate({
         userId, //user의 오브젝트 아이디
         name,
         issuingOrganization,
-        getDate,
+        certicatedDate,
       });
 
       if (newCertificate.errorMessage) {
@@ -83,7 +81,7 @@ certificateRouter.delete(
         throw new Error("자격증 삭제 권한이 없습니다");
       }
 
-      const certificates = await certificateService.delCertificates({
+      const certificates = await certificateService.deleteCertificate({
         _id: id,
       });
       res.status(201).json(certificates);
@@ -111,9 +109,9 @@ certificateRouter.post(
       // newValue : 변경할 데이터
       const name = req.body.name ?? null;
       const issuingOrganization = req.body.issuingOrganization ?? null;
-      const getDate = req.body.getDate ?? null;
+      const certicatedDate = req.body.certicatedDate ?? null;
 
-      const toUpdate = { name, issuingOrganization, getDate };
+      const toUpdate = { name, issuingOrganization, certicatedDate };
 
       // 데이터를 db에 추가
       const updatedCertificate = await certificateService.updateCertificate(

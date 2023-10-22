@@ -1,15 +1,14 @@
 import { Award } from "../db";
 
 class awardService {
-  static async addAward({ userId, name, organization, getDate, awardInfo }) {
+  static async addAward({ userId, name, organization, awardedDate, Info }) {
     const newAward = {
       userId,
       name,
       organization,
-      getDate,
-      awardInfo,
+      awardedDate,
+      Info,
     };
-    console.log("service >> ", newAward);
 
     // db에 추가
     const createdNewAward = await Award.create({ newAward });
@@ -23,12 +22,12 @@ class awardService {
     return awards;
   }
 
-  static async delAwards({ _id }) {
+  static async deleteAward({ _id }) {
     const awards = await Award.delete({ _id });
     return awards;
   }
 
-  static async updateAwards({ _id }, { toUpdate }) {
+  static async updateAward({ _id }, { toUpdate }) {
     const awards = await Award.update({ _id }, { ...toUpdate });
     return awards;
   }

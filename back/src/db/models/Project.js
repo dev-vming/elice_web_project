@@ -1,7 +1,6 @@
 import { ProjectModel } from "../schemas/project";
 
 class Project {
-  // 생성
   static async create({ userId, title, content, startDate, endDate }) {
     const createdNewProject = await ProjectModel.create({
       userId,
@@ -13,25 +12,20 @@ class Project {
     return createdNewProject;
   }
 
-  // 조회 (userId : objectId)
+  // Read
   static async findByUserId({ userId }) {
     const project = await ProjectModel.find({ userId });
     return project;
   }
 
-  // 모두 조회
-  static async findAll() {
-    const projects = await ProjectModel.find({});
-    return projects;
-  }
-
-  // 삭제
+  // Delete
   static async delete({ _id }) {
     const result = await ProjectModel.deleteOne({ _id });
-    return result;
+    console.log(result);
+    return;
   }
 
-  // 수정
+  // Update
   static async update({ _id }, toUpdate) {
     const filter = { _id };
     const option = { returnOriginal: false };

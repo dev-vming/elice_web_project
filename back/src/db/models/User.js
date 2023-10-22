@@ -6,21 +6,21 @@ class User {
     return createdNewUser;
   }
 
+  //Read
   static async findByEmail({ email }) {
     const user = await UserModel.findOne({ email });
     return user;
   }
-
   static async findById({ _id }) {
     const user = await UserModel.findOne({ _id });
     return user;
   }
-
   static async findAll() {
     const users = await UserModel.find({});
     return users;
   }
 
+  //Update
   static async update({ _id }, toUpdate) {
     const filter = { _id };
     const option = { returnOriginal: false };

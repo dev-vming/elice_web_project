@@ -3,7 +3,6 @@ import { Project } from "../db/index";
 
 class projectService {
   static async addProject({ userId, title, content, startDate, endDate }) {
-    //userId : 오브젝트 아이디
     const newProject = {
       userId,
       title,

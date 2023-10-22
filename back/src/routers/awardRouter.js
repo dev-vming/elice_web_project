@@ -26,21 +26,16 @@ awardRouter.post(
         throw new Error("수상경력 추가 권한이 없습니다");
       }
 
-      // 추가할 데이터
-      const name = req.body.name;
-      const organization = req.body.organization;
-      const getDate = req.body.getDate;
-      const awardInfo = req.body.awardInfo ?? "";
-
+      //DB에 데이터 추가
+      const { name, organization, awardedDate, Info } = req.body;
       const newAward = await awardService.addAward({
         userId,
         name,
         organization,
-        getDate,
-        awardInfo,
+        awardedDate,
+        Info,
       });
 
-      // db에 newAward 추가
       if (newAward.errorMessage) {
         throw new Error(newUser.errorMessage);
       }
@@ -82,7 +77,7 @@ awardRouter.delete(
         throw new Error("수상경력 삭제 권한이 없습니다.");
       }
 
-      const awards = await awardService.delAwards({
+      const awards = await awardService.deleteAward({
         _id: id,
       });
       res.status(201).json(awards);
@@ -110,12 +105,12 @@ awardRouter.post(
       // newValue : 변경할 데이터
       const name = req.body.name ?? null;
       const organization = req.body.organization ?? null;
-      const getDate = req.body.getDate ?? null;
-      const awardInfo = req.body.awardInfo ?? "";
+      const awardedDate = req.body.awardedDate ?? null;
+      const Info = req.body.Info ?? "";
 
-      const toUpdate = { name, organization, getDate, awardInfo };
+      const toUpdate = { name, organization, awardedDate, Info };
 
-      const updatedAwards = await awardService.updateAwards(
+      const updatedAwards = await awardService.updateAward(
         { _id: id },
         { toUpdate }
       );

@@ -16,23 +16,16 @@ educationRouter.post(
           "headers의 Content-Type을 application/json으로 설정해주세요"
         );
       }
-      console.log("학력 항목 추가");
+
       const { userId } = req.params;
-      console.log("학력 항목 추가 222222222222222");
       const current_user_id = req.currentUserId;
-      console.log("학력 항목 추가 333333333333333");
+
       if (userId !== current_user_id) {
         throw new Error("학력 추가 권한이 없습니다");
       }
-      console.log("학력 항목 추가 44444444444444");
+
       // req (request) 에서 데이터 가져오기
-      const educationLevel = req.body.educationLevel;
-      console.log("educationLevel", educationLevel);
-      const school = req.body.school;
-      const major = req.body.major;
-      const startDate = req.body.startDate;
-      const endDate = req.body.endDate;
-      console.log("school", school);
+      const { educationLevel, school, major, startDate, endDate } = req.body;
       // 위 데이터를 유저 db에 추가하기
       const newEducation = await educationService.addEducation({
         userId,
@@ -85,7 +78,6 @@ educationRouter.post(
     try {
       console.log("특정 유저의 특정 학력 항목 수정 실행");
       const { userId, id } = req.params;
-      //const education_id = id;
       const current_user_id = req.currentUserId;
 
       if (userId !== current_user_id) {
@@ -122,7 +114,7 @@ educationRouter.get(
   async function (req, res, next) {
     try {
       const { userId } = req.params;
-      const educationInfo = await educationService.getEducationInfo({
+      const educationInfo = await educationService.getEducations({
         //user_id: userId,
         userId,
       });

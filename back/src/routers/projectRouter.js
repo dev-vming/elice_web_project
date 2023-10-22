@@ -26,10 +26,7 @@ projectRouter.post(
       }
 
       // req (request) 에서 데이터 가져오기
-      const title = req.body.title;
-      const content = req.body.content;
-      const startDate = req.body.startDate;
-      const endDate = req.body.endDate;
+      const { title, content, startDate, endDate } = req.body;
 
       // 위 데이터를 db에 추가하기
       // user_id 는 uuid

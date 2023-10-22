@@ -12,8 +12,9 @@ class Certificate {
   }
   // Delete
   static async delete({ _id }) {
-    const certificates = await CertificateModel.findOneAndDelete({ _id });
-    return certificates;
+    const result = CertificateModel.deleteOne({ _id });
+    console.log(result);
+    return;
   }
   // Update
   static async update({ _id }, toUpdate) {

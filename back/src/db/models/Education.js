@@ -6,15 +6,18 @@ class Education {
     return createdNewEducation;
   }
 
+  // Read
   static async findByUserId({ userId }) {
     console.log("userId", userId);
     const education = await EducationModel.find({ userId });
     return education;
   }
 
-  static async findAll() {
-    const education = await EducationModel.find({});
-    return education;
+  //Delete
+  static async delete({ _id }) {
+    const result = await EducationModel.findOneAndDelete({ _id });
+    console.log(result);
+    return;
   }
 
   // Update
@@ -35,16 +38,6 @@ class Education {
       option
     );
     return updatedEducation;
-  }
-
-  // delete
-  static async delete({ _id }) {
-    const deletedEducation = await EducationModel.findOneAndDelete({
-      _id,
-
-      //education_id: education_id,
-    });
-    return deletedEducation;
   }
 }
 
