@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import styled from "styled-components";
 
@@ -7,13 +7,14 @@ const ProjectBox = styled.div`
     width: 70%;
 `;
 
-function ProjectDetail( { portfolioOwnerId, project, htmlString }) {
-    const navigate = useNavigate();
-    const user_id = portfolioOwnerId
+function ProjectDetail( { project, htmlString }) {
+    const params = useParams();
+
     return (
         <>
             <Col xs lg='1'>
-                <Button onClick={() => navigate(`${user_id}/projects/${project.id}`)} float='right'>
+                <Button float='right'>
+                    <Link to={`${params.user_id}/projects/${params._id}`} />
                     닫기
                 </Button>
             </Col>

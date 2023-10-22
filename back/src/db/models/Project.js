@@ -21,6 +21,13 @@ class Project {
     return project;
   }
 
+  //**************************************** */
+  static async findByProjectId({ _id }) {
+    const project = await ProjectModel.find({ _id }).populate("id");
+    return project;
+  }
+
+
   // 모두 조회
   static async findAll() {
     const projects = await ProjectModel.find({}).populate("userId");

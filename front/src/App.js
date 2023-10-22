@@ -63,10 +63,7 @@ function App() {
             <Route path="/users/:userId" element={<MyPage />} />
             <Route path="/network" element={<SearchPortfolios />} />
             <Route path="*" element={<MyPage />} />
-            <Route path="/:userId/detail/:id" element={<ProjectDetail />} />
-            {/* <Route path="/:userId/projects" element={<Projects />} /> */}
-
-            
+            <Route path="/projects/detail/:id" element={<ProjectDetail />} />          
           </Routes>
         </Router>
       </UserStateContext.Provider>

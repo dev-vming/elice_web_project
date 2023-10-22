@@ -94,6 +94,26 @@ projectRouter.get(
   }
 );
 
+//***************************************** */
+projectRouter.get(
+  "/projects/detail/:id",
+  login_required,
+  async (req, res, next) => {
+
+    try {
+      const { userId } = req.params;
+
+      console.log("특정 유저의 프로젝트 상세 페이지 이동");
+      const id = req.params.id;
+
+      const projectDetail = await projectService.getProjectDetail(id);
+      res.status(201).json(projectDetail);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 // delete project by id
 projectRouter.delete(
   "/:userId/projects/:id",
