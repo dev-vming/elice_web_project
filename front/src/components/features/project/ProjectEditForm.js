@@ -4,7 +4,7 @@ import * as Api from "../../../api";
 import styled from "styled-components";
 import { Editor } from "react-draft-wysiwyg"; 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"; 
-import { EditorState, convertToRaw } from "draft-js"; 
+import { EditorState, convertToRaw, ContentState } from "draft-js"; 
 import draftjsToHtml from "draftjs-to-html"; 
 import axios from "axios";
 
@@ -22,13 +22,15 @@ border: 2px solid gray;
 `;
 
 function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsEditing }) {
+  console.log(currentProject.editorStateSave, typeof(currentProject.editorStateSave));
+
   const [title, setTitle] = useState(currentProject.title);
   const [content, setContent] = useState(currentProject.description);
   const [startDate, setStartDate] = useState(currentProject.startDate);
   const [endDate, setEndDate] = useState(currentProject.endDate);
-  const [editorState, setEditorState] = useState(EditorState.createWithContent(currentProject.editorStateSave[0])); 
-  const [htmlString, setHtmlString] = useState(draftjsToHtml(convertToRaw(currentProject.editorStateSave[0])));
-  const [editorStateSave, setEditorStateSave] = useState([]);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty()); 
+  const [htmlString, setHtmlString] = useState(draftjsToHtml(currentProject.editorStateSave[0]));
+  const [editorStateSave, setEditorStateSave] = useState(currentProject.editorStateSave);
   const [imgs, setImgs] = useState(currentProject.imgs);
   const user_id = portfolioOwnerId;
 
@@ -55,7 +57,12 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
     await setEditorState(state);
     const html = draftjsToHtml(convertToRaw(editorState.getCurrentContent())); 
     setHtmlString(html);
-    setEditorStateSave(convertToRaw(editorState.getCurrentContent()))
+    setEditorStateSave(() => {
+      const newStateSave = editorStateSave;
+      newStateSave[0] = convertToRaw(editorState.getCurrentContent())
+      newStateSave[1] = editorState.getCurrentContent()
+      return newStateSave;
+    })
   };
 
   const uploadCallback = async (file) => { //공식문서에서 promise 객체 반환하라고 함
@@ -69,7 +76,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
           },
         });
         resolve({ data: { link: response.data.imageUrl } }).then(setImgs(() => {
-          const imgUrl = response.data.imagUrl;
+          const imgUrl = response.data.imageUrl;
           const newImg = [...imgs]
           newImg.push(imgUrl)
         }));

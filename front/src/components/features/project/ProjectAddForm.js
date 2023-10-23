@@ -62,7 +62,14 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
     console.log('ContentState를 convertToRaw로 원시 js로 변환(blockMap, entityMap 추출된 상태), convertToRaw(editorState.getCurrentContent()) = ' + JSON.stringify(convertToRaw(editorState.getCurrentContent())))
     // editorBox.push(convertToRaw(editorState.getCurrentContent()));
     setHtmlString(html);
-    setEditorStateSave(convertToRaw(editorState.getCurrentContent()))
+    setEditorStateSave(() => {
+      const newStateSave = editorStateSave;
+      newStateSave[0] = convertToRaw(editorState.getCurrentContent())
+      newStateSave[1] = editorState.getCurrentContent()
+      return newStateSave;
+    })
+    console.log('editorStateSave = ' + JSON.stringify(editorStateSave))
+
   };
 
   const uploadCallback = async (file) => { //공식문서에서 promise 객체 반환하라고 함
@@ -76,7 +83,7 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
           },
         });
         resolve({ data: { link: response.data.imageUrl } }).then(setImgs(() => {
-          const imgUrl = response.data.imagUrl;
+          const imgUrl = response.data.imageUrl;
           const newImg = [...imgs]
           newImg.push(imgUrl)
         }));
