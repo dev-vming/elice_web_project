@@ -96,7 +96,7 @@ projectRouter.get(
 
 //***************************************** */
 projectRouter.get(
-  "/projects/detail/:id",
+  "/:userId/projects/detail/:id",
   login_required,
   async (req, res, next) => {
 

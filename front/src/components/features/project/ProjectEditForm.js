@@ -26,9 +26,9 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
   const [content, setContent] = useState(currentProject.description);
   const [startDate, setStartDate] = useState(currentProject.startDate);
   const [endDate, setEndDate] = useState(currentProject.endDate);
-  const [editorState, setEditorState] = useState(EditorState.createWithContent(currentProject.editorStateSave)); 
-  const [htmlString, setHtmlString] = useState(draftjsToHtml(currentProject.editorStateSave));
-  const [editorStateSave, setEditorStateSave] = useState(currentProject.editorStateSave);
+  const [editorState, setEditorState] = useState(EditorState.createWithContent(currentProject.editorStateSave[0])); 
+  const [htmlString, setHtmlString] = useState(draftjsToHtml(convertToRaw(currentProject.editorStateSave[0])));
+  const [editorStateSave, setEditorStateSave] = useState([]);
   const [imgs, setImgs] = useState(currentProject.imgs);
   const user_id = portfolioOwnerId;
 
@@ -36,7 +36,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
     e.preventDefault();
     e.stopPropagation();
   
-    await Api.put(`${user_id}/projects/${currentProject.id}`, {
+    await Api.put(`${user_id}/projects/${currentProject._id}`, {
       user_id,
       title,
       content,
@@ -63,7 +63,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
       const formData = new FormData();
       formData.append('image', file);
       try {
-        const response = await axios.post(`${user_id}/projects/${currentProject.id}`, formData, {
+        const response = await axios.post(`${user_id}/projects/${currentProject._id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

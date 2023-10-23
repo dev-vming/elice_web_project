@@ -1,5 +1,6 @@
 import { Card, Button, Row, Col } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { convertToRaw } from "draft-js"; 
 import draftjsToHtml from "draftjs-to-html";
 import ProjectDetail from "../pages/ProjectDetail"; 
 
@@ -11,8 +12,8 @@ function ProjectCard({ portfolioOwnerId, project, isEditable, setIsEditing }) {
   return (
     <Card.Text>
       <Row className="align-items-center">
-        <Col>
-          <Link to={`project/detail/${project._id}`} />
+        <Col style={{backgroundColor: "yellow"}}>
+          <Link to={`${user_id}/project/detail/${project._id}`} />
           <span>{project.title}</span>
           <br />
           <span className="text-muted">{project.content}</span>
@@ -35,12 +36,12 @@ function ProjectCard({ portfolioOwnerId, project, isEditable, setIsEditing }) {
           </Col>
         )}
       </Row>
-     {!isEditable && (
+     {/* {!isEditable && (
       <ProjectDetail 
           style={{display: 'none' }}
           project={project} 
           portfolioOwnerId={portfolioOwnerId}
-        />)}
+        />)} */}
     </Card.Text>
   );
 }
