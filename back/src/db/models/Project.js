@@ -14,7 +14,9 @@ class Project {
 
   // Read
   static async findByUserId({ userId }) {
-    const project = await ProjectModel.find({ userId });
+    const project = await ProjectModel.find({ userId }).sort({
+      startDate: "asc",
+    });
     return project;
   }
 
