@@ -12,7 +12,7 @@ const Calendar = ({ getDate, setGetDate }) => {
 
   return (
     <Controller
-    control = {control}
+    // control = {control}
     render = {({field : {onChange}}) => (
       <DatePicker 
       placeholderText="년-월-일"    	

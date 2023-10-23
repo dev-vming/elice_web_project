@@ -1,48 +1,35 @@
 import React, { useState } from "react";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import * as Api from "../../../api";
-import Calendar from "../../common/calendar/Calendar";
 
 function AwardEditForm({ currentAward, setAwards, setIsEditing, setIsVisibility}) {
   //useState로 name 상태를 생성함.
   const [ name, setName ] = useState(currentAward.name);
   //useState로 organization 상태를 생성함.
   const [ organization, setOrganization ] = useState(currentAward.organization);
-  //useState로 getDate 상태를 생성함.
-<<<<<<< HEAD
-  const [ getDate, setGetDate ] = useState(currentAward.getDate);
-=======
-  const [ getDate, setGetDate ] = useState(currentAward.getDate.split('T')[0]);
->>>>>>> eee820d44be5b448319f0f1151c169aba601ef48
-  //useState로 awardinfo 상태를 생성함.
-  const [ awardInfo, setAwardInfo ] = useState(currentAward.awardInfo);
+  //useState로 awardedDate 상태를 생성함.
+  const [ awardedDate, setAwardedDate ] = useState(currentAward.awardedDate.split('T')[0]);
+
+  const [ Info, setInfo ] = useState(currentAward.Info);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // currentAward의 user_id를 user_id 변수에 할당함.
-    const user_id = currentAward.userId;
+    // currentAward의 userId를 userId 변수에 할당함.
+    const userId = currentAward.userId;
 
     // "awards/수상 id" 엔드포인트로 PUT 요청함.
-<<<<<<< HEAD
-    await Api.put(`${user_id}/awards/${currentAward.id}`, {
-=======
-    await Api.put(`${user_id}/awards/${currentAward._id}`, {
->>>>>>> eee820d44be5b448319f0f1151c169aba601ef48
-      user_id,
+    await Api.post(`${userId}/awards/${currentAward._id}`, {
+      userId,
       name,
       organization,
-      getDate,
-      awardInfo,
+      awardedDate,
+      Info,
     });
 
-    // "awardlist/유저id" 엔드포인트로 GET 요청함.
-<<<<<<< HEAD
-    const res = await Api.get(`${user_id}/awards/${currentAward.id}`);
-=======
-    const res = await Api.get(`${user_id}/awards/${currentAward._id}`);
->>>>>>> eee820d44be5b448319f0f1151c169aba601ef48
+ 
+    const res = await Api.get(`${userId}/awards`);
     // awards를 response의 data로 세팅함.
     setAwards(res.data);
     // 편집 과정이 끝났으므로, isEditing을 false로 세팅함.
@@ -70,29 +57,24 @@ function AwardEditForm({ currentAward, setAwards, setIsEditing, setIsVisibility}
         />
       </Form.Group>
 
-      <Form.Group controlid="formBasicgetDate" className="mt-3">
+      <Form.Group controlid="formBasicsetAwardedDate" className="mt-3">
         <Form.Label>수상 일자</Form.Label>
-<<<<<<< HEAD
-          <Calendar
-            getDate={getDate}
-            setGetDate={setGetDate}
-=======
+
           <Form.Control
             type = "Date"
-            placeholder={currentAward.getDate}
-            value={getDate}
-            onChange={(e)=>setGetDate(e.target.value)}
->>>>>>> eee820d44be5b448319f0f1151c169aba601ef48
+            placeholder={currentAward.awardedDate}
+            value={awardedDate}
+            onChange={(e)=>setAwardedDate(e.target.value)}
             />
         </Form.Group>
 
-        <Form.Group controlId="formBasicAwardInfo" className="mt-3">
+        <Form.Group controlId="formBasicInfo" className="mt-3">
           <Form.Label>추가사항 (선택)</Form.Label>
           <Form.Control
             type="text"
             placeholder="세부내용"
-            value={awardInfo}
-            onChange={(e) => setAwardInfo(e.target.value)}
+            value={Info}
+            onChange={(e) => setInfo(e.target.value)}
           />
       </Form.Group>
 

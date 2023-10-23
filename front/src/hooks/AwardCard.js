@@ -9,9 +9,9 @@ function AwardCard({ award, isEditable, setIsEditing }) {
           <br />
           <span>{award.organization}</span>
           <br/>
-          <span className="text-muted">{award.getDate.split('T')[0]} 취득</span>
+          <span className="text-muted">{award.awardedDate.split('T')[0]} 취득</span>
           <br />
-          <span className="text-muted">{award.awardInfo}</span>
+          <span className="text-muted">{award.Info}</span>
         </Col>
 
         {isEditable && (

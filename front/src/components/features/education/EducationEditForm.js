@@ -10,7 +10,7 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing , set
   //useState로 major 상태를 생성함.
   const [major, setMajor] = useState(currentEducation.major);
   //useState로 educationLevel 상태를 생성함.
-  const [educationlevel, setEducationlevel] = useState(currentEducation.educationlevel);
+  const [educationLevel, setEducationLevel] = useState(currentEducation.educationLevel);
   //useState로 startDate,endDate 상태를 생성함.
   const [ startDate, setStartDate ] = useState(currentEducation.startDate.split('T')[0]);
   const [ endDate, setEndDate ] = useState(currentEducation.endDate.split('T')[0]);
@@ -19,20 +19,20 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing , set
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const user_id = currentEducation.userId;
+    const userId = currentEducation.userId;
 
     // "education/유저id" 엔드포인트로 put 요청함.
-    await Api.put(`${user_id}/educations/${currentEducation._id}`, {
-      user_id,
+    await Api.post(`${userId}/educations/${currentEducation._id}`, {
+      userId,
       school,
       major,
-      educationlevel,
+      educationLevel,
       startDate,
       endDate,
     });
 
     // "educationlist/유저id" 엔드포인트로 get요청함.
-    const res = await Api.get(`${user_id}/educations/${currentEducation._id}`);
+    const res = await Api.get(`${userId}/educations`);
     // educations를 response의 data로 세팅함.
     setEducations(res.data);
     // 편집 과정이 끝났으므로, isEditing을 false로 세팅함.
@@ -62,7 +62,7 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing , set
 
       <br/>
       <Form.Group controlId="formBasicEducationLevel">
-          <DropdownButton id="Educationlevel" title={educationlevel} onSelect={(eventKey)=>setEducationlevel(eventKey)}>
+          <DropdownButton id="EducationLevel" title={educationLevel} onSelect={(eventKey)=>setEducationLevel(eventKey)}>
             <DropdownItem eventKey="졸업">졸업</DropdownItem>
             <DropdownItem eventKey="재학중">재학중</DropdownItem>
             <DropdownItem eventKey="학사 졸업">학사 졸업</DropdownItem>

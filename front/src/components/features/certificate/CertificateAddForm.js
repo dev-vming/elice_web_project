@@ -7,29 +7,30 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding, se
   const [name, setName] = useState("");
   //useState로 description 상태를 생성함.
   const [issuingOrganization, setIssuingOrganization] = useState("");
-  //useState로 getDate 상태를 생성함.
-  const [getDate, setGetDate] = useState();
+  //useState로 certificatedDate 상태를 생성함.
+  const [certificatedDate, setCertificatedDate] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // portfolioOwnerId를 user_id 변수에 할당함.
-  const user_id = portfolioOwnerId;
+  const userId = portfolioOwnerId;
 
     // "award/create" 엔드포인트로 post요청함.
-    await Api.post(`${user_id}/certificates`, {
-      user_id: portfolioOwnerId,
+    await Api.post(`${userId}/certificates`, {
+      userId,
       name,
       issuingOrganization,
-      getDate,
+      certificatedDate,
     });
 
 
-    const res = await Api.get(`${user_id}/certificates`);
+    const res = await Api.get(`${userId}/certificates`);
     // awards를 response의 data로 세팅함.
     setCertificates(res.data);
     // award를 추가하는 과정이 끝났으므로, isAdding을 false로 세팅함.
     setIsAdding(false);
+  
   };
 
   return (
@@ -56,9 +57,10 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding, se
         자격증 획득일
         <Form.Control
             type ="Date"
-            value={getDate}
-            onChange={(e)=>setGetDate(e.target.value)} />
-
+            value={certificatedDate}
+            onChange={(e)=>setCertificatedDate(e.target.value)} />
+    </Form.Group>
+    
       <Form.Group as={Row} className="mt-3 text-center">
         <Col sm={{ span: 20 }}>
           <Button variant="primary" type="submit" className="me-3" onClick={()=>setIsVisibility(true)}>

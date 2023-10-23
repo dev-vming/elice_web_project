@@ -45,7 +45,7 @@ function MyPage() {
       fetchPorfolioOwner(ownerId);
     } else {
       // 이외의 경우, 즉 URL이 "/" 라면, 전역 상태의 user.id를 유저 id로 설정함.
-      const ownerId = userState.user.id;
+      const ownerId = userState.user._id;
       // 해당 유저 id로 fetchPorfolioOwner 함수를 실행함.
       fetchPorfolioOwner(ownerId);
     }
@@ -73,29 +73,29 @@ function MyPage() {
       <Row>
         <Col md="3" lg="3">
           <User
-            portfolioOwnerId={portfolioOwner.id}
-            isEditable={portfolioOwner.id === userState.user?.id}
+            portfolioOwnerId={portfolioOwner._id}
+            isEditable={portfolioOwner._id === userState.user?._id}
           />
         </Col>
         <Col>
         <Educations
-            portfolioOwnerId={portfolioOwner.id}
-            isEditable={portfolioOwner.id === userState.user?.id}
+            portfolioOwnerId={portfolioOwner._id}
+            isEditable={portfolioOwner._id === userState.user?._id}
           />
 
         <Awards
-            portfolioOwnerId={portfolioOwner.id}
-            isEditable={portfolioOwner.id === userState.user?.id}
+            portfolioOwnerId={portfolioOwner._id}
+            isEditable={portfolioOwner._id === userState.user?._id}
           />
 
         <Certificates
-            portfolioOwnerId={portfolioOwner.id}
-            isEditable={portfolioOwner.id === userState.user?.id}
+            portfolioOwnerId={portfolioOwner._id}
+            isEditable={portfolioOwner._id === userState.user?._id}
           />
 
         <Projects
-            portfolioOwnerId={portfolioOwner.id}
-            isEditable={portfolioOwner.id === userState.user?.id}
+            portfolioOwnerId={portfolioOwner._id}
+            isEditable={portfolioOwner._id === userState.user?._id}
           />  
         </Col>
         
