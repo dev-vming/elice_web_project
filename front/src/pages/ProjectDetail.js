@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import styled from "styled-components";
 
@@ -9,12 +9,15 @@ const ProjectBox = styled.div`
 
 function ProjectDetail( { project, htmlString }) {
     const params = useParams();
+    const navigate = useNavigate();
+    const moveToProjectCard = () => {
+        navigate(`${params.userId}/projects/${params._id}`);
+    }
 
     return (
         <>
             <Col xs lg='1'>
-                <Button float='right'>
-                    <Link to={`${params.user_id}/projects/${params._id}`} />
+                <Button float='right' onClick={moveToProjectCard}>
                     닫기
                 </Button>
             </Col>

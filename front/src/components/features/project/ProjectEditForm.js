@@ -4,7 +4,7 @@ import * as Api from "../../../api";
 import styled from "styled-components";
 import { Editor } from "react-draft-wysiwyg"; 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"; 
-import { EditorState, convertToRaw, ContentState } from "draft-js"; 
+import { EditorState, convertToRaw } from "draft-js"; 
 import draftjsToHtml from "draftjs-to-html"; 
 import axios from "axios";
 
@@ -25,7 +25,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
   console.log(currentProject.editorStateSave, typeof(currentProject.editorStateSave));
 
   const [title, setTitle] = useState(currentProject.title);
-  const [content, setContent] = useState(currentProject.description);
+  const [content, setContent] = useState(currentProject.content);
   const [startDate, setStartDate] = useState(currentProject.startDate);
   const [endDate, setEndDate] = useState(currentProject.endDate);
   const [editorState, setEditorState] = useState(EditorState.createEmpty()); 

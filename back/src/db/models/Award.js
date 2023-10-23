@@ -6,30 +6,31 @@ class Award {
     return createdNewAward;
   }
   // Read
-  static async findByUser(userId) {
+  static async findByUserId({ userId }) {
     const awrads = await AwardModel.find({ userId });
     return awrads;
   }
   // Delete
   static async delete({ _id }) {
-    const awrads = await AwardModel.findOneAndDelete({ _id });
-    return awrads;
+    const result = await AwardModel.deleteOne({ _id });
+    console.log(result);
+    return;
   }
   // Update
-  static async update(id, newValue) {
-    const filter = { _id: id };
+  static async update({ _id }, toUpdate) {
+    const filter = { _id };
     const option = { returnOriginal: false }; // 수정 전의 값 반환
 
-    const updateData = {
-      name: newValue.name,
-      organization: newValue.organization,
-      getDate: newValue.getDate,
-      awardInfo: newValue.awardInfo,
-    };
+    const realToUpdate = {};
+    for (let u in toUpdate) {
+      if (toUpdate[u]) {
+        realToUpdate[u] = toUpdate[u];
+      }
+    }
 
-    const updateAward = await AwardModel.findOneAndUpdate(
+    const updateAward = await AwardModel.updateMany(
       filter,
-      updateData,
+      realToUpdate,
       option
     );
     return updateAward;

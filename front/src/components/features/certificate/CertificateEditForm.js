@@ -8,27 +8,29 @@ function CertificateEditForm({ currentCertificate, setCertificates, setIsEditing
   const [name, setName] = useState(currentCertificate.name);
   //useState로 description 상태를 생성함.
   const [issuingOrganization, setIssuingOrganization] = useState(currentCertificate.issuingOrganization);
-  //useState로 getDate 상태를 생성함.
-  const [ getDate, setGetDate ] = useState(currentCertificate.getDate.split('T')[0]);
+  //useState로 certificatedDate 상태를 생성함.
+  const [ certificatedDate, setCertificatedDate ] = useState(currentCertificate.certificatedDate.split('T')[0]);
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     // currentCertificate의 user_id를 user_id 변수에 할당함.
-    const user_id = currentCertificate.userId;
+    const userId = currentCertificate.userId;
 
     // "awards/수상 id" 엔드포인트로 PUT 요청함.
-    await Api.put(`${user_id}/certificates/${currentCertificate._id}`, {
-      user_id,
+    await Api.post(`${userId}/certificates/${currentCertificate._id}`, {
+      userId,
       name,
       issuingOrganization,
-      getDate,
+      certificatedDate,
     });
 
-    // "awardlist/유저id" 엔드포인트로 GET 요청함.
-    const res = await Api.get(`${user_id}/certificates/${currentCertificate._id}`);
+    
 
+    // "awardlist/유저id" 엔드포인트로 GET 요청함.
+    const res = await Api.get(`${userId}/certificates`);
+   
     // awards를 response의 data로 세팅함.
     setCertificates(res.data);
     // 편집 과정이 끝났으므로, isEditing을 false로 세팅함.
@@ -55,12 +57,12 @@ function CertificateEditForm({ currentCertificate, setCertificates, setIsEditing
         />
       </Form.Group>
 
-      <Form.Group controlId="formBasicgetDate" className="mt-3 text-center">
+      <Form.Group controlId="formBasicCertificatedDate" className="mt-3 text-center">
         자격증 획득일
         <Form.Control
             type ="Date"
-            value={getDate}
-            onChange={(e)=>setGetDate(e.target.value)}
+            value={certificatedDate}
+            onChange={(e)=>setCertificatedDate(e.target.value)}
         />
       </Form.Group>
 

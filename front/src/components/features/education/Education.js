@@ -16,7 +16,7 @@ function Education({ education, setEducations, isEditable , setIsVisibility }) {
         />
       ) : (
         <EducationCard
-            education={education}
+          education={education}
           isEditable={isEditable}
           setIsEditing={setIsEditing}
         />

@@ -1,55 +1,57 @@
 import { ProjectModel } from "../schemas/project";
 
 class Project {
-  // 생성
   static async create({ userId, title, content, startDate, endDate, editorStateSave }) {
-    console.log("projectcreate", userId, title, content, startDate, endDate, editorStateSave);
     const createdNewProject = await ProjectModel.create({
       userId,
       title,
       content,
       startDate,
       endDate,
-      editorStateSave,
+      editorStateSave
     });
     return createdNewProject;
   }
 
-  // 조회 (userId : objectId)
+  // Read
   static async findByUserId({ userId }) {
-    const project = await ProjectModel.find({ userId }).populate("userId");
+    const project = await ProjectModel.find({ userId });
     return project;
   }
 
-  //**************************************** */
+  // Read by ProjectId
   static async findByProjectId({ _id }) {
-    const project = await ProjectModel.find({ _id }).populate("id");
+    const project = await ProjectModel.find({ _id });
     return project;
   }
 
 
-  // 모두 조회
-  static async findAll() {
-    const projects = await ProjectModel.find({}).populate("userId");
-    return projects;
-  }
-
-  // 삭제
+  // Delete
   static async delete({ _id }) {
     const result = await ProjectModel.deleteOne({ _id });
-    return result;
+    console.log(result);
+    return;
   }
 
-  // 수정
-  static async update({ id, fieldToUpdate, newValue }) {
-    const filter = { _id: id };
-    const update = { [fieldToUpdate]: newValue };
+  // Update
+  static async update({ _id }, toUpdate) {
+    const filter = { _id };
     const option = { returnOriginal: false };
-    const updatedProject = await ProjectModel.findOneAndUpdate(
+
+    // newValue 값이 null 인 필드 제거하기
+    let realToUpdate = {};
+    for (let u in toUpdate) {
+      if (toUpdate[u]) {
+        realToUpdate[u] = toUpdate[u];
+      }
+    }
+
+    const updatedProject = await ProjectModel.updateMany(
       filter,
-      update,
+      realToUpdate,
       option
     );
+
     return updatedProject;
   }
 }

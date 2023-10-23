@@ -7,7 +7,7 @@ function EducationCard({ education, isEditable, setIsEditing }) {
                 <Col>
                     <span>{education.school}</span>
                     <br />
-                    <span>{education.major} ({education.educationlevel})</span>
+                    <span>{education.major} ({education.educationLevel})</span>
                     <br />
                     <span className="text-muted">{education.startDate.split('T')[0]}~{education.endDate.split('T')[0]}</span>
                 </Col>

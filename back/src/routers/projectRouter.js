@@ -26,21 +26,17 @@ projectRouter.post(
       }
 
       // req (request) 에서 데이터 가져오기
-      const title = req.body.title;
-      const content = req.body.content;
-      const startDate = req.body.startDate;
-      const endDate = req.body.endDate;
-      const editorStateSave = req.body.editorStateSave
+      const { title, content, startDate, endDate } = req.body;
 
       // 위 데이터를 db에 추가하기
       // user_id 는 uuid
       const newProject = await projectService.addProject({
-        user_id: userId,
+        userId,
         title,
         content,
         startDate,
         endDate,
-        editorStateSave,
+        editorStateSave
       });
 
       if (newProject.errorMessage) {
@@ -57,13 +53,6 @@ projectRouter.post(
 // get 요청: 모든 프로젝트 조회
 projectRouter.get("/projects", login_required, async (req, res, next) => {
   try {
-    const { userId } = req.params;
-    const current_user_id = req.currentUserId;
-
-    if (userId !== current_user_id) {
-      throw new Error("프로젝트 추가 권한이 없습니다");
-    }
-
     console.log("전체 프로젝트 조회 실행");
     const projects = await projectService.getProjects({});
     res.status(201).json(projects);
@@ -94,14 +83,12 @@ projectRouter.get(
   }
 );
 
-//***************************************** */
 projectRouter.get(
-  "/:userId/projects/detail/:id",
+  "/:userId/projects/:id",
   login_required,
   async (req, res, next) => {
 
     try {
-      const { userId } = req.params;
 
       console.log("특정 유저의 프로젝트 상세 페이지 이동");
       const id = req.params.id;
@@ -155,8 +142,7 @@ projectRouter.put(
       const id = req.params.id;
       const toUpdate = req.body;
 
-      console.log("project router, update", id, toUpdate);
-      const result = await projectService.updateProject(id, toUpdate);
+      const result = await projectService.updateProject({ _id: id }, toUpdate);
       res.status(201).json(result);
     } catch (err) {
       next(err);
