@@ -16,6 +16,8 @@ function Educations({portfolioOwnerId, isEditable}) {
         Api.get(`${portfolioOwnerId}/educations`).then((res) => setEducations(res.data));
     }, [portfolioOwnerId]);
 
+    console.log(educations)
+
     return (
         <Card>
             <Card.Body>

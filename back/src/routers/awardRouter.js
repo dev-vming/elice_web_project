@@ -11,33 +11,31 @@ awardRouter.post(
   login_required,
   async function (req, res, next) {
     try {
+      console.log("특정 유저의 수상경력 추가 실행");
+
       if (is.emptyObject(req.body)) {
         throw new Error(
           "headers의 Content-Type을 application/json으로 설정해주세요"
         );
       }
-      console.log("특정 유저의 수상경력 추가 실행");
+
       const { userId } = req.params;
       const current_user_id = req.currentUserId;
 
       if (userId !== current_user_id) {
         throw new Error("수상경력 추가 권한이 없습니다");
       }
-      // newAward : 추가할 데이터
-      const name = req.body.name;
-      const organization = req.body.organization;
-      const getDate = req.body.getDate;
-      const awardInfo = req.body.awardInfo ?? "";
 
+      //DB에 데이터 추가
+      const { name, organization, awardedDate, Info } = req.body;
       const newAward = await awardService.addAward({
-        user_id: userId,
+        userId,
         name,
         organization,
-        getDate,
-        awardInfo,
+        awardedDate,
+        Info,
       });
 
-      // db에 newAward 추가
       if (newAward.errorMessage) {
         throw new Error(newUser.errorMessage);
       }
@@ -57,7 +55,7 @@ awardRouter.get(
     try {
       console.log("특정 유저의 수상경력 조회 실행");
       const { userId } = req.params;
-      const awards = await awardService.getAwards({ user_id: userId });
+      const awards = await awardService.getAwards({ userId });
       res.status(201).json(awards);
     } catch (err) {
       next(err);
@@ -73,14 +71,14 @@ awardRouter.delete(
     try {
       console.log("특정 유저의 수상경력 삭제 실행");
       const { userId, id } = req.params;
-
       const current_user_id = req.currentUserId;
+
       if (userId !== current_user_id) {
         throw new Error("수상경력 삭제 권한이 없습니다.");
       }
 
-      const awards = await awardService.delAwards({
-        id,
+      const awards = await awardService.deleteAward({
+        _id: id,
       });
       res.status(201).json(awards);
     } catch (err) {
@@ -96,23 +94,30 @@ awardRouter.post(
   async function (req, res, next) {
     try {
       console.log("특정 유저의 수상경력 수정 실행");
-      const { userId, id } = req.params;
 
+      const { userId, id } = req.params;
       const current_user_id = req.currentUserId;
+
       if (userId !== current_user_id) {
         throw new Error("수상경력 수정 권한이 없습니다.");
       }
 
       // newValue : 변경할 데이터
-      const name = req.body.name;
-      const organization = req.body.organization;
-      const getDate = req.body.getDate;
-      const awardInfo = req.body.awardInfo ?? "";
+      const name = req.body.name ?? null;
+      const organization = req.body.organization ?? null;
+      const awardedDate = req.body.awardedDate ?? null;
+      const Info = req.body.Info ?? "";
 
-      const newValue = { name, organization, getDate, awardInfo };
+      const toUpdate = { name, organization, awardedDate, Info };
 
-      const updatedAwards = await awardService.updateAwards(id, newValue);
+      const updatedAwards = await awardService.updateAward(
+        { _id: id },
+        { toUpdate }
+      );
 
+      if (updatedAwards.errorMessage) {
+        throw new Error(updatedAwards.errorMessage);
+      }
       // db에 updatedAwards를 추가
       res.status(201).json(updatedAwards);
     } catch (err) {

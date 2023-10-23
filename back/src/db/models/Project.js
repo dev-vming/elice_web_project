@@ -25,7 +25,6 @@ class Project {
     return project;
   }
 
-
   // Delete
   static async delete({ _id }) {
     const result = await ProjectModel.deleteOne({ _id });

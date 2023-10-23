@@ -1,14 +1,14 @@
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import draftjsToHtml from "draftjs-to-html";
-import ProjectDetail from "../pages/ProjectDetail"; 
+// import ProjectDetail from "../pages/ProjectDetail"; 
 
 function ProjectCard({ project, isEditable, setIsEditing }) { 
   const htmlString = draftjsToHtml(project.editorStateSave[0])
   console.log(htmlString)
   const navigate = useNavigate(); 
   const moveToDetail = () => {
-    navigate(`${project.userId}/project/${project._id}`);
+    navigate(`${project.userId}/projects/${project._id}`, { state: { project }});
   }
 
   return (
@@ -43,7 +43,7 @@ function ProjectCard({ project, isEditable, setIsEditing }) {
       <ProjectDetail 
           style={{display: 'none' }}
           project={project} 
-          portfolioOwnerId={portfolioOwnerId}
+          htmlString={htmlString}
         />)} */}
     </Card.Text>
   );
