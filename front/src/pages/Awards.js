@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import * as Api from "../api";
 import {Award,AwardAddForm} from "../components/features/award";
@@ -11,11 +11,13 @@ function Awards({ portfolioOwnerId, isEditable }) {
   //useState로 isVisibility 상태를 생성함.
   const [ isVisibility, setIsVisibility ] = useState(true);
 
+  const getUser = useCallback(() => {
+    Api.get(`${portfolioOwnerId}/awards`).then((res) => setAwards(res.data));    
+  },[portfolioOwnerId]);
 
   useEffect(() => {
-    // "awardlist/유저id"로 GET 요청하고, response의 data로 awards를 세팅함.
-    Api.get(`${portfolioOwnerId}/awards`).then((res) => setAwards(res.data));
-  }, [portfolioOwnerId]);
+    getUser();
+  }, [getUser, portfolioOwnerId]);
 
   return (
     <Card>

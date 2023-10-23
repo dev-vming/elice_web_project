@@ -28,5 +28,4 @@ function EducationCard({ education, isEditable, setIsEditing }) {
     );
 }
 
-export default EducationCard
-
+export default EducationCard;

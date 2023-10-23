@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import * as Api from "../api";
 import {CertificateAddForm, Certificate}  from "../components/features/certificate";
@@ -11,9 +11,13 @@ function Certificates({ portfolioOwnerId, isEditable }) {
   //useState로 isVisibility 상태를 생성함.
   const [ isVisibility, setIsVisibility ] = useState(true);
 
-  useEffect(() => {
+  const getUser = useCallback(() => {
     Api.get(`${portfolioOwnerId}/certificates`).then((res) => setCertificates(res.data));
-  }, [portfolioOwnerId]);
+  },[portfolioOwnerId]);
+
+  useEffect(() => {
+    getUser();
+  }, [getUser, portfolioOwnerId]);
 
 
   return (
