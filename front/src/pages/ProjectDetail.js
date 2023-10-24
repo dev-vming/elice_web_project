@@ -32,6 +32,10 @@ function ProjectDetail( ) {
                 <br />
                 <span>{project.startDate} ~ {project.endDate}</span>
                 <br />
+          {project.content.map(stack => {
+            return <span style={{ border: '2px solid black', margin: '2px 3px' }}> {stack} </span>
+            })}   
+                <br />
                 <div dangerouslySetInnerHTML={{ __html: htmlString }} />
             </ProjectBox>
         </>

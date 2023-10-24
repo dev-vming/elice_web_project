@@ -1,11 +1,9 @@
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import draftjsToHtml from "draftjs-to-html";
-// import ProjectDetail from "../pages/ProjectDetail"; 
 
 function ProjectCard({ project, isEditable, setIsEditing }) { 
   const htmlString = draftjsToHtml(project.editorStateSave[0])
-  console.log(htmlString)
   const navigate = useNavigate(); 
   const moveToDetail = () => {
     navigate(`/projects/${project._id}`, { state: { project }});
