@@ -6,29 +6,31 @@ class Certificate {
     return createdNewCertificate;
   }
   // Read
-  static async findByUser(userId) {
+  static async findByUserId({ userId }) {
     const certificates = await CertificateModel.find({ userId });
     return certificates;
   }
   // Delete
   static async delete({ _id }) {
-    const certificates = await CertificateModel.findOneAndDelete({ _id });
-    return certificates;
+    const result = CertificateModel.deleteOne({ _id });
+    console.log(result);
+    return;
   }
-
   // Update
-  static async update(id, newValue) {
-    const filter = { _id: id };
+  static async update({ _id }, toUpdate) {
+    const filter = { _id };
     const option = { returnOriginal: false };
 
-    const updateData = {
-      name: newValue.name,
-      issuingOrganization: newValue.issuingOrganization,
-      getDate: newValue.getDate,
-    };
-    const updateCertificate = await CertificateModel.findOneAndUpdate(
+    let realToUpdate = {};
+    for (let u in toUpdate) {
+      if (toUpdate[u]) {
+        realToUpdate[u] = toUpdate[u];
+      }
+    }
+
+    const updateCertificate = await CertificateModel.updateMany(
       filter,
-      updateData,
+      realToUpdate,
       option
     );
     return updateCertificate;

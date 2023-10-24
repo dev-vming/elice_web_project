@@ -14,11 +14,11 @@ const AwardSchema = new Schema({
     type: String,
     required: true,
   },
-  getDate: {
+  awardedDate: {
     type: Date,
     required: true,
   },
-  awardInfo: {
+  Info: {
     type: String,
     required: false,
     default: "",

@@ -23,10 +23,6 @@ const ProjectSchema = new Schema({
     type: Date,
     required: false,
   },
-  editorState: {
-    type: Object,
-    required: false,
-  }
 });
 
 const ProjectModel = mongoose.model("Project", ProjectSchema);

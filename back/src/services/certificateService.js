@@ -1,38 +1,36 @@
-import { User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
-import { Certificate } from "../db/models/Certificate";
+import { Certificate } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
 
 class certificateService {
-  static async addCertificate({ user_id, name, issuingOrganization, getDate }) {
-    // userId: user_id를 통해 찾은 user
-    const userId = await User.findById({ user_id });
-
+  static async addCertificate({
+    userId,
+    name,
+    issuingOrganization,
+    certificatedDate,
+  }) {
     const newCertificate = {
       userId,
       name,
       issuingOrganization,
-      getDate,
+      certificatedDate,
     };
-
     //db에 추가
     const createdNewCertificate = await Certificate.create({ newCertificate });
     createdNewCertificate.errorMessage = null;
-
     return createdNewCertificate;
   }
 
-  static async getCertificates({ user_id }) {
-    const findUser = await User.findById({ user_id });
-    const certificates = await Certificate.findByUser(findUser);
+  static async getCertificates({ userId }) {
+    const certificates = await Certificate.findByUserId({ userId });
     return certificates;
   }
 
-  static async delCertificates({ _id }) {
+  static async deleteCertificate({ _id }) {
     const certificates = await Certificate.delete({ _id });
     return certificates;
   }
 
-  static async updateCertificates(id, newValue) {
-    const certificates = await Certificate.update(id, newValue);
+  static async updateCertificate({ _id }, { toUpdate }) {
+    const certificates = await Certificate.update({ _id }, { ...toUpdate });
     return certificates;
   }
 }
