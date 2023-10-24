@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Container, Col, Row,  Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { Container, Col, Row,  Navbar, Nav } from "react-bootstrap";
 
 import { UserStateContext } from "../App";
 import * as Api from "../api";
@@ -8,7 +8,7 @@ import User from "../components/features/user/User";
 import Educations from './Educations';
 import Awards from "./Awards";
 import Certificates from "./Certificates";
-
+import Projects from './Projects'
 
 function MyPage() {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ function MyPage() {
       fetchPorfolioOwner(ownerId);
     } else {
       // 이외의 경우, 즉 URL이 "/" 라면, 전역 상태의 user.id를 유저 id로 설정함.
-      const ownerId = userState.user.id;
+      const ownerId = userState.user._id;
       // 해당 유저 id로 fetchPorfolioOwner 함수를 실행함.
       fetchPorfolioOwner(ownerId);
     }
@@ -57,20 +57,14 @@ function MyPage() {
 
   return (
     <Container fluid>
-     <Navbar className="navbar" expand="xl" bg="light">
+    <Navbar className="navbar mb-4" expand="xl"  sticky="top" bg= "light" >
   <Container>
-    <Navbar.Brand onClick={() => navigate("/")}> {portfolioOwner.name}의 포트폴리오 </Navbar.Brand>
-    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-    <Navbar.Collapse id="basic-navbar-nav">
-      <Nav className="me-auto">
+    <Navbar.Brand placement="end" onClick={() => navigate("/")}> {portfolioOwner.name}의 포트폴리오 </Navbar.Brand>
+    <Navbar.Toggle aria-controls="navbar-nav" />
+    <Navbar.Collapse id="navbar-nav">
+      <Nav className="justify-content-md-end flex-grow-1 p-2 bd-highlight">
         <Nav.Link href="/"> 프로젝트 </Nav.Link>
-        <NavDropdown title="개인 이력" id="basic-nav-dropdown">
-          <NavDropdown.Item onClick={() => navigate("*")}>학력</NavDropdown.Item>
-          <NavDropdown.Item href="*">수상 이력</NavDropdown.Item>
-          <NavDropdown.Item href="*">자격증 이력</NavDropdown.Item>
-          <NavDropdown.Divider />
-          <NavDropdown.Item href="*">기술 스택</NavDropdown.Item>
-        </NavDropdown>
+        <Nav.Link href="/" id="profile" >개인 이력</Nav.Link>
       </Nav>
     </Navbar.Collapse>
   </Container>
@@ -79,25 +73,30 @@ function MyPage() {
       <Row>
         <Col md="3" lg="3">
           <User
-            portfolioOwnerId={portfolioOwner.id}
-            isEditable={portfolioOwner.id === userState.user?.id}
+            portfolioOwnerId={portfolioOwner._id}
+            isEditable={portfolioOwner._id === userState.user?._id}
           />
         </Col>
         <Col>
         <Educations
-            portfolioOwnerId={portfolioOwner.id}
-            isEditable={portfolioOwner.id === userState.user?.id}
+            portfolioOwnerId={portfolioOwner._id}
+            isEditable={portfolioOwner._id === userState.user?._id}
           />
 
         <Awards
-            portfolioOwnerId={portfolioOwner.id}
-            isEditable={portfolioOwner.id === userState.user?.id}
+            portfolioOwnerId={portfolioOwner._id}
+            isEditable={portfolioOwner._id === userState.user?._id}
           />
 
         <Certificates
-            portfolioOwnerId={portfolioOwner.id}
-            isEditable={portfolioOwner.id === userState.user?.id}
+            portfolioOwnerId={portfolioOwner._id}
+            isEditable={portfolioOwner._id === userState.user?._id}
           />
+
+        <Projects
+            portfolioOwnerId={portfolioOwner._id}
+            isEditable={portfolioOwner._id === userState.user?._id}
+          />  
         </Col>
         
         

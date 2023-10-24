@@ -1,13 +1,16 @@
 import { Card, Button, Row, Col } from "react-bootstrap";
 
 function CertificateCard({ certificate, isEditable, setIsEditing }) {
+
   return (
     <Card.Text>
       <Row className="align-items-center">
         <Col>
-          <span>{certificate.title}</span>
+          <span>{certificate.name}</span>
           <br />
-          <span className="text-muted">{certificate.description}</span>
+          <span className="text-muted">{certificate.issuingOrganization}</span>
+          <br/>
+          <span className="text-muted">{certificate.certificatedDate.split('T')[0]}</span>
         </Col>
         {isEditable && (
           <Col xs lg="1">
