@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AwardCard from "../../../hooks/AwardCard";
 import AwardEditForm from "./AwardEditForm";
 
-function Award({ award, setAwards, isEditable, setIsVisibility }) {
+function Award({ portfolioOwnerId, award, setAwards, isEditable, setIsVisibility }) {
   //useState로 isEditing 상태를 생성함.
   const [isEditing, setIsEditing] = useState(false);
   return (
@@ -19,6 +19,8 @@ function Award({ award, setAwards, isEditable, setIsVisibility }) {
           award={award}
           isEditable={isEditable}
           setIsEditing={setIsEditing}
+          portfolioOwnerId={portfolioOwnerId}
+          setAwards={setAwards}
         />
       )}
     </>

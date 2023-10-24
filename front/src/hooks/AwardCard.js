@@ -1,6 +1,17 @@
 import { Card, Button, Row, Col } from "react-bootstrap";
+import * as Api from '../api';
 
-function AwardCard({ award, isEditable, setIsEditing }) {
+function AwardCard({ portfolioOwnerId, setAwards, award, isEditable, setIsEditing }) {
+
+  const deletecard = async () => {
+    if(window.confirm('게시물을 삭제하시겠습니까?')) {
+        await Api.delete(`${portfolioOwnerId}/awards/${award._id}`).then((res) => {
+            alert("삭제되었습니다!");
+            setAwards((prev)=> prev.filter((item)=>item._id !== award._id));
+        })
+    } 
+  }
+
   return (
     <Card.Text>
       <Row className="align-items-center">
@@ -23,6 +34,14 @@ function AwardCard({ award, isEditable, setIsEditing }) {
               className="mr-3"
             >
               편집
+            </Button>
+            <Button
+              variant="outline-danger"
+              size="sm"
+              onClick={() => deletecard()}
+              className="mr-3"
+            >
+              삭제
             </Button>
           </Col>
         )}

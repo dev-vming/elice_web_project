@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import EducationCard from "../../../hooks/EducationCard";
 import EducationEditForm from "./EducationEditForm";
 
-function Education({ education, setEducations, isEditable , setIsVisibility }) {
+function Education({ portfolioOwnerId, education, setEducations, isEditable , setIsVisibility }) {
   //useState로 isEditing 상태를 생성함.
   const [isEditing, setIsEditing] = useState(false);
   return (
@@ -17,8 +17,10 @@ function Education({ education, setEducations, isEditable , setIsVisibility }) {
       ) : (
         <EducationCard
           education={education}
+          setEducations={setEducations}
           isEditable={isEditable}
           setIsEditing={setIsEditing}
+          portfolioOwnerId={portfolioOwnerId}
         />
       )}
     </>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CertificateCard from "../../../hooks/CertificateCard";
 import CertificateEditForm from "./CertificateEditForm";
 
-function Certificate({ certificate, setCertificates, isEditable, setIsVisibility }) {
+function Certificate({ portfolioOwnerId, certificate, setCertificates, isEditable, setIsVisibility }) {
   //useState로 isEditing 상태를 생성함.
   const [isEditing, setIsEditing] = useState(false);
   return (
@@ -19,6 +19,8 @@ function Certificate({ certificate, setCertificates, isEditable, setIsVisibility
           certificate={certificate}
           isEditable={isEditable}
           setIsEditing={setIsEditing}
+          portfolioOwnerId={portfolioOwnerId}
+          setCertificates={setCertificates}
         />
       )}
     </>
