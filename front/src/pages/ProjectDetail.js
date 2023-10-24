@@ -13,8 +13,9 @@ function ProjectDetail( ) {
     const location = useLocation();
     const project = location.state.project;
     const htmlString = draftjsToHtml(project.editorStateSave[0])
-    const moveToProjectCard = () => {
-        navigate(`/projects/${project._id}`);
+   
+    const handleClick = () => {
+        navigate("/previous");
     }
 
     console.log(project)
@@ -22,7 +23,7 @@ function ProjectDetail( ) {
     return (
         <>
             <Col xs lg='1'>
-                <Button float='right' onClick={moveToProjectCard}>
+                <Button float='right' onClick={handleClick}>
                     닫기
                 </Button>
             </Col>

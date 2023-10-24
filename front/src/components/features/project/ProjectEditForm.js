@@ -4,8 +4,9 @@ import * as Api from "../../../api";
 import styled from "styled-components";
 import { Editor } from "react-draft-wysiwyg"; 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"; 
-import { EditorState, convertToRaw, convertFromRaw } from "draft-js"; 
+import { EditorState, convertToRaw, convertFromRaw, ContentState } from "draft-js"; 
 import draftjsToHtml from "draftjs-to-html"; 
+import htmlToDraft from 'html-to-draftjs'
 import axios from "axios";
 
 const RowBox = styled.div`
@@ -27,19 +28,24 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
   const [content, setContent] = useState(currentProject.content);
   const [startDate, setStartDate] = useState(currentProject.startDate);
   const [endDate, setEndDate] = useState(currentProject.endDate);
-  const [editorState, setEditorState] = useState(EditorState.createEmpty()); 
-  // const [editorState, setEditorState] = useState(EditorState.createWithContent(convertFromRaw(currentProject.editorStateSave[0]))
-  // );
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [htmlString, setHtmlString] = useState(draftjsToHtml(currentProject.editorStateSave[0]));
   const [editorStateSave, setEditorStateSave] = useState(currentProject.editorStateSave);
   const [imgs, setImgs] = useState(currentProject.imgs);
   const userId = portfolioOwnerId;
 
-  // useEffect(() => {
-  //   setEditorState(
-  //     EditorState.createWithContent(convertFromRaw(currentProject.editorStateSave[1]))
-  //   );
-  // }, [currentProject]);
+  useEffect(() => {
+    const blocksFromHtml = htmlToDraft(htmlString);
+    if (blocksFromHtml) {
+      const { contentBlocks, entityMap } = blocksFromHtml;
+      const contentState = ContentState.createFromBlockArray(
+        contentBlocks,
+        entityMap
+      );
+    const newEditorState = EditorState.createWithContent(contentState);
+    setEditorState(newEditorState);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,10 +68,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
 
   const updateTextDescription = (state) => {
     setEditorState(state);
-    console.log(`editorState = ${JSON.stringify(editorState)}`)
     const html = draftjsToHtml(convertToRaw(editorState.getCurrentContent()));
-    console.log('editorState에서 ContentState로 변환, editorState.getCurrentContent() = ' + editorState.getCurrentContent()) 
-    console.log('ContentState를 convertToRaw로 원시 js로 변환, convertToRaw(editorState.getCurrentContent()) = ' + JSON.stringify(convertToRaw(editorState.getCurrentContent())));
     setHtmlString(html);
     setEditorStateSave(() => {
       const newStateSave = editorStateSave;
@@ -73,16 +76,6 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
       return newStateSave;
     })
   };
-
-  // const updateTextDescription = (state) => {
-  //   setEditorState(state);
-  //   const html = draftjsToHtml(convertToRaw(state.getCurrentContent()));
-  //   setHtmlString(html);
-  //   setEditorStateSave([
-  //     convertToRaw(state.getCurrentContent()),
-  //     state.getCurrentContent()
-  //   ]);
-  // };
 
   const uploadCallback = async (file) => { //공식문서에서 promise 객체 반환하라고 함
     return new Promise(async (resolve, reject) => {
@@ -155,7 +148,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
         editorState={editorState}
         onEditorStateChange={updateTextDescription}
         toolbar={{
-        image: { uploadCallback: uploadCallback },
+        image: { uploadCallback },
         }}
         localization={{ locale: "ko" }}
         editorStyle={{
