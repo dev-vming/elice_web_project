@@ -23,6 +23,7 @@ const ProjectSchema = new Schema({
     type: Date,
     required: false,
   },
+<<<<<<< HEAD
   editorStateSave: {
     type: Array,
     required: false,
@@ -31,6 +32,8 @@ const ProjectSchema = new Schema({
     type: Array,
     required: false,
   },
+=======
+>>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
 });
 
 const ProjectModel = mongoose.model("Project", ProjectSchema);

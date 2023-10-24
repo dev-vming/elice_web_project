@@ -16,6 +16,15 @@ certificateRouter.post(
   async function (req, res, next) {
     try {
       console.log("특정 유저의 자격증 추가 실행");
+<<<<<<< HEAD
+=======
+
+      if (is.emptyObject(req.body)) {
+        throw new Error(
+          "headers의 Content-Type을 application/json으로 설정해주세요"
+        );
+      }
+>>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
 
       const { userId } = req.params;
 
@@ -71,6 +80,13 @@ certificateRouter.delete(
       console.log("특정 자격증 삭제 실행");
       const { id } = req.params;
 
+<<<<<<< HEAD
+=======
+      if (userId !== current_user_id) {
+        throw new Error("자격증 삭제 권한이 없습니다");
+      }
+
+>>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
       const certificates = await certificateService.deleteCertificate({
         _id: id,
       });
@@ -89,6 +105,16 @@ certificateRouter.post(
   async function (req, res, next) {
     try {
       console.log("특정 유저의 자격증 수정 실행");
+<<<<<<< HEAD
+=======
+
+      const { userId, id } = req.params;
+      const current_user_id = req.currentUserId;
+
+      if (userId !== current_user_id) {
+        throw new Error("자격증 수정 권한이 없습니다");
+      }
+>>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
 
       const { id } = req.params;
       // newValue : 변경할 데이터

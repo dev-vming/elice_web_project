@@ -28,6 +28,26 @@ userAuthRouter.post(
     } catch (error) {
       next(error);
     }
+<<<<<<< HEAD
+=======
+
+    // req (request) 에서 데이터 가져오기
+    const { name, email, password } = req.body;
+    // 위 데이터를 유저 db에 추가하기
+    const newUser = await userAuthService.addUser({
+      name,
+      email,
+      password,
+    });
+
+    if (newUser.errorMessage) {
+      throw new Error(newUser.errorMessage);
+    }
+
+    res.status(201).json(newUser);
+  } catch (error) {
+    next(error);
+>>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
   }
 );
 
@@ -101,7 +121,12 @@ userAuthRouter.put(
       const toUpdate = { name, email, password, description };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
+<<<<<<< HEAD
       const updatedUser = await userAuthService.setUser({ _id }, { toUpdate });
+=======
+      await userAuthService.setUser({ _id }, { toUpdate });
+      const updatedUser = await userAuthService.getUserInfoById({_id});
+>>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
 
       if (updatedUser.errorMessage) {
         throw new Error(updatedUser.errorMessage);

@@ -73,9 +73,12 @@ function SearchPortfolios() {
       <Row className="justify-content-center">
         {users.map((user) => (
           <UserCard key={user._id} user={user} isNetwork />
+<<<<<<< HEAD
         ))}
         {searchResult.map((project) => (
           <ProjectCard project={project} />
+=======
+>>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
         ))}
       </Row>
     </Container>

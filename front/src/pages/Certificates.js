@@ -31,6 +31,7 @@ function Certificates({ portfolioOwnerId, isEditable }) {
             setCertificates={setCertificates}
             isEditable={isEditable}
             setIsVisibility={setIsVisibility}
+            portfolioOwnerId={portfolioOwnerId}
           />
         ))}
         {isEditable && isVisibility && (

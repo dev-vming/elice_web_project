@@ -30,6 +30,7 @@ function Awards({ portfolioOwnerId, isEditable }) {
             setAwards={setAwards}
             isEditable={isEditable}
             setIsVisibility={setIsVisibility}
+            portfolioOwnerId={portfolioOwnerId}
           />
         ))}
         {isEditable && isVisibility && (

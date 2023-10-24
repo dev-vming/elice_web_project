@@ -23,7 +23,11 @@ projectRouter.post(
       }
 
       // req (request) 에서 데이터 가져오기
+<<<<<<< HEAD
       const { title, content, startDate, endDate, editorStateSave, imgs } = req.body;
+=======
+      const { title, content, startDate, endDate } = req.body;
+>>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
 
       // 위 데이터를 db에 추가하기
       // user_id 는 uuid
@@ -33,8 +37,11 @@ projectRouter.post(
         content,
         startDate,
         endDate,
+<<<<<<< HEAD
         editorStateSave,
         imgs,
+=======
+>>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
       });
 
       if (newProject.errorMessage) {

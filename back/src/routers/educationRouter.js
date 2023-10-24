@@ -14,6 +14,15 @@ educationRouter.post(
   check_permission,
   async function (req, res, next) {
     try {
+<<<<<<< HEAD
+=======
+      if (is.emptyObject(req.body)) {
+        throw new Error(
+          "headers의 Content-Type을 application/json으로 설정해주세요"
+        );
+      }
+
+>>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
       const { userId } = req.params;
       // req (request) 에서 데이터 가져오기
       const { educationLevel, school, major, startDate, endDate } = req.body;
@@ -45,7 +54,17 @@ educationRouter.delete(
   check_permission,
   async function (req, res, next) {
     try {
+<<<<<<< HEAD
       const { id } = req.params;
+=======
+      const { userId, id } = req.params;
+      //const education_id = id;
+      const current_user_id = req.currentUserId;
+
+      if (userId !== current_user_id) {
+        throw new Error("학력 항목 삭제 권한이 없습니다.");
+      }
+>>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
       const deletedEducation = await educationService.deleteEducation({
         _id: id,
       });
@@ -64,7 +83,17 @@ educationRouter.post(
   async function (req, res, next) {
     try {
       console.log("특정 유저의 특정 학력 항목 수정 실행");
+<<<<<<< HEAD
       const { id } = req.params;
+=======
+      const { userId, id } = req.params;
+      const current_user_id = req.currentUserId;
+
+      if (userId !== current_user_id) {
+        throw new Error("학력 항목 수정 권한이 없습니다.");
+      }
+
+>>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
       // req에서 변경할 데이터를 받아온다
       const educationLevel = req.body.educationLevel ?? null;
       const school = req.body.school ?? null;

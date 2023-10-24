@@ -17,7 +17,11 @@ function Educations({portfolioOwnerId, isEditable}) {
 
     useEffect(() => {
         getUser();
+<<<<<<< HEAD
     }, [getUser,portfolioOwnerId]);
+=======
+    }, [getUser, portfolioOwnerId]);
+>>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
 
     return (
         <Card>
@@ -27,9 +31,17 @@ function Educations({portfolioOwnerId, isEditable}) {
                     <Education
                         key={education._id}
                         education={education}
+<<<<<<< HEAD
                         setEducations={setEducations}
                         isEditable={isEditable}
                         setIsVisibility={setIsVisibility}
+=======
+                        eduations={educations}
+                        setEducations={setEducations}
+                        isEditable={isEditable}
+                        setIsVisibility={setIsVisibility}
+                        portfolioOwnerId={portfolioOwnerId}
+>>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
                     />
                 ))}
                 {isEditable && isVisibility && (
