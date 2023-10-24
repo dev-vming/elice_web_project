@@ -28,7 +28,7 @@ class Project {
     return projectById;
   }
 
-  // Read by content
+  // Read by content      ----- content는 배열. 배열의 인덱스 하나 있는지 찾아서 읽어오기 가능?
   static async findByContent({ content }) {
     const projectByContent = await ProjectModel.find({ content });
     return projectByContent;
