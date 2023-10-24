@@ -2,14 +2,15 @@ import { User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로
 import { Project } from "../db/index";
 
 class projectService {
-  static async addProject({ userId, title, content, startDate, endDate, editorStateSave }) {
+  static async addProject({ userId, title, content, startDate, endDate, editorStateSave, imgs }) {
     const newProject = {
       userId,
       title,
       content,
       startDate,
       endDate,
-      editorStateSave
+      editorStateSave,
+      imgs,
     };
     const createdNewProject = await Project.create(newProject);
     createdNewProject.errorMessage = null;
@@ -25,6 +26,11 @@ class projectService {
   static async getProjectDetail(_id) {
     const projectDetail = await Project.findByProjectId({ _id }); 
     return projectDetail;
+  }
+
+  static async getProjectContent(content) {
+    const projectContent = await Project.findByContent({ content }); 
+    return projectContent;
   }
 
   static async deleteProject({ _id }) {

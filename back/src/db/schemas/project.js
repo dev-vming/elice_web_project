@@ -12,7 +12,7 @@ const ProjectSchema = new Schema({
     required: true,
   },
   content: {
-    type: String,
+    type: Array,
     required: false,
   },
   startDate: {
@@ -25,8 +25,12 @@ const ProjectSchema = new Schema({
   },
   editorStateSave: {
     type: Array,
-    required: true,
-  }
+    required: false,
+  },
+  imgs: {
+    type: Array,
+    required: false,
+  },
 });
 
 const ProjectModel = mongoose.model("Project", ProjectSchema);

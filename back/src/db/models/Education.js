@@ -9,7 +9,9 @@ class Education {
   // Read
   static async findByUserId({ userId }) {
     console.log("userId", userId);
-    const education = await EducationModel.find({ userId });
+    const education = await EducationModel.find({ userId }).sort({
+      startDate: "asc",
+    });
     return education;
   }
 

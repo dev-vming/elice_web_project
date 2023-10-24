@@ -1,6 +1,7 @@
 import { Card, Button, Row, Col } from "react-bootstrap";
 
 function CertificateCard({ certificate, isEditable, setIsEditing }) {
+
   return (
     <Card.Text>
       <Row className="align-items-center">
@@ -9,7 +10,7 @@ function CertificateCard({ certificate, isEditable, setIsEditing }) {
           <br />
           <span className="text-muted">{certificate.issuingOrganization}</span>
           <br/>
-          <span className="text-muted">{certificate.getDate.split('T')[0]}</span>
+          <span className="text-muted">{certificate.certificatedDate.split('T')[0]}</span>
         </Col>
         {isEditable && (
           <Col xs lg="1">

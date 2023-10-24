@@ -8,14 +8,16 @@ function ProjectCard({ project, isEditable, setIsEditing }) {
   console.log(htmlString)
   const navigate = useNavigate(); 
   const moveToDetail = () => {
-    navigate(`${project.userId}/projects/${project._id}`, { state: { project }});
+    navigate(`/projects/${project._id}`, { state: { project }});
   }
 
   return (
     <Card.Text>
       <Row className="align-items-center">
         <Col style={
-          {backgroundColor: "yellow", height: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}
+          {backgroundColor: "yellow", height: '100px', overflow: 'hidden'
+          //, whiteSpace: 'nowrap', textOverflow: 'ellipsis'
+        }
           } onClick={moveToDetail}>
           <span>{project.title}</span>
           <br />
@@ -23,6 +25,9 @@ function ProjectCard({ project, isEditable, setIsEditing }) {
           <br />
           <span>{project.startDate} ~ {project.endDate}</span>
           <br />
+          {project.content.map(stack => {
+            return <span style={{ border: '2px solid black', margin: '2px 3px' }}> {stack} </span>
+            })}   
           <div dangerouslySetInnerHTML={{ __html: htmlString }} />
         </Col>
 

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import * as Api from "../../../api";
 import styled from "styled-components";
 import { Editor } from "react-draft-wysiwyg"; 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"; 
-import { EditorState, convertToRaw } from "draft-js"; 
+import { EditorState, convertToRaw, convertFromRaw } from "draft-js"; 
 import draftjsToHtml from "draftjs-to-html"; 
 import axios from "axios";
 
@@ -22,30 +22,37 @@ border: 2px solid gray;
 `;
 
 function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsEditing }) {
-  console.log(currentProject.editorStateSave, typeof(currentProject.editorStateSave));
 
   const [title, setTitle] = useState(currentProject.title);
   const [content, setContent] = useState(currentProject.content);
   const [startDate, setStartDate] = useState(currentProject.startDate);
   const [endDate, setEndDate] = useState(currentProject.endDate);
   const [editorState, setEditorState] = useState(EditorState.createEmpty()); 
+  // const [editorState, setEditorState] = useState(EditorState.createWithContent(convertFromRaw(currentProject.editorStateSave[0]))
+  // );
   const [htmlString, setHtmlString] = useState(draftjsToHtml(currentProject.editorStateSave[0]));
   const [editorStateSave, setEditorStateSave] = useState(currentProject.editorStateSave);
   const [imgs, setImgs] = useState(currentProject.imgs);
-  const user_id = portfolioOwnerId;
+  const userId = portfolioOwnerId;
+
+  // useEffect(() => {
+  //   setEditorState(
+  //     EditorState.createWithContent(convertFromRaw(currentProject.editorStateSave[1]))
+  //   );
+  // }, [currentProject]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
   
-    await Api.put(`${user_id}/projects/${currentProject._id}`, {
-      user_id,
+    await Api.put(`${userId}/projects/${currentProject._id}`, {
+      userId,
       title,
       content,
       startDate,
       endDate,
       editorStateSave,
-      imgs
+      imgs,
     });
 
     // const res = await Api.get(`${user_id}/projects/${currentProject.id}`);
@@ -53,32 +60,45 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
     setIsEditing(false);
   };
 
-  const updateTextDescription = async (state) => {
-    await setEditorState(state);
-    const html = draftjsToHtml(convertToRaw(editorState.getCurrentContent())); 
+  const updateTextDescription = (state) => {
+    setEditorState(state);
+    console.log(`editorState = ${JSON.stringify(editorState)}`)
+    const html = draftjsToHtml(convertToRaw(editorState.getCurrentContent()));
+    console.log('editorState에서 ContentState로 변환, editorState.getCurrentContent() = ' + editorState.getCurrentContent()) 
+    console.log('ContentState를 convertToRaw로 원시 js로 변환, convertToRaw(editorState.getCurrentContent()) = ' + JSON.stringify(convertToRaw(editorState.getCurrentContent())));
     setHtmlString(html);
     setEditorStateSave(() => {
       const newStateSave = editorStateSave;
       newStateSave[0] = convertToRaw(editorState.getCurrentContent())
-      newStateSave[1] = editorState.getCurrentContent()
       return newStateSave;
     })
   };
+
+  // const updateTextDescription = (state) => {
+  //   setEditorState(state);
+  //   const html = draftjsToHtml(convertToRaw(state.getCurrentContent()));
+  //   setHtmlString(html);
+  //   setEditorStateSave([
+  //     convertToRaw(state.getCurrentContent()),
+  //     state.getCurrentContent()
+  //   ]);
+  // };
 
   const uploadCallback = async (file) => { //공식문서에서 promise 객체 반환하라고 함
     return new Promise(async (resolve, reject) => {
       const formData = new FormData();
       formData.append('image', file);
       try {
-        const response = await axios.post(`${user_id}/projects/${currentProject._id}`, formData, {
+        const response = await axios.post(`${userId}/projects/${currentProject._id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
         resolve({ data: { link: response.data.imageUrl } }).then(setImgs(() => {
           const imgUrl = response.data.imageUrl;
-          const newImg = [...imgs]
-          newImg.push(imgUrl)
+          const newImgs = [...imgs]
+          newImgs.push(imgUrl)
+          return newImgs;
         }));
       } catch (error) {
         reject('이미지 업로드 실패');
@@ -101,7 +121,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
       <Form.Group controlId="formBasicDescription" className="mt-3">
         <Form.Control
           type="text"
-          placeholder="프로젝트 요약 및 기술스택을 입력하세요"
+          placeholder="기술스택을 선택하세요"
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { projectService } from "../services/projectService";
 import is from "@sindresorhus/is";
+import { is_request_body } from "../middlewares/is_request_body";
 
 const projectRouter = Router();
 
@@ -9,14 +10,10 @@ const projectRouter = Router();
 projectRouter.post(
   "/:userId/projects",
   login_required,
+  is_request_body,
   async (req, res, next) => {
     try {
       console.log("특정 유저의 프로젝트 추가 실행");
-      if (is.emptyObject(req.body)) {
-        throw new Error(
-          "headers의 Content-Type을 application/json으로 설정해주세요"
-        );
-      }
 
       const { userId } = req.params;
       const current_user_id = req.currentUserId;
@@ -26,7 +23,7 @@ projectRouter.post(
       }
 
       // req (request) 에서 데이터 가져오기
-      const { title, content, startDate, endDate } = req.body;
+      const { title, content, startDate, endDate, editorStateSave, imgs } = req.body;
 
       // 위 데이터를 db에 추가하기
       // user_id 는 uuid
@@ -36,7 +33,8 @@ projectRouter.post(
         content,
         startDate,
         endDate,
-        editorStateSave
+        editorStateSave,
+        imgs,
       });
 
       if (newProject.errorMessage) {
@@ -83,18 +81,36 @@ projectRouter.get(
   }
 );
 
+// get project by project id
 projectRouter.get(
-  "/:userId/projects/:id",
+  "/projects/:id",
   login_required,
   async (req, res, next) => {
 
     try {
-
-      console.log("특정 유저의 프로젝트 상세 페이지 이동");
+      console.log("프로젝트 상세 페이지 조회");
       const id = req.params.id;
 
-      const projectDetail = await projectService.getProjectDetail(id);
+      const projectDetail = await projectService.getProjectDetail({ _id: id });
       res.status(201).json(projectDetail);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+// get project by content
+projectRouter.get(
+  "/projects/:content",
+  login_required,
+  async (req, res, next) => {
+
+    try {
+      console.log("특정 기술스택을 사용한 프로젝트 조회");
+      const content = req.params.content;
+
+      const projectContent = await projectService.getProjectContent(content);
+      res.status(201).json(projectContent);
     } catch (err) {
       next(err);
     }

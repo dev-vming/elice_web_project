@@ -57,7 +57,7 @@ function MyPage() {
 
   return (
     <Container fluid>
-     <Navbar className="navbar mb-4" expand="xl"  sticky="top" bg= "light" >
+    <Navbar className="navbar mb-4" expand="xl"  sticky="top" bg= "light" >
   <Container>
     <Navbar.Brand placement="end" onClick={() => navigate("/")}> {portfolioOwner.name}의 포트폴리오 </Navbar.Brand>
     <Navbar.Toggle aria-controls="navbar-nav" />

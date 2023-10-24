@@ -14,10 +14,11 @@ function ProjectDetail( ) {
     const project = location.state.project;
     const htmlString = draftjsToHtml(project.editorStateSave[0])
     const moveToProjectCard = () => {
-        navigate(`${project.userId}/projects/${project._id}`);
+        navigate(`/projects/${project._id}`);
     }
-    console.log(project)
 
+    console.log(project)
+//여기 와서 api호출
     return (
         <>
             <Col xs lg='1'>

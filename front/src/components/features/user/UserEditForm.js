@@ -10,11 +10,12 @@ function UserEditForm({ user, setIsEditing, setUser }) {
   //useState로 description 상태를 생성함.
   const [description, setDescription] = useState(user.description);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // "users/유저id" 엔드포인트로 PUT 요청함.
-    const res = await Api.put(`users/${user.id}`, {
+    const res = await Api.put(`users/${user._id}`, {
       name,
       email,
       description,

@@ -1,28 +1,37 @@
 import { ProjectModel } from "../schemas/project";
 
 class Project {
-  static async create({ userId, title, content, startDate, endDate, editorStateSave }) {
+  static async create({ userId, title, content, startDate, endDate, editorStateSave, imgs }) {
     const createdNewProject = await ProjectModel.create({
       userId,
       title,
       content,
       startDate,
       endDate,
-      editorStateSave
+      editorStateSave,
+      imgs,
     });
     return createdNewProject;
   }
 
   // Read
   static async findByUserId({ userId }) {
-    const project = await ProjectModel.find({ userId });
+    const project = await ProjectModel.find({ userId }).sort({
+      startDate: "asc",
+    });
     return project;
   }
 
-  // Read by ProjectId
-  static async findByProjectId({ _id }) {
-    const project = await ProjectModel.find({ _id });
-    return project;
+   // Read by ProjectId
+   static async findByProjectId({ _id }) {
+    const projectById = await ProjectModel.find({ _id });
+    return projectById;
+  }
+
+  // Read by content
+  static async findByContent({ content }) {
+    const projectByContent = await ProjectModel.find({ content });
+    return projectByContent;
   }
 
   // Delete
