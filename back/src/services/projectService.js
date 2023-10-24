@@ -2,22 +2,15 @@ import { User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로
 import { Project } from "../db/index";
 
 class projectService {
-<<<<<<< HEAD
   static async addProject({ userId, title, content, startDate, endDate, editorStateSave, imgs }) {
-=======
-  static async addProject({ userId, title, content, startDate, endDate }) {
->>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
     const newProject = {
       userId,
       title,
       content,
       startDate,
       endDate,
-<<<<<<< HEAD
       editorStateSave,
       imgs,
-=======
->>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
     };
     const createdNewProject = await Project.create(newProject);
     createdNewProject.errorMessage = null;

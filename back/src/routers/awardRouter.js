@@ -17,22 +17,7 @@ awardRouter.post(
     try {
       console.log("특정 유저의 수상경력 추가 실행");
 
-<<<<<<< HEAD
       const { userId } = req.params;
-=======
-      if (is.emptyObject(req.body)) {
-        throw new Error(
-          "headers의 Content-Type을 application/json으로 설정해주세요"
-        );
-      }
-
-      const { userId } = req.params;
-      const current_user_id = req.currentUserId;
-
-      if (userId !== current_user_id) {
-        throw new Error("수상경력 추가 권한이 없습니다");
-      }
->>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
 
       //DB에 데이터 추가
       const { name, organization, awardedDate, Info } = req.body;
@@ -80,17 +65,7 @@ awardRouter.delete(
   async function (req, res, next) {
     try {
       console.log("특정 유저의 수상경력 삭제 실행");
-<<<<<<< HEAD
       const { id } = req.params;
-=======
-      const { userId, id } = req.params;
-      const current_user_id = req.currentUserId;
-
-      if (userId !== current_user_id) {
-        throw new Error("수상경력 삭제 권한이 없습니다.");
-      }
-
->>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
       const awards = await awardService.deleteAward({
         _id: id,
       });
@@ -109,18 +84,7 @@ awardRouter.post(
   async function (req, res, next) {
     try {
       console.log("특정 유저의 수상경력 수정 실행");
-<<<<<<< HEAD
       const { id } = req.params;
-=======
-
-      const { userId, id } = req.params;
-      const current_user_id = req.currentUserId;
-
-      if (userId !== current_user_id) {
-        throw new Error("수상경력 수정 권한이 없습니다.");
-      }
-
->>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
       // newValue : 변경할 데이터
       const name = req.body.name ?? null;
       const organization = req.body.organization ?? null;

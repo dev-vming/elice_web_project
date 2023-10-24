@@ -1,29 +1,21 @@
 import { ProjectModel } from "../schemas/project";
 
 class Project {
-<<<<<<< HEAD
   static async create({ userId, title, content, startDate, endDate, editorStateSave, imgs }) {
-=======
-  static async create({ userId, title, content, startDate, endDate }) {
->>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
     const createdNewProject = await ProjectModel.create({
       userId,
       title,
       content,
       startDate,
       endDate,
-<<<<<<< HEAD
       editorStateSave,
       imgs,
-=======
->>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
     });
     return createdNewProject;
   }
 
   // Read
   static async findByUserId({ userId }) {
-<<<<<<< HEAD
     const project = await ProjectModel.find({ userId }).sort({
       startDate: "asc",
     });
@@ -42,12 +34,6 @@ class Project {
     return projectByContent;
   }
 
-=======
-    const project = await ProjectModel.find({ userId });
-    return project;
-  }
-
->>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
   // Delete
   static async delete({ _id }) {
     const result = await ProjectModel.deleteOne({ _id });

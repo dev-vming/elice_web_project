@@ -7,13 +7,7 @@ class Award {
   }
   // Read
   static async findByUserId({ userId }) {
-<<<<<<< HEAD
-    const awrads = await AwardModel.find({ userId }).sort({
-      awardedDate: "asc",
-    });
-=======
     const awrads = await AwardModel.find({ userId });
->>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
     return awrads;
   }
   // Delete

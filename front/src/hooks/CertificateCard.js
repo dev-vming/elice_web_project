@@ -13,11 +13,6 @@ function CertificateCard({ portfolioOwnerId, setCertificates, certificate, isEdi
     } 
   }
 
-<<<<<<< HEAD
-function CertificateCard({ certificate, isEditable, setIsEditing }) {
-
-=======
->>>>>>> 06470c725bbcfa7a50cfac1d88a6db39fc6f6810
   return (
     <Card.Text>
       <Row className="align-items-center">
