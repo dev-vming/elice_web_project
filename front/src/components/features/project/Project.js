@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ProjectCard from "../../../hooks/ProjectCard";
+import ProjectCard from "./ProjectCard";
 import ProjectEditForm from "./ProjectEditForm";
 
 function Project({ portfolioOwnerId, project, setProjects, isEditable }) {

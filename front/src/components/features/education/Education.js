@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import EducationCard from "../../../hooks/EducationCard";
+import EducationCard from "./EducationCard";
 import EducationEditForm from "./EducationEditForm";
 
 function Education({ portfolioOwnerId, education, setEducations, isEditable , setIsVisibility }) {

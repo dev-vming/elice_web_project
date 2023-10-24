@@ -2,9 +2,9 @@ import React, { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
-import * as Api from "../api";
+import * as Api from "../utils/api";
 import UserCard from "../components/features/user/UserCard";
-import ProjectCard from "../hooks/ProjectCard";
+import ProjectCard from "../components/features/project/ProjectCard";
 import { UserStateContext } from "../App";
 
 function SearchPortfolios() {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AwardCard from "../../../hooks/AwardCard";
+import AwardCard from "./AwardCard";
 import AwardEditForm from "./AwardEditForm";
 
 function Award({ portfolioOwnerId, award, setAwards, isEditable, setIsVisibility }) {
