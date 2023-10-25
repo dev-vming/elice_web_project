@@ -6,7 +6,6 @@ import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { EditorState, convertToRaw } from "draft-js"; 
 import draftjsToHtml from "draftjs-to-html"; 
-import axios from "axios";
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import stacksList from "./ProjectStackList";
 
@@ -37,19 +36,24 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    e.stopPropagation(); 
-
-    const contentState = editorState.getCurrentContent();
-
-     // 1) 업로드해놓고 혹시 삭제한 이미지가 있는지 조회 
-    const content = {
-      text: contentState.getPlainText(),
-      images: contentState.getEntitiesByType('IMAGE').map(entity => entity.getData().get('link')),
-    };
-
-    // 2) 삭제한 이미지가 있다면 imgs에서 url 삭제
-    const newImgs = contentState.getEntitiesByType('IMAGE').map(entity => entity.getData().get('link'));
-
+    e.stopPropagation();
+  
+    // const contentState = editorState.getCurrentContent();
+  
+    // // 1) 업로드해놓고 혹시 삭제한 이미지가 있는지 조회 
+    // const content = {
+    //   text: contentState.getPlainText(),
+    //   // 이미지 엔티티만 가져옴
+    //   images: Object.values(contentState.getEntityMap())
+    //     .filter(entity => entity.getType() === 'IMAGE')
+    //     .map(entity => entity.getData().get('link')),
+    // };
+  
+    // // 2) 삭제한 이미지가 있다면 imgs에서 URL 삭제
+    // const newImgs = Object.values(contentState.getEntityMap())
+    //   .filter(entity => entity.getType() === 'IMAGE')
+    //   .map(entity => entity.getData().get('link'));
+  
     await Api.post(`${userId}/projects`, {
       userId,
       title,
@@ -57,14 +61,14 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
       startDate,
       endDate,
       editorStateSave, 
-      imgs: newImgs,
+      imgs,
     });
-
-    const res = await Api.get(`${userId}/projects`); //수정할 땐 {userId}/projects/{_id}
+  
+    const res = await Api.get(`${userId}/projects`);
     setProjects(res.data);
     setIsAdding(false);
   };
-
+  
   const updateTextcontent = async (state) => {
     await setEditorState(state);
     const html = draftjsToHtml(convertToRaw(editorState.getCurrentContent()));
@@ -83,12 +87,9 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
       const formData = new FormData();
       formData.append('image', file);
       try { 
-        const response = await axios.post(`projects/${userId}/uploads`, formData, {
-          headers: {               //edit 할 때는 `/{userId}/projects/{id}` 가능합니다 
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        resolve({ data: { link: response.data.imageUrl } }).then(setImgs(() => {
+        const response = Api.postImg(`projects/uploads`, formData);
+        resolve({ data: { link: response.data.imageUrl } })
+        .then(setImgs(() => {
           const imgUrl = response.data.imageUrl;
           const newImgs = [...imgs]
           newImgs.push(imgUrl)
