@@ -1,7 +1,10 @@
 import { ProjectModel } from "../schemas/project";
 
 class Project {
+
   static async create({ userId, title, content, startDate, endDate, editorStateSave, imgs }) {
+
+
     const createdNewProject = await ProjectModel.create({
       userId,
       title,
@@ -10,6 +13,7 @@ class Project {
       endDate,
       editorStateSave,
       imgs,
+
     });
     return createdNewProject;
   }
