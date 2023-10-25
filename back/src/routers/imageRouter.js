@@ -79,7 +79,7 @@ imageRouter.post(
 );
 
 imageRouter.post(
-  "/projects/uploads",
+  "/projects/:id/uploads",
   imageUpload_project.single("image"),
   async (req, res, next) => {
     try {
@@ -111,6 +111,5 @@ imageRouter.post(
     }
   }
 );
-imageRouter.post("/");
 
 export { imageRouter };
