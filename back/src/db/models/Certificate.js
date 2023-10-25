@@ -7,7 +7,9 @@ class Certificate {
   }
   // Read
   static async findByUserId({ userId }) {
-    const certificates = await CertificateModel.find({ userId });
+    const certificates = await CertificateModel.find({ userId }).sort({
+      certificatedDate: "asc",
+    });
     return certificates;
   }
   // Delete
