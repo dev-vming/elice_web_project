@@ -15,6 +15,3 @@ module.exports = () => {
     done(null, user);
   });
 };
-
-
-module.exports = function 
