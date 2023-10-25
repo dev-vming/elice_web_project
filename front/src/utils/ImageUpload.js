@@ -1,31 +1,13 @@
-import { useState } from 'react';
-import axios from 'axios';
 import { Form } from "react-bootstrap";
-
-const backendPortNumber = "5001";
-const serverUrl =
-    "http://" + window.location.hostname + ":" + backendPortNumber + "/";
+import * as Api from "./api";
 
 export default function ImageUpload({user}) {
 
-    const [img, setImg] = useState("")
-
     const formSubmit = async (e) => {
         e.preventDefault();
+        const img = e.target.files[0];
 
-        setImg(e.target.files[0]);
-        const formData = new FormData();
-        formData.append('image', img );
-
-        await axios.post(serverUrl +`users/${user._id}/uploads`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            }
-        }).then(res => {
-            console.log('이미지 전송 요청 성공');
-        }).catch(err => {
-            console.log('이미지 전송 요청 실패');
-        })
+        await Api.imgpost(`users/${user._id}/uploads`, img);
     }
 
         return (
@@ -35,7 +17,7 @@ export default function ImageUpload({user}) {
                 <Form.Control
                     type="file"
                     accept="image/*"
-                    onChange={(e) => formSubmit(e)}
+                    onChange={formSubmit}
                 />
             </Form.Group>
 
