@@ -1,13 +1,23 @@
 import React, { useState } from "react";
 import { Button, Form, Card, Col, Row } from "react-bootstrap";
 import * as Api from "../../../utils/api";
-import ImageUpload from '../../../utils/ImageUpload'
 
 function UserEditForm({ user, setIsEditing, setUser }) {
   //useState로 name 상태를 생성함.
   const [name, setName] = useState(user.name);
   //useState로 description 상태를 생성함.
   const [description, setDescription] = useState(user.description);
+  //useState로 imgUrl 상태를 생성함.
+  const [ imgUrl, setImgUrl ] = useState(user.imgUrl);
+
+  const SubmitImg = async (e) => {
+    e.preventDefault();
+    const img = e.target.files[0];
+
+    const res2 = await Api.imgpost(`users/${user._id}/uploads`, img);
+    const newImgUrl = res2.data.imagePath;
+    setImgUrl(newImgUrl);
+}
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,6 +26,7 @@ function UserEditForm({ user, setIsEditing, setUser }) {
     const res = await Api.put(`users/${user._id}`, {
       name,
       description,
+      imgUrl,
     });
     // 유저 정보는 response의 data임.
     const updatedUser = res.data;
@@ -29,7 +40,13 @@ function UserEditForm({ user, setIsEditing, setUser }) {
   return (
     <Card className="mb-2">
       <Card.Body>
-        <ImageUpload user={user}/>
+          <Form.Group encType='multipart/form-data' controlId="useProfileImg" className="mb-3">
+            <Form.Control
+              type="file"
+              accept="image/*"
+              onChange={SubmitImg}
+            />
+          </Form.Group>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="useEditName" className="mb-3">
             <Form.Control
