@@ -29,8 +29,6 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
           } onClick={moveToDetail}>
           <span>{project.title}</span>
           <br />
-          <span className="text-muted">{project.content}</span>
-          <br />
           <span>{project.startDate} ~ {project.endDate}</span>
           <br />
           {project.content.map(stack => {

@@ -45,7 +45,6 @@ function SearchPortfolios() {
         return project //있으면 저장
       } else {
         throw new Error('일치하는 프로젝트가 없습니다.');
-return <div>일치하는 프로젝트가 없습니다.</div>
       }
     })) 
     setStackName(''); // 검색한거 초기화
@@ -75,7 +74,7 @@ return <div>일치하는 프로젝트가 없습니다.</div>
           <UserCard key={user._id} user={user} isNetwork />
         ))}
         {searchResult.map((project) => (
-          <ProjectCard project={project} />
+          <ProjectCard key={project._id} project={project} />
         ))}
       </Row>
     </Container>

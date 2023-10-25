@@ -1,28 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Col, Row } from "react-bootstrap";
+import { Button, Form, Col, Row, DropdownButton } from "react-bootstrap";
 import * as Api from "../../../utils/api";
 import styled from "styled-components";
 import { Editor } from "react-draft-wysiwyg"; 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"; 
-import { EditorState, convertToRaw, convertFromRaw, ContentState } from "draft-js"; 
+import { EditorState, convertToRaw, ContentState } from "draft-js"; 
 import draftjsToHtml from "draftjs-to-html"; 
 import htmlToDraft from 'html-to-draftjs'
 import axios from "axios";
+import DropdownItem from "react-bootstrap/esm/DropdownItem";
+import stacksList from "./ProjectStackList";
 
-const RowBox = styled.div`
-width: 100%;
-display: flex;
-`;
+// //텍스트에디터 출력 확인 공간
+// const RowBox = styled.div` 
+// width: 100%;
+// display: flex;
+// `;
 
-const Viewer = styled.div` 
-width: 50%;
-height: 400px;
-padding: 20px;
-margin-top: 20px;
-border: 2px solid gray;
-`;
+// const Viewer = styled.div` 
+// width: 50%;
+// height: 400px;
+// padding: 20px;
+// margin-top: 20px;
+// border: 2px solid gray;
+// `;
 
-function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsEditing }) {
+function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing }) {
 
   const [title, setTitle] = useState(currentProject.title);
   const [content, setContent] = useState(currentProject.content);
@@ -51,19 +54,30 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
     e.preventDefault();
     e.stopPropagation();
   
-    await Api.put(`${userId}/projects/${currentProject._id}`, {
+    const contentState = editorState.getCurrentContent();
+
+     // 1) 업로드해놓고 혹시 삭제한 이미지가 있는지 조회 
+    const content = {
+      text: contentState.getPlainText(),
+      images: contentState.getEntitiesByType('IMAGE').map(entity => entity.getData().get('link')),
+    };
+
+    // 2) 삭제한 이미지가 있다면 imgs에서 url 삭제
+    const newImgs = contentState.getEntitiesByType('IMAGE').map(entity => entity.getData().get('link'));
+
+    await Api.post(`${userId}/projects`, {
       userId,
       title,
       content,
       startDate,
       endDate,
-      editorStateSave,
-      imgs,
+      editorStateSave, 
+      imgs: newImgs,
     });
 
-    // const res = await Api.get(`${user_id}/projects/${currentProject.id}`);
+    // const res = await Api.get(`${userId}/projects`); 
     // setProjects(res.data);
-    setIsEditing(false);
+    setIsAdding(false);
   };
 
   const updateTextDescription = (state) => {
@@ -81,9 +95,9 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
     return new Promise(async (resolve, reject) => {
       const formData = new FormData();
       formData.append('image', file);
-      try {
-        const response = await axios.post(`${userId}/projects/${currentProject._id}`, formData, {
-          headers: {
+      try { 
+        const response = await axios.post(`projects/${currentProject._id}/uploads`, formData, {
+          headers: {               
             'Content-Type': 'multipart/form-data',
           },
         });
@@ -111,14 +125,25 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
         />
       </Form.Group>
 
-      <Form.Group controlId="formBasicDescription" className="mt-3">
-        <Form.Control
-          type="text"
-          placeholder="기술스택을 선택하세요"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
+      <Form.Group controlId="formBasiccontent" className="mt-3">
+        <DropdownButton id="Stacks" title={'기술 스택을 선택해주세요'} onSelect={(eventKey) => setContent((prevContent) => {
+          const newContent = [...prevContent, eventKey];
+          return newContent; 
+        })}>
+          <div style={{ maxHeight: "300px", overflowY: "auto" }}>
+            {stacksList.map((stack)=>{
+              return (
+                <DropdownItem eventKey={stack}>{stack}</DropdownItem>
+              ) 
+            })}
+          </div>  
+        </DropdownButton>
+          <br/>
+          {content.map(stack => {
+            return <span style={{ border: '2px solid black', margin: '2px 3px' }}>      {stack} </span>
+            })}   
       </Form.Group>
+
 
       <Form.Group controlId="formBasicStartDate" className="mt-3">
         <Form.Control
@@ -158,10 +183,10 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
         }}
       />
 
-      <RowBox>
+      {/* <RowBox>
         <Viewer dangerouslySetInnerHTML={{ __html: htmlString }} />
         <Viewer>{htmlString}</Viewer>
-      </RowBox>
+      </RowBox> */}
 
       <Form.Group as={Row} className="mt-3 text-center mb-4">
         <Col sm={{ span: 20 }}>
