@@ -103,7 +103,6 @@ projectRouter.get(
     try {
       console.log("특정 기술스택을 사용한 프로젝트 조회");
       const { content } = req.params;
-      console.log("content : ", content);
       const projectContent = await projectService.getProjectContent(content);
       res.status(201).json(projectContent);
     } catch (err) {

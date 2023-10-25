@@ -37,12 +37,9 @@ class Project {
   }
 
   static async findByContent({ content }) {
-    console.log("models1 : ", content);
-
     const projectByContent = await ProjectModel.find({
       content: { $in: [content] },
     });
-    console.log("models2 : ", content, projectByContent);
 
     return projectByContent;
   }
