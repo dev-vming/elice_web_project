@@ -2,7 +2,15 @@ import { User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로
 import { Project } from "../db/index";
 
 class projectService {
-  static async addProject({ userId, title, content, startDate, endDate, editorStateSave, imgs }) {
+  static async addProject({
+    userId,
+    title,
+    content,
+    startDate,
+    endDate,
+    editorStateSave,
+    imgs,
+  }) {
     const newProject = {
       userId,
       title,
@@ -18,18 +26,27 @@ class projectService {
     return createdNewProject;
   }
 
+  static async getProjectsAll({ perPage, offset }) {
+    console.log("perPage(서비스)", perPage);
+    console.log("offset(서비스)", offset);
+    // const findUser = await User.findById({ userId });
+    // const education = await Education.findByUserId(findUser);
+    const projects = await Project.findAll({ perPage, offset });
+    return projects;
+  }
+
   static async getProjects(userId) {
     const projects = await Project.findByUserId({ userId });
     return projects;
   }
 
   static async getProjectDetail(_id) {
-    const projectDetail = await Project.findByProjectId({ _id }); 
+    const projectDetail = await Project.findByProjectId({ _id });
     return projectDetail;
   }
 
   static async getProjectContent(content) {
-    const projectContent = await Project.findByContent({ content }); 
+    const projectContent = await Project.findByContent({ content });
     return projectContent;
   }
 

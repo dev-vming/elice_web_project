@@ -1,10 +1,15 @@
 import { ProjectModel } from "../schemas/project";
 
 class Project {
-
-  static async create({ userId, title, content, startDate, endDate, editorStateSave, imgs }) {
-
-
+  static async create({
+    userId,
+    title,
+    content,
+    startDate,
+    endDate,
+    editorStateSave,
+    imgs,
+  }) {
     const createdNewProject = await ProjectModel.create({
       userId,
       title,
@@ -13,9 +18,19 @@ class Project {
       endDate,
       editorStateSave,
       imgs,
-
     });
     return createdNewProject;
+  }
+
+  // 모두 조회
+  static async findAll({ perPage, offset }) {
+    console.log("perPage(모델)", perPage);
+    console.log("offset(모델)", offset);
+    const projects = await ProjectModel.find({})
+      //.sort({ createdAt: -1 }) 생성 시간 역순정렬 === 최근 데이터 순
+      .limit(perPage)
+      .skip(offset);
+    return projects;
   }
 
   // Read
@@ -26,8 +41,8 @@ class Project {
     return project;
   }
 
-   // Read by ProjectId
-   static async findByProjectId({ _id }) {
+  // Read by ProjectId
+  static async findByProjectId({ _id }) {
     const projectById = await ProjectModel.find({ _id });
     return projectById;
   }
