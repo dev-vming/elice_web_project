@@ -8,7 +8,7 @@ import Header from "./components/common/Header";
 import { LoginPage, SearchPortfolios, RegisterPage , MyPage, ProjectDetail} from "./pages";
 import ProjectWrapper from "./pages/ProjectWrapper";
 import ProfileWrapper from "./pages/ProfileWrapper";
-
+import NotFoundPage from "./pages/NotFoundPage";
 // import Educations from "./components/education/Educations";
 
 export const UserStateContext = createContext(null);
@@ -68,6 +68,9 @@ function App() {
             <Route path= "/project" element={ <MyPage/>}/>
             <Route path= "/profile" element={<MyPage/>}/>
             <Route path="/projects/:id" element={<ProjectDetail />} />
+
+               
+            <Route><NotFoundPage /></Route>
             {/* <Route path="/:userId/projects/detail/:id" element={<ProjectDetail />} /> */}
             {/* <Route path="/:userId/projects" element={<Projects />} /> */}
 

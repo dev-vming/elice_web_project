@@ -17,7 +17,6 @@ function UserEditForm({ user, setIsEditing, setUser }) {
     // "users/유저id" 엔드포인트로 PUT 요청함.
     const res = await Api.put(`users/${user._id}`, {
       name,
-      email,
       description,
     });
     // 유저 정보는 response의 data임.
