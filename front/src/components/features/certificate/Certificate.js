@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CertificateCard from "../../../hooks/CertificateCard";
+import CertificateCard from "./CertificateCard";
 import CertificateEditForm from "./CertificateEditForm";
 
 function Certificate({ portfolioOwnerId, certificate, setCertificates, isEditable, setIsVisibility }) {

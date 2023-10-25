@@ -1,7 +1,7 @@
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import draftjsToHtml from "draftjs-to-html";
-import * as Api from '../api';
+import * as Api from '../../../utils/api';
 
 function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIsEditing }) { 
   const htmlString = draftjsToHtml(project.editorStateSave[0])

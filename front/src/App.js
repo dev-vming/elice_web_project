@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useReducer, createContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import * as Api from "./api";
+import * as Api from "./utils/api";
 import { loginReducer } from "./reducer";
 
 import Header from "./components/common/Header";
 import { LoginPage, SearchPortfolios, RegisterPage , MyPage, ProjectDetail} from "./pages";
+import ProjectWrapper from "./pages/ProjectWrapper";
+import ProfileWrapper from "./pages/ProfileWrapper";
 
 // import Educations from "./components/education/Educations";
 
@@ -63,7 +65,11 @@ function App() {
             <Route path="/users/:userId" element={<MyPage />} />
             <Route path="/network" element={<SearchPortfolios />} />
             <Route path="*" element={<MyPage />} />
-            <Route path="/projects/:id" element={<ProjectDetail />} /> 
+            <Route path= "/project" element={ <MyPage/>}/>
+            <Route path= "/profile" element={<MyPage/>}/>
+            <Route path="/projects/:id" element={<ProjectDetail />} />
+            {/* <Route path="/:userId/projects/detail/:id" element={<ProjectDetail />} /> */}
+            {/* <Route path="/:userId/projects" element={<Projects />} /> */}
 
             
           </Routes>

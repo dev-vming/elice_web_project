@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
-import * as Api from "../api";
+import * as Api from "../utils/api";
 import {CertificateAddForm, Certificate}  from "../components/features/certificate";
 
 function Certificates({ portfolioOwnerId, isEditable }) {

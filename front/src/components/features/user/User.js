@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import UserEditForm from "./UserEditForm";
 import UserCard from "./UserCard";
-import * as Api from "../../../api";
+import * as Api from "../../../utils/api";
 
 
 function User({ portfolioOwnerId, isEditable }) {
