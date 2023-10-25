@@ -52,7 +52,7 @@ projectRouter.post(
 projectRouter.get("/projects", login_required, async (req, res, next) => {
   try {
     console.log("전체 프로젝트 조회 실행");
-    const projects = await projectService.getProjects({});
+    const projects = await projectService.getAllProjects({});
     res.status(201).json(projects);
   } catch (err) {
     next(err);

@@ -23,6 +23,11 @@ class projectService {
     return projects;
   }
 
+  static async getAllProjects() {
+    const projects = await Project.findAll();
+    return projects;
+  }
+
   static async getProjectDetail(_id) {
     const projectDetail = await Project.findByProjectId({ _id }); 
     return projectDetail;
