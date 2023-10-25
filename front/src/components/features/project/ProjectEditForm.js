@@ -24,7 +24,7 @@ import stacksList from "./ProjectStackList";
 // border: 2px solid gray;
 // `;
 
-function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing }) {
+function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing}) {
 
   const [title, setTitle] = useState(currentProject.title);
   const [content, setContent] = useState(currentProject.content);
@@ -63,8 +63,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing }) {
 
     // // 2) 삭제한 이미지가 있다면 imgs에서 url 삭제
     // const newImgs = contentState.getEntityMap().get('IMAGE').map(entity => entity.getData().get('link'));
-    
-    await Api.post(`${userId}/projects`, {
+    await Api.put(`${userId}/projects/${currentProject._id}`, {
       userId,
       title,
       content,
@@ -144,7 +143,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing }) {
       <Form.Group controlId="formBasicStartDate" className="mt-3">
         <Form.Control
           type='Date'
-          placeholder="프로젝트 시작일"
+          placeholder={startDate}
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
         />
@@ -153,7 +152,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing }) {
       <Form.Group controlId="formBasicEndDate" className="mt-3">
         <Form.Control
           type="Date"
-          placeholder="프로젝트 종료일"
+          placeholder={endDate}
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
         />
