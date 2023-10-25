@@ -1,10 +1,15 @@
 import { ProjectModel } from "../schemas/project";
 
 class Project {
-
-  static async create({ userId, title, content, startDate, endDate, editorStateSave, imgs }) {
-
-
+  static async create({
+    userId,
+    title,
+    content,
+    startDate,
+    endDate,
+    editorStateSave,
+    imgs,
+  }) {
     const createdNewProject = await ProjectModel.create({
       userId,
       title,
@@ -13,7 +18,6 @@ class Project {
       endDate,
       editorStateSave,
       imgs,
-
     });
     return createdNewProject;
   }
@@ -26,10 +30,21 @@ class Project {
     return project;
   }
 
-   // Read by ProjectId
-   static async findByProjectId({ _id }) {
+  // Read by ProjectId
+  static async findByProjectId({ _id }) {
     const projectById = await ProjectModel.find({ _id });
     return projectById;
+  }
+
+  static async findByContent({ content }) {
+    console.log("models1 : ", content);
+
+    const projectByContent = await ProjectModel.find({
+      content: { $in: [content] },
+    });
+    console.log("models2 : ", content, projectByContent);
+
+    return projectByContent;
   }
 
   // Read all Project
