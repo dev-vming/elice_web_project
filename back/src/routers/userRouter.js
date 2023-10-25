@@ -34,11 +34,10 @@ userAuthRouter.post(
 
 userAuthRouter.post(
   "/user/login",
-  (req, res, next) =>
-    passport.authenticate("local", {
-      failureRedirect: "/",
-      failureMessage: true,
-    }),
+  passport.authenticate("local", {
+    failureRedirect: "/",
+    failureMessage: true,
+  }),
   async function (req, res, next) {
     try {
       console.log("inside login routing req handler", req.user);

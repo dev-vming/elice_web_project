@@ -1,10 +1,15 @@
 import { ProjectModel } from "../schemas/project";
 
 class Project {
-
-  static async create({ userId, title, content, startDate, endDate, editorStateSave, imgs }) {
-
-
+  static async create({
+    userId,
+    title,
+    content,
+    startDate,
+    endDate,
+    editorStateSave,
+    imgs,
+  }) {
     const createdNewProject = await ProjectModel.create({
       userId,
       title,
@@ -13,7 +18,6 @@ class Project {
       endDate,
       editorStateSave,
       imgs,
-
     });
     return createdNewProject;
   }
@@ -26,13 +30,13 @@ class Project {
     return project;
   }
 
-   // Read by ProjectId
-   static async findByProjectId({ _id }) {
+  // Read by ProjectId
+  static async findByProjectId({ _id }) {
     const projectById = await ProjectModel.find({ _id });
     return projectById;
   }
 
-  // Read by content      ----- content는 배열. 배열의 인덱스 하나 있는지 찾아서 읽어오기 가능?
+  // Read by content ----- content는 배열. 배열의 인덱스 하나 있는지 찾아서 읽어오기 가능?
   static async findByContent({ content }) {
     const projectByContent = await ProjectModel.find({ content });
     return projectByContent;

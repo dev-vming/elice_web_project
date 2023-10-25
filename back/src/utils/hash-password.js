@@ -1,7 +1,6 @@
-import crypto from "crypto";
+// import crypto from "crypto";
+import bcrypt from "bcrypt";
 
-module.exports = (password) => {
-  const hash = crypto.createHash("sha1");
-  hash.update(password);
-  return hash.digest("hex");
+module.exports = async (password) => {
+  return await bcrypt.hash(password, 10);
 };

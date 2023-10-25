@@ -10,7 +10,7 @@ import { awardRouter } from "./routers/awardRouter";
 import { imageRouter } from "./routers/imageRouter";
 // passport 로그인 기능 구현을 위한 패키지들
 import passport from "passport";
-import { cookieParser } from "cookie-parser";
+import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 

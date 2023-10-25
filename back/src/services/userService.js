@@ -1,7 +1,10 @@
 import { User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
-import bcrypt, { hash } from "bcrypt";
-import { v4 as uuidv4 } from "uuid";
+// import bcrypt, { hash } from "bcrypt";
+// import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
+// import { compare } from "bcrypt";
+import hashPassword from "../utils/hash-password";
+import comparePassword from "../utils/compare-password";
 
 class userAuthService {
   static async addUser({ name, email, password }) {
@@ -14,7 +17,7 @@ class userAuthService {
     }
 
     // 비밀번호 해쉬화
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hashPassword(password, 10);
 
     // id 는 유니크 값 부여
     // const id = uuidv4();
@@ -38,7 +41,7 @@ class userAuthService {
 
     // 비밀번호 일치 여부 확인
     const correctPasswordHash = user.password;
-    const isPasswordCorrect = await bcrypt.compare(
+    const isPasswordCorrect = await comparePassword(
       password,
       correctPasswordHash
     );

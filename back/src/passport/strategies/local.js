@@ -1,6 +1,7 @@
 const LocalStrategy = require("passport-local").Strategy;
-import { User } from "../db";
-const hashPassword = require("../../utils/hash-password");
+import { hash } from "bcrypt";
+import { User } from "../../db/index";
+import comparePassword from "../../utils/compare-password";
 
 const config = {
   usernameField: "email",
@@ -9,12 +10,16 @@ const config = {
 
 const local = new LocalStrategy(config, async (email, password, done) => {
   try {
-    const user = await User({ email });
+    const user = await User.findByEmail({ email });
     if (!user) {
       throw new Error("회원을 찾을 수 없습니다.");
     }
-    if (user.password !== hashPassword(password)) {
-      throw new Error("비밀번호가 일치하지 않습니다.");
+
+    const isPasswordCorrect = await comparePassword(password, user.password);
+    if (!isPasswordCorrect) {
+      console.log(isPasswordCorrect);
+      console.log(password, user.password);
+      throw new Error("비밀번호가 일치하지 않습니다 ");
     }
 
     done(null, {

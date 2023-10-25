@@ -1,7 +1,7 @@
 const passport = require("passport");
 
 const local = require("./strategies/local");
-const { User } = require("../db");
+const { User } = require("../db/index");
 
 module.exports = () => {
   passport.use(local);
