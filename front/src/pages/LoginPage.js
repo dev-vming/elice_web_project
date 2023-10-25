@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Col, Row, Form, Button } from "react-bootstrap";
 
-import * as Api from "../api";
+import * as Api from "../utils/api";
 import { DispatchContext } from "../App";
 
 function LoginPage() {
@@ -51,10 +51,11 @@ function LoginPage() {
         type: "LOGIN_SUCCESS",
         payload: user,
       });
-
+      alert(`${user.name}님 환영합니다!`);
       // 기본 페이지로 이동함.
-      navigate("/", { replace: true });
+      navigate("/network", { replace: true });
     } catch (err) {
+      alert('로그인에 실패했습니다.');
       console.log("로그인에 실패하였습니다.\n", err);
     }
   };
