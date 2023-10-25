@@ -37,8 +37,6 @@ function SearchPortfolios() {
     setStackName(e.target.value);
   };
 
-  //projects = [{project}, {project2}, ... ]
-  //project = [{title: value}, {content : [1, 2, 3, 4 ... ]}, ... , ]
   const clickHandler = () => {
     setSearchResult(projects.filter((project) => { //project하나당 조회. 맞는 프로젝트 배열에 저장
       if(project.content.forEach((stack) => stack === stackName)) { //project의 content안에 stackName있냐?
@@ -74,7 +72,7 @@ function SearchPortfolios() {
           <UserCard key={user._id} user={user} isNetwork />
         ))}
         {searchResult.map((project) => (
-          <ProjectCard key={project._id} project={project} />
+          <ProjectCard project={project} />
         ))}
       </Row>
     </Container>

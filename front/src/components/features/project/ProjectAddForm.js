@@ -83,8 +83,8 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
       const formData = new FormData();
       formData.append('image', file);
       try { 
-        const response = await axios.post(`projects/${userId}/uploads`, formData, {
-          headers: {               //edit 할 때는 `/{userId}/projects/{id}` 가능합니다 
+        const response = await axios.post(`projects/uploads`, formData, {
+          headers: {            
             'Content-Type': 'multipart/form-data',
           },
         });

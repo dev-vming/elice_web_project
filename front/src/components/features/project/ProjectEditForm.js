@@ -77,7 +77,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing }) {
 
     // const res = await Api.get(`${userId}/projects`); 
     // setProjects(res.data);
-    setIsAdding(false);
+    setIsEditing(false);
   };
 
   const updateTextDescription = (state) => {
@@ -96,7 +96,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing }) {
       const formData = new FormData();
       formData.append('image', file);
       try { 
-        const response = await axios.post(`projects/${currentProject._id}/uploads`, formData, {
+        const response = await axios.post(`projects/uploads`, formData, {
           headers: {               
             'Content-Type': 'multipart/form-data',
           },
