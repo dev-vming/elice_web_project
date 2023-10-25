@@ -13,7 +13,7 @@ function Projects({ portfolioOwnerId, isEditable }) {
 
   useEffect(() => {
     getUser();
-  }, [getUser,portfolioOwnerId]);
+  }, [getUser, portfolioOwnerId]);
 
 
   return (  //추가, 편집 중에 버튼 안보이게, line 27
