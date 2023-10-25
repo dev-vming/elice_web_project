@@ -68,12 +68,7 @@ function App() {
             <Route path= "/project" element={ <MyPage/>}/>
             <Route path= "/profile" element={<MyPage/>}/>
             <Route path="/projects/:id" element={<ProjectDetail />} />
-
-               
-            <Route><NotFoundPage /></Route>
-            {/* <Route path="/:userId/projects/detail/:id" element={<ProjectDetail />} /> */}
-            {/* <Route path="/:userId/projects" element={<Projects />} /> */}
-
+            {/* <Route><NotFoundPage /></Route> */}
             
           </Routes>
         </Router>
