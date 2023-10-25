@@ -17,9 +17,20 @@ function Projects({ portfolioOwnerId, isEditable }) {
 
 
   return (  //추가, 편집 중에 버튼 안보이게, line 27
-    <Card>
+
+    <Card className="overflow-auto" >
       <Card.Body>
-        <Card.Title>프로젝트</Card.Title>
+      <Card.Title>프로젝트</Card.Title>
+        <Col >
+        {isEditable && !isAdding && (
+          <Row className="mt-3 text-center mb-4">
+            <Col sm={{ span: 20 }}>
+              <Button onClick={() => setIsAdding(true)} >+</Button>
+            </Col>
+          </Row>
+        )}
+
+  
         {projects.map((project) => (
           <Project
             portfolioOwnerId={portfolioOwnerId}
@@ -29,13 +40,7 @@ function Projects({ portfolioOwnerId, isEditable }) {
             isEditable={isEditable}
           />
         ))}
-        {isEditable && !isAdding && (
-          <Row className="mt-3 text-center mb-4">
-            <Col sm={{ span: 20 }}>
-              <Button onClick={() => setIsAdding(true)} >+</Button>
-            </Col>
-          </Row>
-        )}
+       
         {isAdding && (
           <ProjectAddForm
             portfolioOwnerId={portfolioOwnerId}
@@ -43,6 +48,7 @@ function Projects({ portfolioOwnerId, isEditable }) {
             setIsAdding={setIsAdding}
           />
         )}
+        </Col>
       </Card.Body>
     </Card>
   );

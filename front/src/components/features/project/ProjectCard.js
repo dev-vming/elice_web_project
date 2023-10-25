@@ -1,4 +1,4 @@
-import { Card, Button, Row, Col } from "react-bootstrap";
+import { Card, Button, Row, Col, ListGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import draftjsToHtml from "draftjs-to-html";
 import * as Api from '../../../utils/api';
@@ -20,23 +20,29 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
 }
 
   return (
-    <Card.Text>
+    // <Card className="back-ground: yellow" >
+      <Card.Body className="project-body-content" >
       <Row className="align-items-center">
         <Col style={
-          {backgroundColor: "yellow", height: '100px', overflow: 'hidden'
+          {backgroundColor: "white", height: '150px', 
           //, whiteSpace: 'nowrap', textOverflow: 'ellipsis'
-        }
+          }
           } onClick={moveToDetail}>
-          <span>{project.title}</span>
-          <br />
-          <span>{project.startDate} ~ {project.endDate}</span>
-          <br />
-          {project.content.map(stack => {
-            return <span style={{ border: '2px solid black', margin: '2px 3px' }}> {stack} </span>
-            })}   
-          <div dangerouslySetInnerHTML={{ __html: htmlString }} />
-        </Col>
 
+            <Card.Title> {project.title} </Card.Title>
+        
+          <ListGroup.Item className = "overflow-hidden">
+            <ListGroup.Item> {project.startDate} ~ {project.endDate}</ListGroup.Item>
+            <ListGroup.Item> {project.content.map(stack => {
+            return <span style={{ border: '1px solid gray', padding: '3px 6px' }}> {stack} </span>
+            })} </ListGroup.Item>
+         <ListGroup.Item><div dangerouslySetInnerHTML={{ __html: htmlString }} /></ListGroup.Item>
+            </ListGroup.Item>
+
+         
+         
+        </Col>
+        
         {isEditable && (
           <Col xs lg="1">
             <Button
@@ -64,7 +70,8 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
           project={project} 
           htmlString={htmlString}
         />)} */}
-    </Card.Text>
+        </Card.Body>
+    // </Card>
   );
 }
 

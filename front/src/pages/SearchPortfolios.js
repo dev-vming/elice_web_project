@@ -27,17 +27,27 @@ function SearchPortfolios() {
 
   useEffect(() => {
     Api.get("userlist").then((res) => setUsers(res.data))
-    Api.get("projects").then((res) => setProjects(res.data));
+    Api.get("projects").then((res) => setSearchResult(res.data));
   }, []);
 
   const searchHandler = (e) => {
-    setStackName(e.target.value.toLowerCase);
-    setSearchResult(projects.filter((project) => {
-      if(project.content.forEach((stack) => stack.toLowerCase() === stackName)) return project;
-    }));
+    const _stackName = e.target.value?? "" ; 
+    setStackName(_stackName.toLowerCase());
+    // setSearchResult(projects.filter((project) => {
+    //   if(project.content.forEach((stack) => stack.toLowerCase() === stackName)) return project;
+    // }));
+    console.log(_stackName, searchResult)
+    // setSearchResult((prev) => prev.filter((project) => project.content.includes(_stackName.toLowerCase()))   )
+    setSearchResult((prev) => prev.filter((project) => 
+    project.content.findIndex(stack => stack.toLowerCase().includes(_stackName.toLowerCase())) !== -1 ))
+
+    // project.content((stack) => stack.toLowerCase().includes(stackName))));
+
+
   };
 
   const clickHandler = () => {
+
     setStackName(''); 
   };
 
@@ -61,10 +71,10 @@ function SearchPortfolios() {
         </Form>
       </Row>
       <Row className="justify-content-center">
-        {users.map((user) => (
+        {/* {users.map((user) => (
           <UserCard key={user._id} user={user} isNetwork />
-        ))}
-        {projects.map((project) => (
+        ))} */}
+        {searchResult.map((project) => (
           <Project key={project._id} project={project} />
         ))}
       </Row>
