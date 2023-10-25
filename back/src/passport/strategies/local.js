@@ -1,5 +1,5 @@
 const LocalStrategy = require("passport-local").Strategy;
-import { hash } from "bcrypt";
+// import { hash } from "bcrypt";
 import { User } from "../../db/index";
 import comparePassword from "../../utils/compare-password";
 
@@ -17,8 +17,6 @@ const local = new LocalStrategy(config, async (email, password, done) => {
 
     const isPasswordCorrect = await comparePassword(password, user.password);
     if (!isPasswordCorrect) {
-      console.log(isPasswordCorrect);
-      console.log(password, user.password);
       throw new Error("비밀번호가 일치하지 않습니다 ");
     }
 

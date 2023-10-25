@@ -3,6 +3,7 @@ import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { userAuthService } from "../services/userService";
 import { is_request_body } from "../middlewares/is_request_body";
+import { is_logged_in } from "../middlewares/local_strategy/is_logged_in";
 import passport from "passport";
 
 const userAuthRouter = Router();
@@ -62,6 +63,7 @@ userAuthRouter.post(
 userAuthRouter.get(
   "/userlist",
   login_required,
+  is_logged_in,
   async function (req, res, next) {
     try {
       // 전체 사용자 목록을 얻음
