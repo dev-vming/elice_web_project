@@ -10,19 +10,19 @@ import axios from "axios";
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import stacksList from "./ProjectStackList";
 
-//텍스트에디터 출력 확인 공간
-const RowBox = styled.div`
-width: 100%;
-display: flex;
-`;
+// //텍스트에디터 출력 확인 공간
+// const RowBox = styled.div`
+// width: 100%;
+// display: flex;
+// `;
 
-const Viewer = styled.div` //test창
-width: 50%;
-height: 400px;
-padding: 20px;
-margin-top: 20px;
-border: 2px solid gray;
-`;
+// const Viewer = styled.div` //test창
+// width: 50%;
+// height: 400px;
+// padding: 20px;
+// margin-top: 20px;
+// border: 2px solid gray;
+// `;
 
 function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
   const [title, setTitle] = useState("");
@@ -39,17 +39,28 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
     e.preventDefault();
     e.stopPropagation(); 
 
+    const contentState = editorState.getCurrentContent();
+
+     // 1) 업로드해놓고 혹시 삭제한 이미지가 있는지 조회 
+    const content = {
+      text: contentState.getPlainText(),
+      images: contentState.getEntitiesByType('IMAGE').map(entity => entity.getData().get('link')),
+    };
+
+    // 2) 삭제한 이미지가 있다면 imgs에서 url 삭제
+    const newImgs = contentState.getEntitiesByType('IMAGE').map(entity => entity.getData().get('link'));
+
     await Api.post(`${userId}/projects`, {
       userId,
       title,
       content,
       startDate,
       endDate,
-      editorStateSave, //
-      imgs,
+      editorStateSave, 
+      imgs: newImgs,
     });
 
-    const res = await Api.get(`${userId}/projects`);
+    const res = await Api.get(`${userId}/projects`); //수정할 땐 {userId}/projects/{_id}
     setProjects(res.data);
     setIsAdding(false);
   };
@@ -57,24 +68,23 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
   const updateTextcontent = async (state) => {
     await setEditorState(state);
     const html = draftjsToHtml(convertToRaw(editorState.getCurrentContent()));
-    console.log('editorState에서 ContentState로 변환, editorState.getCurrentContent() = ' + editorState.getCurrentContent());
-    console.log('ContentState를 convertToRaw로 원시 js로 변환, convertToRaw(editorState.getCurrentContent()) = ' + JSON.stringify(convertToRaw(editorState.getCurrentContent())));
+    // console.log('editorState에서 ContentState로 변환, editorState.getCurrentContent() = ' + editorState.getCurrentContent());
+    // console.log('ContentState를 convertToRaw로 원시 js로 변환, convertToRaw(editorState.getCurrentContent()) = ' + JSON.stringify(convertToRaw(editorState.getCurrentContent())));
     setHtmlString(html);
     setEditorStateSave(() => {
       const newEditorStateSave = editorStateSave;
       newEditorStateSave[0] = convertToRaw(editorState.getCurrentContent());
       return newEditorStateSave;
     })
-    console.log('editorStateSave = ' + JSON.stringify(editorStateSave))
   };
 
   const uploadCallback = async (file) => { //공식문서에서 promise 객체 반환하라고 함
     return new Promise(async (resolve, reject) => {
       const formData = new FormData();
       formData.append('image', file);
-      try {
-        const response = await axios.post(`${userId}/projects`, formData, {
-          headers: {
+      try { 
+        const response = await axios.post(`projects/${userId}/uploads`, formData, {
+          headers: {               //edit 할 때는 `/{userId}/projects/{id}` 가능합니다 
             'Content-Type': 'multipart/form-data',
           },
         });
@@ -159,10 +169,10 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
         }}
       />
 
-      <RowBox>
+      {/* <RowBox>
         <Viewer dangerouslySetInnerHTML={{ __html: htmlString }} />
         <Viewer>{htmlString}</Viewer>
-      </RowBox>
+      </RowBox> */}
 
       <Form.Group as={Row} className="mt-3 text-center">
         <Col sm={{ span: 20 }}>

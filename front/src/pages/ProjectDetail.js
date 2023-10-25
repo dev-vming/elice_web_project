@@ -29,7 +29,6 @@ function ProjectDetail( ) {
             </Col>
             <ProjectBox>
                 <h1>{project.title}</h1>
-                <span className="text-muted">{project.content}</span>
                 <br />
                 <span>{project.startDate} ~ {project.endDate}</span>
                 <br />
