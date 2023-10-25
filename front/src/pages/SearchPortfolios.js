@@ -28,23 +28,18 @@ function SearchPortfolios() {
   useEffect(() => {
     Api.get("userlist").then((res) => setUsers(res.data))
     Api.get("projects").then((res) => setProjects(res.data));
-  }, [projects, userState, navigate]);
+  }, []);
 
-  // const searchHandler = (e) => {
-  //   setStackName(e.target.value.toLowerCase);
-  //   setSearchResult(projects.filter((project) => {
-  //     if(project.content
-  //       .toLowerCase()
-  //       .forEach((stack) => stack === stackName))
-  //     return project
-  //   }));
-  // };
+  const searchHandler = (e) => {
+    setStackName(e.target.value.toLowerCase);
+    setSearchResult(projects.filter((project) => {
+      if(project.content.forEach((stack) => stack.toLowerCase() === stackName)) return project;
+    }));
+  };
 
   const clickHandler = () => {
     setStackName(''); 
   };
-
-  
 
   return (
     <Container fluid>
@@ -69,7 +64,7 @@ function SearchPortfolios() {
         {users.map((user) => (
           <UserCard key={user._id} user={user} isNetwork />
         ))}
-        {searchResult.map((project) => (
+        {projects.map((project) => (
           <Project key={project._id} project={project} />
         ))}
       </Row>
