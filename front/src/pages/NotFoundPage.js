@@ -6,9 +6,9 @@ function NotFoundPage(){
         // <PageLayout
             heading = "NotFound"
             links= {[ { to: "/login", text: "Go Back"}]}
-        >
-        <div> 아무것도 없습니다. </div>
-        // </PageLayout>
+        
+        <div> 원하시는 페이지를 찾을 수 없습니다. </div>
+      
     )
 }
 
