@@ -98,11 +98,12 @@ userAuthRouter.put(
       const email = req.body.email ?? null;
       const password = req.body.password ?? null;
       const description = req.body.description ?? null;
-      const toUpdate = { name, email, password, description };
+      const imgUrl = req.body.imgUrl ?? null;
+      const toUpdate = { name, email, password, description, imgUrl };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
       await userAuthService.setUser({ _id }, { toUpdate });
-      const updatedUser = await userAuthService.getUserInfoById({_id});
+      const updatedUser = await userAuthService.getUserInfoById({ _id });
 
       if (updatedUser.errorMessage) {
         throw new Error(updatedUser.errorMessage);
