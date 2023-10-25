@@ -40,6 +40,14 @@ function UserEditForm({ user, setIsEditing, setUser }) {
   return (
     <Card className="mb-2">
       <Card.Body>
+          <Row className="justify-content-md-center">
+            <Card.Img
+              style={{ width: "10rem", height: "8rem", borderRadius: "50%" }}
+              className="mb-3"
+              src={imgUrl}
+              alt="유저 프로필 이미지"
+            />
+          </Row>
           <Form.Group encType='multipart/form-data' controlId="useProfileImg" className="mb-3">
             <Form.Control
               type="file"
