@@ -8,9 +8,14 @@ import { certificateRouter } from "./routers/certificateRouter";
 import { educationRouter } from "./routers/educationRouter";
 import { awardRouter } from "./routers/awardRouter";
 import { imageRouter } from "./routers/imageRouter";
-
+// passport 로그인 기능 구현을 위한 패키지들
+import passport from "passport";
+import { cookieParser } from "cookie-parser";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 
 const app = express();
+require("./passport/index")();
 
 // CORS 에러 방지
 app.use(cors());
@@ -20,6 +25,22 @@ app.use(cors());
 // express.urlencoded: 주로 Form submit 에 의해 만들어지는 URL-Encoded 형태의 데이터를 인식하고 핸들링할 수 있게 함.
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// passport 로그인 기능 구현을 위한 패키지 연결
+app.use(cookieParser());
+app.use(
+  session({
+    secret: "elice",
+    resave: false,
+    saveUninitialized: true,
+    // 세션 스토어 사용하기
+    store: MongoStore.create({
+      mongoUrl: "mongodb://localhost:27017/simple-board",
+    }),
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // 기본 페이지
 app.get("/", (req, res) => {
