@@ -44,32 +44,39 @@ userAuthRouter.post(
       if (!user) return next(info);
       return req.login(user, (loginError) => {
         if (loginError) return next(loginError);
-        res.setHeader("set-cookie", `sessionID=${req.sessionID}`);
-        res.status(200).json(user);
-        return;
+        res.setHeader(
+          "set-cookie",
+          `sessionID=${req.sessionID};max-age=3600;httpOnly;secure=false`
+        );
+        res.setHeader("Access-Control-Allow-origin", "*"); // 모든 출처(orogin)을 허용
+        res.setHeader(
+          "Access-Control-Allow-Methods",
+          "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+        ); // 모든 HTTP 메서드 허용
+        res.setHeader("Access-Control-Allow-Credentials", "true"); // 클라이언트와 서버 간에 쿠키 주고받기 허용
+        // res.status(200).json(user);
+        next();
       });
     })(req, res, next);
+  },
+  async function (req, res, next) {
+    try {
+      const email = req.body.email;
+      const password = req.body.password;
+
+      // 위 데이터를 이용하여 유저 db에서 유저 찾기
+      const user = await userAuthService.getUser({ email, password });
+
+      if (user.errorMessage) {
+        throw new Error(user.errorMessage);
+      }
+      res.status(200).send(user);
+      console.log(res.getHeaders());
+      next();
+    } catch (error) {
+      next(error);
+    }
   }
-  // async function (req, res, next) {
-  //   try {
-  //     const email = req.body.email;
-  //     const password = req.body.password;
-
-  //     // 위 데이터를 이용하여 유저 db에서 유저 찾기
-  //     const user = await userAuthService.getUser({ email, password });
-
-  //     if (user.errorMessage) {
-  //       throw new Error(user.errorMessage);
-  //     }
-
-  //     res.setHeader("set-cookie", `sesionID=${req.sessionID}`);
-  //     res.status(200).send(user);
-  //     console.log(res.getHeaders());
-  //     next();
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
 );
 
 userAuthRouter.get(

@@ -5,9 +5,9 @@ const { User } = require("../db/index");
 module.exports = () => {
   passport.use(local);
 
-  passport.serializeUser((user, done) => {
+  passport.serializeUser((req, user, done) => {
     console.log("sericalizeUser 실행", user._id);
-
+    console.log("req.headers", req.headers);
     done(null, user._id);
   });
 
