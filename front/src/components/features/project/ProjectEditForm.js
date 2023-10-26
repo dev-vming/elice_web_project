@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Col, Row, DropdownButton } from "react-bootstrap";
+import { Button, Form, Col, Row, DropdownButton, Stack, Badge } from "react-bootstrap";
 import * as Api from "../../../utils/api";
 import styled from "styled-components";
 import { Editor } from "react-draft-wysiwyg"; 
@@ -146,9 +146,11 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing}) {
           </div>  
         </DropdownButton>
           <br/>
-          {content.map(stack => {
-            return <span style={{ border: '2px solid black', margin: '2px 3px' }}>      {stack} </span>
-            })}   
+          <Stack direction="horizontal" gap={1}>
+            {content.map(stack => 
+              <Badge bg="secondary">{stack}</Badge>
+              )}
+            </Stack>
       </Form.Group>
 
 
