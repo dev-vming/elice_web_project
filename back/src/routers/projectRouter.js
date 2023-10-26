@@ -4,12 +4,14 @@ import { projectService } from "../services/projectService";
 import is from "@sindresorhus/is";
 import { is_request_body } from "../middlewares/is_request_body";
 import { check_permission } from "../middlewares/check_permission";
+import { is_logged_in } from "../middlewares/local_strategy/is_logged_in";
 
 const projectRouter = Router();
 
 // post 요청: 프로젝트 추가
 projectRouter.post(
   "/:userId/projects",
+  is_logged_in,
   login_required,
   is_request_body,
   check_permission,
@@ -46,15 +48,20 @@ projectRouter.post(
 );
 
 // get 요청: 모든 프로젝트 조회
-projectRouter.get("/projects", login_required, async (req, res, next) => {
-  try {
-    console.log("전체 프로젝트 조회 실행");
-    const projects = await projectService.getProjects({});
-    res.status(201).json(projects);
-  } catch (err) {
-    next(err);
+projectRouter.get(
+  "/projects",
+  is_logged_in,
+  login_required,
+  async (req, res, next) => {
+    try {
+      console.log("전체 프로젝트 조회 실행");
+      const projects = await projectService.getProjects({});
+      res.status(201).json(projects);
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 // get 요청: 특정 유저의 자격증 조회
 projectRouter.get(

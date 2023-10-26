@@ -6,8 +6,7 @@ module.exports = () => {
   passport.use(local);
 
   passport.serializeUser((req, user, done) => {
-    console.log("sericalizeUser 실행", user._id);
-    console.log("req.headers", req.headers);
+    console.log("sericalizeUser 실행", user);
     done(null, user._id);
   });
 
@@ -18,6 +17,6 @@ module.exports = () => {
         console.log(user);
         done(null, user);
       })
-      .catch((err) => done(err)); // 여기서 로그인 정보 전용 세션에서 정보를 찾는것이 맞아 보인다...
+      .catch((err) => done(err));
   });
 };

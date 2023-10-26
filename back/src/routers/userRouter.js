@@ -5,7 +5,6 @@ import { userAuthService } from "../services/userService";
 import { is_request_body } from "../middlewares/is_request_body";
 import { is_logged_in } from "../middlewares/local_strategy/is_logged_in";
 import passport from "passport";
-import morgan from "morgan";
 
 const userAuthRouter = Router();
 
@@ -36,31 +35,10 @@ userAuthRouter.post(
 
 userAuthRouter.post(
   "/user/login",
-  // passport.authenticate("local"),
-  async (req, res, next) =>
-    passport.authenticate("local", (authError, user, info) => {
-      console.log("local strategy is called", user);
-      if (authError) return next(authError);
-      if (!user) return next(info);
-      return next();
-      // req.login(user, (loginError) => {
-      //   if (loginError) return next(loginError);
-      //   res.setHeader(
-      //     "set-cookie",
-      //     `sessionID=${req.sessionID};max-age=3600;httpOnly;secure=false`
-      //   );
-      //   res.setHeader("Access-Control-Allow-origin", "*"); // 모든 출처(orogin)을 허용
-      //   res.setHeader(
-      //     "Access-Control-Allow-Methods",
-      //     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-      //   ); // 모든 HTTP 메서드 허용
-      //   res.setHeader("Access-Control-Allow-Credentials", "true"); // 클라이언트와 서버 간에 쿠키 주고받기 허용
-      //   // res.status(200).json(user);
-      //   next();
-      // });
-    })(req, res, next),
+  passport.authenticate("local"),
   async function (req, res, next) {
     try {
+      console.log("req.user", req.user);
       const email = req.body.email;
       const password = req.body.password;
 
@@ -71,18 +49,16 @@ userAuthRouter.post(
         throw new Error(user.errorMessage);
       }
       res.status(200).send(user);
-      console.log(res.getHeaders());
-      next();
     } catch (error) {
-      next(error);
+      res.send(error);
     }
   }
 );
 
 userAuthRouter.get(
   "/userlist",
-  login_required,
   is_logged_in,
+  login_required,
   async function (req, res, next) {
     try {
       // 전체 사용자 목록을 얻음
@@ -119,6 +95,7 @@ userAuthRouter.get(
 
 userAuthRouter.put(
   "/users/:_id",
+  is_logged_in,
   login_required,
   async function (req, res, next) {
     try {
