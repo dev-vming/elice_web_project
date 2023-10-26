@@ -2,12 +2,14 @@ import { Card , Badge, Stack, ListGroup, Col, Row, Button } from "react-bootstra
 import { useNavigate } from "react-router-dom";
 import draftjsToHtml from "draftjs-to-html";
 import * as Api from '../../../utils/api';
+import { useState } from "react";
+import ProjectDetailModal from "../../../pages/ProjectDetailModal";
 
 function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIsEditing }) { 
   const htmlString = draftjsToHtml(project.editorStateSave[0])
-  const navigate = useNavigate(); 
+  const [modalshow, setModalShow] = useState(false);
   const moveToDetail = () => {
-    navigate(`/projects/${project._id}`, { state: { project }});
+    setModalShow(true)
   }
 
   const deletecard = async () => {
@@ -20,6 +22,13 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
 }
 
   return (
+  <>
+    <ProjectDetailModal 
+      show={modalshow}
+      onHide={()=> setModalShow(false)} 
+      project={project}
+      htmlString={htmlString}
+    />
     <Card className="mb-2 ms-3 mr-5" style={{ width: "25rem" }}>
       <Card.Img onClick={moveToDetail} variant="top" src={project.imgs[0]}/>
       <Card.Body>
@@ -31,7 +40,7 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
             <Stack direction="horizontal" gap={1}>
                 <Badge bg="secondary">{project.content[0]}</Badge>
                 <Badge bg="secondary">{project.content[1]}</Badge>
-                <Badge bg="secondary">{project.content[3]}</Badge>
+                <Badge bg="secondary">{project.content[2]}</Badge>
             </Stack>
           </ListGroup.Item>
           <ListGroup.Item onClick={moveToDetail}>
@@ -61,6 +70,7 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
           </ListGroup.Item>
         </ListGroup>
     </Card>
+  </>
   );
 }
 
