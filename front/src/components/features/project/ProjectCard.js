@@ -28,7 +28,7 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
       project={project}
       htmlString={htmlString}
     />
-    <Card className="mb-2 ms-3 mr-5" style={{ width: "25rem" }}>
+    <Card className="mb-2 ms-3 mr-5" style={{ width: "25rem", padding: "10px" }}>
       <Card.Img 
         onClick={moveToDetail} 
         variant="top" 
