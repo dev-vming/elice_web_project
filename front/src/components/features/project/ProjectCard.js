@@ -1,4 +1,4 @@
-import { Card, Button, Row, Col } from "react-bootstrap";
+import { Card, Button, Row, Col, ListGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import draftjsToHtml from "draftjs-to-html";
 import * as Api from '../../../utils/api';
@@ -33,34 +33,25 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
             return <span style={{ border: '2px solid black', margin: '2px 3px' }}> {stack} </span>
             })}   
         </Col>
-
         {isEditable && (
           <Col xs lg="1">
             <Button
               variant="outline-info"
               size="sm"
               onClick={() => setIsEditing((prev) => !prev)}
-              className="mr-3"
-            >
+              className="mr-3">
               편집
             </Button>
             <Button
               variant="outline-danger"
               size="sm"
               onClick={() => deletecard()}
-              className="mr-3"
-            >
+              className="mr-3">
               삭제
             </Button>
           </Col>
         )}
       </Row>
-     {/* {!isEditable && (
-      <ProjectDetail 
-          style={{display: 'none' }}
-          project={project} 
-          htmlString={htmlString}
-        />)} */}
     </Card.Text>
   );
 }

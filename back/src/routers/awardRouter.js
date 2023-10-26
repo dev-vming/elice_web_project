@@ -30,7 +30,7 @@ awardRouter.post(
       });
 
       if (newAward.errorMessage) {
-        throw new Error(newUser.errorMessage);
+        throw new Error(newAward.errorMessage);
       }
 
       res.status(201).json(newAward);

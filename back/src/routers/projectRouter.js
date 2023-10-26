@@ -23,7 +23,8 @@ projectRouter.post(
       }
 
       // req (request) 에서 데이터 가져오기
-      const { title, content, startDate, endDate, editorStateSave, imgs } = req.body;
+      const { title, content, startDate, endDate, editorStateSave, imgs } =
+        req.body;
 
       // 위 데이터를 db에 추가하기
       // user_id 는 uuid
@@ -38,7 +39,7 @@ projectRouter.post(
       });
 
       if (newProject.errorMessage) {
-        throw new Error(newUser.errorMessage);
+        throw new Error(newProject.errorMessage);
       }
 
       res.status(201).json(newProject);
@@ -82,33 +83,26 @@ projectRouter.get(
 );
 
 // get project by project id
-projectRouter.get(
-  "/projects/:id",
-  login_required,
-  async (req, res, next) => {
+projectRouter.get("/projects/:id", login_required, async (req, res, next) => {
+  try {
+    console.log("프로젝트 상세 페이지 조회");
+    const id = req.params.id;
 
-    try {
-      console.log("프로젝트 상세 페이지 조회");
-      const id = req.params.id;
-
-      const projectDetail = await projectService.getProjectDetail({ _id: id });
-      res.status(201).json(projectDetail);
-    } catch (err) {
-      next(err);
-    }
+    const projectDetail = await projectService.getProjectDetail({ _id: id });
+    res.status(201).json(projectDetail);
+  } catch (err) {
+    next(err);
   }
-);
+});
 
 // get project by content
 projectRouter.get(
-  "/projects/:content",
+  "/projects/stack/:content",
   login_required,
   async (req, res, next) => {
-
     try {
       console.log("특정 기술스택을 사용한 프로젝트 조회");
-      const content = req.params.content;
-
+      const { content } = req.params;
       const projectContent = await projectService.getProjectContent(content);
       res.status(201).json(projectContent);
     } catch (err) {
@@ -127,7 +121,7 @@ projectRouter.delete(
       const current_user_id = req.currentUserId;
 
       if (userId !== current_user_id) {
-        throw new Error("프로젝트 추가 권한이 없습니다");
+        throw new Error("프로젝트 삭제 권한이 없습니다");
       }
 
       console.log("특정 유저의 프로젝트 삭제 실행");
@@ -141,12 +135,13 @@ projectRouter.delete(
 );
 
 // update project by id(uuid)
-projectRouter.put(
+projectRouter.post(
   "/:userId/projects/:id",
   login_required,
   async (req, res, next) => {
     // 우선 해당 id 의 유저가 db에 존재하는지 여부 확인
     try {
+      console.log("특정 유저의 프로젝트 수정 실행");
       const { userId } = req.params;
       const current_user_id = req.currentUserId;
 
@@ -154,7 +149,6 @@ projectRouter.put(
         throw new Error("프로젝트 추가 권한이 없습니다");
       }
 
-      console.log("특정 유저의 프로젝트 수정 실행");
       const id = req.params.id;
       const toUpdate = req.body;
 

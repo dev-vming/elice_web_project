@@ -31,7 +31,7 @@ certificateRouter.post(
       });
 
       if (newCertificate.errorMessage) {
-        throw new Error(newUser.errorMessage);
+        throw new Error(newCertificate.errorMessage);
       }
 
       res.status(201).json(newCertificate);
