@@ -38,6 +38,7 @@ const stacksList = [
     'Heroku',
     'HTML',
     'IBM Cloud',
+    'JAVA',
     'Javascript',
     'Jenkins',
     'Joomla',

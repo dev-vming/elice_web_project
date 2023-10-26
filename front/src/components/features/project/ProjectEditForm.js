@@ -89,24 +89,36 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing}) {
     })
   };
 
+  const addImage = (imgUrl) => {
+    const newImgs = [...imgs];
+    newImgs.push(imgUrl);
+    setImgs(newImgs);
+  };
+
+  const isUrl = (str) => {
+    const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/;
+    return urlPattern.test(str);
+  }
+
   const uploadCallback = async (file) => { //공식문서에서 promise 객체 반환하라고 함
     return new Promise(async (resolve, reject) => {
-      const formData = new FormData();
-      formData.append('image', file);
-      try { 
-        const response = Api.postImg(`projects/uploads`, formData);
-        resolve({ data: { link: response.data.imageUrl } })
-        .then(setImgs(() => {
-          const imgUrl = response.data.imageUrl;
-          const newImgs = [...imgs]
-          newImgs.push(imgUrl)
-          return newImgs;
-        }));
-      } catch (error) {
-        reject('이미지 업로드 실패');
-      }
-    });
-  };
+      if (typeof file === 'string' && isUrl(file)) {
+        addImage(file);
+        resolve({ data: { link: file } });
+      } else if (file instanceof File) {
+          const formData = new FormData();
+          formData.append('image', file);
+          try { 
+            const response = Api.postImg(`projects/uploads`, formData);
+            const imgUrl = response.data.imageUrl;
+            addImage(imgUrl);
+            resolve({ data: { link: imgUrl } });
+          } catch (error) {
+              reject('이미지 업로드 실패');
+            }
+        } 
+      });
+    };
 
   
   return (

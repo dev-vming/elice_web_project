@@ -44,21 +44,19 @@ async function post(endpoint, data) {
 }
 
 async function postImg(endpoint, data) {
-  const bodyData = JSON.stringify(data);
   try{
     // JSON.stringify 함수: Javascript 객체를 JSON 형태로 변환함.
     // 예시: {name: "Kim"} => {"name": "Kim"}
     console.log(`%c이미지 POST 요청: ${serverUrl + endpoint}`, "color: #296aba;");
-    console.log(`%cPOST 요청 데이터: ${bodyData}`, "color: #296aba;");
+    console.log(`%cPOST 요청 데이터: ${data}`, "color: #296aba;");
   }
   catch (err) {
     console.log('POST 요청에 실패했습니다\n',err);
   }
 
-  return axios.post(serverUrl + endpoint, bodyData, {
+  return axios.post(serverUrl + endpoint, data, {
     headers: {
       "Content-Type": 'multipart/form-data',
-      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
     },
   });
 }

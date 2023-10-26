@@ -72,8 +72,6 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
   const updateTextcontent = async (state) => {
     await setEditorState(state);
     const html = draftjsToHtml(convertToRaw(editorState.getCurrentContent()));
-    // console.log('editorState에서 ContentState로 변환, editorState.getCurrentContent() = ' + editorState.getCurrentContent());
-    // console.log('ContentState를 convertToRaw로 원시 js로 변환, convertToRaw(editorState.getCurrentContent()) = ' + JSON.stringify(convertToRaw(editorState.getCurrentContent())));
     setHtmlString(html);
     setEditorStateSave(() => {
       const newEditorStateSave = editorStateSave;
@@ -82,24 +80,38 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
     })
   };
 
-  const uploadCallback = async (file) => { //공식문서에서 promise 객체 반환하라고 함
-    return new Promise(async (resolve, reject) => {
-      const formData = new FormData();
-      formData.append('image', file);
-      try { 
-        const response = Api.postImg(`projects/uploads`, formData);
-        resolve({ data: { link: response.data.imageUrl } })
-        .then(setImgs(() => {
-          const imgUrl = response.data.imageUrl;
-          const newImgs = [...imgs]
-          newImgs.push(imgUrl)
-          return newImgs;
-        }));
-      } catch (error) {
-        reject('이미지 업로드 실패');
-      }
-    });
+  const addImage = (imgUrl) => {
+    const newImgs = [...imgs];
+    newImgs.push(imgUrl);
+    setImgs(newImgs);
   };
+
+  const isUrl = (str) => {
+    const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/;
+    return urlPattern.test(str);
+  }
+
+  const uploadCallback = async (file) => { 
+    return new Promise(async (resolve, reject) => {
+      if (typeof file === 'string' && isUrl(file)) {
+        addImage(file);
+        resolve({ data: { link: file } });
+      } else if (file instanceof File) {
+          const formData = new FormData();
+          formData.append('image', file);
+          try { 
+            const response = await Api.postImg(`projects/uploads`, formData);
+            console.log(response)
+            const imgUrl = response.data.imagePath;
+            console.log(imgUrl);
+            addImage(imgUrl);
+            resolve({ data: { link: imgUrl } });
+          } catch (error) {
+              reject('이미지 업로드 실패');
+            }
+        } 
+      });
+    };
 
   return (
     <Form onSubmit={handleSubmit}>
