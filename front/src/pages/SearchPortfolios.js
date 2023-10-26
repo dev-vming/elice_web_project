@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import * as Api from "../utils/api";
 import Project from "../components/features/project/Project";
-import ProjectStackList from '../components/features/project/ProjectStackList';
 
 function SearchPortfolios() {
   const [projects, setProjects] = useState([]);

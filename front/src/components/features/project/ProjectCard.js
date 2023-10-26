@@ -1,5 +1,4 @@
-import { Card , Badge, Stack, ListGroup, Col, Row, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Card , Badge, Stack, ListGroup, Button } from "react-bootstrap";
 import draftjsToHtml from "draftjs-to-html";
 import * as Api from '../../../utils/api';
 import { useState } from "react";
@@ -28,6 +27,7 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
       onHide={()=> setModalShow(false)} 
       project={project}
       htmlString={htmlString}
+      isEditable={isEditable}
     />
     <Card className="mb-2 ms-3 mr-5" style={{ width: "25rem" }}>
       <Card.Img onClick={moveToDetail} variant="top" src={project.imgs[0]}/>
