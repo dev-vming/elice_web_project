@@ -1,4 +1,5 @@
 import { ProjectModel } from "../schemas/project";
+import is from "is";
 
 class Project {
   static async create({
@@ -24,10 +25,18 @@ class Project {
 
   // Read
   static async findByUserId({ userId }) {
-    const project = await ProjectModel.find({ userId }).sort({
+    if (is.empty(userId)) {
+      const result = await ProjectModel.find({}).sort({
+        startDate: "asc",
+      });
+      if (is.empty(result)) {
+        return "there is no projects";
+      }
+      return result;
+    }
+    return await ProjectModel.find({ userId }).sort({
       startDate: "asc",
     });
-    return project;
   }
 
   // Read by ProjectId

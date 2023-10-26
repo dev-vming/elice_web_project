@@ -1,9 +1,13 @@
 function is_logged_in(req, res, next) {
-  // isAuthenticated()로 검사해 로그인이 되어있으면
+  // console.log("패스포트 로그인", req.isAuthenticated());
   if (req.isAuthenticated()) {
+    // console.log("inside is_logged_in req.user", req.user);
+    // console.log("inside is_logged_in req.session", req.session);
     next(); // 다음 미들웨어
   } else {
-    res.status(403).send("로그인 필요");
+    // console.log("inside is_logged_in req.user", req.user);
+    // console.log("inside is_logged_in req.session", req.session);
+    res.status(403).send("passport: 로그인 필요");
   }
 }
 

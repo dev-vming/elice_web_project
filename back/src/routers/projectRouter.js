@@ -17,6 +17,7 @@ projectRouter.post(
     try {
       console.log("특정 유저의 프로젝트 추가 실행");
 
+      const userId = req.params.userId;
       // req (request) 에서 데이터 가져오기
       const { title, content, startDate, endDate, editorStateSave, imgs } =
         req.body;
@@ -63,6 +64,7 @@ projectRouter.get(
   async (req, res, next) => {
     try {
       console.log("특정 유저의 프로젝트 조회 실행");
+      const userId = req.params.userId;
       const projects = await projectService.getProjects(userId);
       res.status(201).json(projects);
     } catch (err) {

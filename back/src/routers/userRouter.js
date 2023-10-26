@@ -5,6 +5,7 @@ import { userAuthService } from "../services/userService";
 import { is_request_body } from "../middlewares/is_request_body";
 import { is_logged_in } from "../middlewares/local_strategy/is_logged_in";
 import passport from "passport";
+import morgan from "morgan";
 
 const userAuthRouter = Router();
 
@@ -35,14 +36,20 @@ userAuthRouter.post(
 
 userAuthRouter.post(
   "/user/login",
-  passport.authenticate("local", {
-    failureRedirect: "/",
-    failureMessage: true,
-  }),
+  // passport.authenticate("local"),
+  (req, res, next) => {
+    return passport.authenticate("local", (authError, user, info) => {
+      console.log("local strategy is called", user);
+      if (authError) return next(authError);
+      if (!user) return next(info);
+      return req.login(user, (loginError) => {
+        if (loginError) return next(loginError);
+        return next();
+      });
+    })(req, res, next);
+  },
   async function (req, res, next) {
     try {
-      console.log("inside login routing req handler", req.user);
-      // req (request) 에서 데이터 가져오기
       const email = req.body.email;
       const password = req.body.password;
 
@@ -53,7 +60,10 @@ userAuthRouter.post(
         throw new Error(user.errorMessage);
       }
 
+      res.setHeader("set-cookie", `sesionID=${req.sessionID}`);
       res.status(200).send(user);
+      console.log(res.getHeaders());
+      next();
     } catch (error) {
       next(error);
     }
@@ -77,6 +87,7 @@ userAuthRouter.get(
 
 userAuthRouter.get(
   "/user/current",
+  is_logged_in,
   login_required,
   async function (req, res, next) {
     try {

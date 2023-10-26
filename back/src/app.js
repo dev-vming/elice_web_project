@@ -13,29 +13,37 @@ import passport from "passport";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import path from "path";
+import morgan from "morgan";
 
 const app = express();
 require("./passport/index")();
 
 // CORS 에러 방지
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    credentials: "true",
+  })
+);
 
 // express 기본 제공 middleware
 // express.json(): POST 등의 요청과 함께 오는 json형태의 데이터를 인식하고 핸들링할 수 있게 함.
 // express.urlencoded: 주로 Form submit 에 의해 만들어지는 URL-Encoded 형태의 데이터를 인식하고 핸들링할 수 있게 함.
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "public")));
 
 // passport 로그인 기능 구현을 위한 패키지 연결
-app.use(cookieParser());
 app.use(
   session({
     secret: "elice",
     resave: false,
     saveUninitialized: true,
+    cookie: { maxAge: 3600, secure: false, httpOnly: true },
     // 세션 스토어 사용하기
     store: MongoStore.create({
-      mongoUrl: "mongodb://localhost:27017/simple-board",
+      mongoUrl: process.env.MONGODB_URL,
     }),
   })
 );
