@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Col, Row, DropdownButton } from "react-bootstrap";
+import { Button, Form, Col, Row, DropdownButton, Stack, Badge } from "react-bootstrap";
 import * as Api from "../../../utils/api";
 import styled from "styled-components";
 import { Editor } from "react-draft-wysiwyg"; 
@@ -63,7 +63,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing}) {
 
     // // 2) 삭제한 이미지가 있다면 imgs에서 url 삭제
     // const newImgs = contentState.getEntityMap().get('IMAGE').map(entity => entity.getData().get('link'));
-    await Api.put(`${userId}/projects/${currentProject._id}`, {
+    await Api.post(`${userId}/projects/${currentProject._id}`, {
       userId,
       title,
       content,
@@ -110,7 +110,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing}) {
           formData.append('image', file);
           try { 
             const response = Api.postImg(`projects/uploads`, formData);
-            const imgUrl = response.data.imageUrl;
+            const imgUrl = response.data.imagePath;
             addImage(imgUrl);
             resolve({ data: { link: imgUrl } });
           } catch (error) {
@@ -146,9 +146,11 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing}) {
           </div>  
         </DropdownButton>
           <br/>
-          {content.map(stack => {
-            return <span style={{ border: '2px solid black', margin: '2px 3px' }}>      {stack} </span>
-            })}   
+          <Stack direction="horizontal" gap={1}>
+            {content.map(stack => 
+              <Badge bg="secondary">{stack}</Badge>
+              )}
+            </Stack>
       </Form.Group>
 
 
