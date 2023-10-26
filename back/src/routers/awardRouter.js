@@ -44,7 +44,6 @@ awardRouter.post(
 awardRouter.get(
   "/:userId/awards",
   login_required,
-  check_permission,
   async function (req, res, next) {
     try {
       console.log("특정 유저의 수상경력 조회 실행");

@@ -67,11 +67,6 @@ projectRouter.get(
   async (req, res, next) => {
     try {
       const { userId } = req.params;
-      const current_user_id = req.currentUserId;
-
-      if (userId !== current_user_id) {
-        throw new Error("프로젝트 추가 권한이 없습니다");
-      }
 
       console.log("특정 유저의 프로젝트 조회 실행");
       const projects = await projectService.getProjects(userId);
@@ -146,7 +141,7 @@ projectRouter.post(
       const current_user_id = req.currentUserId;
 
       if (userId !== current_user_id) {
-        throw new Error("프로젝트 추가 권한이 없습니다");
+        throw new Error("프로젝트 수정 권한이 없습니다");
       }
 
       const id = req.params.id;

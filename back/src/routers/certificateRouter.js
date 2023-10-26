@@ -46,7 +46,6 @@ certificateRouter.post(
 certificateRouter.get(
   "/:userId/certificates",
   login_required,
-  check_permission,
   async function (req, res, next) {
     try {
       console.log("특정 유저의 자격증 조회 실행");

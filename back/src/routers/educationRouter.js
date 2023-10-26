@@ -92,7 +92,6 @@ educationRouter.post(
 educationRouter.get(
   "/:userId/educations",
   login_required,
-  check_permission,
   async function (req, res, next) {
     try {
       const { userId } = req.params;

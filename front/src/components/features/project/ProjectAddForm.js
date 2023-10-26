@@ -22,7 +22,7 @@ import stacksList from "./ProjectStackList";
 // border: 2px solid gray;
 // `;
 
-function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
+function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisibility }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState([]);
   const [startDate, setStartDate] = useState(null)
@@ -188,10 +188,12 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
 
       <Form.Group as={Row} className="mt-3 text-center">
         <Col sm={{ span: 20 }}>
-          <Button variant="primary" type="submit" className="me-3">
+          <Button variant="primary" type="submit" className="me-3" onClick={()=>setIsVisibility(true)}>
             확인
           </Button>
-          <Button variant="secondary" onClick={() => setIsAdding(false)}>
+          <Button variant="secondary" onClick={() => {
+            setIsAdding(false)
+            setIsVisibility(true)}}>
             취소
           </Button>
         </Col>

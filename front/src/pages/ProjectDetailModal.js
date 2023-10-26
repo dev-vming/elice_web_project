@@ -1,7 +1,8 @@
+import { useContext } from "react";
 import { Button, Modal, Stack, Badge } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-function ProjectDetailModal({show, onHide, project, htmlString, isEditable}) {
+function ProjectDetailModal({show, onHide, project, htmlString }) {
     const navigate = useNavigate();
 
     return (
@@ -31,11 +32,9 @@ function ProjectDetailModal({show, onHide, project, htmlString, isEditable}) {
                 <div dangerouslySetInnerHTML={{ __html: htmlString }} />
             </Modal.Body>
             <Modal.Footer>
-                {isEditable && (
                     <Button variant="primary" onClick={()=> navigate(`/users/${project.userId}`)}>
-                        이 유저의 프로젝트 더 보기
+                        프로젝트 더 보기
                     </Button>
-                )}
 
             </Modal.Footer>
         </Modal>

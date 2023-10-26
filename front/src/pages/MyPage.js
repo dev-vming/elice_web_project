@@ -75,7 +75,7 @@ function MyPage() {
         <Nav.Link 
           onClick= {() => {
           setSelectedContent("project")
-          navigate("/project") }
+          navigate(`/users/${portfolioOwner._id}`) }
         } 
         id = "project"
         > 
@@ -86,7 +86,7 @@ function MyPage() {
         <Nav.Link  
           onClick= {() => { 
           setSelectedContent("profile")
-          navigate("/profile")} 
+          navigate(`/users/${portfolioOwner._id}`)} 
               }
               id = "profile"
               >
