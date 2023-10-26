@@ -63,7 +63,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing}) {
 
     // // 2) 삭제한 이미지가 있다면 imgs에서 url 삭제
     // const newImgs = contentState.getEntityMap().get('IMAGE').map(entity => entity.getData().get('link'));
-    await Api.put(`${userId}/projects/${currentProject._id}`, {
+    await Api.post(`${userId}/projects/${currentProject._id}`, {
       userId,
       title,
       content,
@@ -100,7 +100,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing}) {
     return urlPattern.test(str);
   }
 
-  const uploadCallback = async (file) => { //공식문서에서 promise 객체 반환하라고 함
+  const uploadCallback = async (file) => { 
     return new Promise(async (resolve, reject) => {
       if (typeof file === 'string' && isUrl(file)) {
         addImage(file);
@@ -109,8 +109,8 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing}) {
           const formData = new FormData();
           formData.append('image', file);
           try { 
-            const response = Api.postImg(`projects/uploads`, formData);
-            const imgUrl = response.data.imageUrl;
+            const response = await Api.postImg(`projects/uploads`, formData);
+            const imgUrl = response.data.imagePath;
             addImage(imgUrl);
             resolve({ data: { link: imgUrl } });
           } catch (error) {

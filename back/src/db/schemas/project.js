@@ -13,19 +13,19 @@ const ProjectSchema = new Schema({
   },
   content: {
     type: Array,
-    required: false,
+    required: true,
   },
   startDate: {
     type: Date,
-    required: false,
+    required: true,
   },
   endDate: {
     type: Date,
-    required: false,
+    required: true,
   },
   editorStateSave: {
     type: Array,
-    required: false,
+    required: true,
   },
   imgs: {
     type: Array,

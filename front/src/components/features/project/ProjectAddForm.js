@@ -101,9 +101,7 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding }) {
           formData.append('image', file);
           try { 
             const response = await Api.postImg(`projects/uploads`, formData);
-            console.log(response)
             const imgUrl = response.data.imagePath;
-            console.log(imgUrl);
             addImage(imgUrl);
             resolve({ data: { link: imgUrl } });
           } catch (error) {
