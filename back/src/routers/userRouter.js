@@ -37,28 +37,28 @@ userAuthRouter.post(
 userAuthRouter.post(
   "/user/login",
   // passport.authenticate("local"),
-  (req, res, next) => {
-    return passport.authenticate("local", (authError, user, info) => {
+  async (req, res, next) =>
+    passport.authenticate("local", (authError, user, info) => {
       console.log("local strategy is called", user);
       if (authError) return next(authError);
       if (!user) return next(info);
-      return req.login(user, (loginError) => {
-        if (loginError) return next(loginError);
-        res.setHeader(
-          "set-cookie",
-          `sessionID=${req.sessionID};max-age=3600;httpOnly;secure=false`
-        );
-        res.setHeader("Access-Control-Allow-origin", "*"); // 모든 출처(orogin)을 허용
-        res.setHeader(
-          "Access-Control-Allow-Methods",
-          "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-        ); // 모든 HTTP 메서드 허용
-        res.setHeader("Access-Control-Allow-Credentials", "true"); // 클라이언트와 서버 간에 쿠키 주고받기 허용
-        // res.status(200).json(user);
-        next();
-      });
-    })(req, res, next);
-  },
+      return next();
+      // req.login(user, (loginError) => {
+      //   if (loginError) return next(loginError);
+      //   res.setHeader(
+      //     "set-cookie",
+      //     `sessionID=${req.sessionID};max-age=3600;httpOnly;secure=false`
+      //   );
+      //   res.setHeader("Access-Control-Allow-origin", "*"); // 모든 출처(orogin)을 허용
+      //   res.setHeader(
+      //     "Access-Control-Allow-Methods",
+      //     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+      //   ); // 모든 HTTP 메서드 허용
+      //   res.setHeader("Access-Control-Allow-Credentials", "true"); // 클라이언트와 서버 간에 쿠키 주고받기 허용
+      //   // res.status(200).json(user);
+      //   next();
+      // });
+    })(req, res, next),
   async function (req, res, next) {
     try {
       const email = req.body.email;

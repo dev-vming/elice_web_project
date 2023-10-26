@@ -1,4 +1,4 @@
-const passport = require("passport");
+import passport from "passport";
 const local = require("./strategies/local");
 const { User } = require("../db/index");
 
