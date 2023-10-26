@@ -1,45 +1,36 @@
-import React, { useEffect, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import * as Api from "../utils/api";
-import UserCard from "../components/features/user/UserCard";
 import Project from "../components/features/project/Project";
-import { UserStateContext } from "../App";
 import ProjectStackList from '../components/features/project/ProjectStackList';
 
 function SearchPortfolios() {
-  const navigate = useNavigate();
-  const userState = useContext(UserStateContext);
-  const [users, setUsers] = useState([]);
   const [projects, setProjects] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
-  const [stackName, setStackName] = useState('');
 
-  // useEffect(() => {
-  //   // 만약 전역 상태의 user가 null이라면, 로그인 페이지로 이동함.
-  //   if (!userState.user) {
-  //     navigate("/login");
-  //     return;
-  //   }
-  //   // "userlist" 엔드포인트로 GET 요청을 하고, users를 response의 data로 세팅함.
-  //   Api.get("userlist").then((res) => setUsers(res.data));
-  // }, [userState, navigate]);
+  const getProjects = () => {
+    Api.get("projects").then((res) => {
+      setProjects(res.data);
+      setSearchResult(res.data);
+    });
+  }
 
   useEffect(() => {
-    Api.get("userlist").then((res) => setUsers(res.data))
-    Api.get("projects").then((res) => setProjects(res.data));
+    getProjects();
   }, []);
 
-  const searchHandler = (e) => {
-    setStackName(e.target.value.toLowerCase);
-    setSearchResult(projects.filter((project) => {
-      if(project.content.forEach((stack) => stack.toLowerCase() === stackName)) return project;
-    }));
-  };
 
-  const clickHandler = () => {
-    setStackName(''); 
-  };
+  const searchHandler = (e) => {
+    const input = e.target.value.toLowerCase();
+    if (input == '') setSearchResult(projects);
+    setSearchResult(() => {
+      const newResult = projects;
+      return newResult.filter(project => {
+        const contentArray = project.content;
+        return contentArray.some(stack => stack.toLowerCase().includes(input));
+      })
+    })
+  }
 
   return (
     <Container fluid>
@@ -48,23 +39,21 @@ function SearchPortfolios() {
           <Row>
             <Col className="d-flex">
               <Form.Control
-                style={{width: '50%'}}
-                type="search"
+                style={{width: '400px'}}
+                type="text"
                 placeholder="Search"
                 className="me-2"
-                aria-label="Search"
                 onChange={searchHandler}
               />
-              <Button variant="outline-success" type='submit' onClick={clickHandler}>Search</Button>
             </Col>
           </Row>
         </Form>
       </Row>
       <Row className="justify-content-center">
-        {users.map((user) => (
+        {/* {users.map((user) => (
           <UserCard key={user._id} user={user} isNetwork />
-        ))}
-        {projects.map((project) => (
+        ))} */}
+        {searchResult.map((project) => (
           <Project key={project._id} project={project} />
         ))}
       </Row>

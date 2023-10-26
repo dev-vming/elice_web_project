@@ -20,12 +20,10 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
 }
 
   return (
-    <Card.Text>
+    <Card.Text className="justrify-content-center align-items-center">
       <Row className="align-items-center">
         <Col style={
-          {backgroundColor: "yellow", height: '100px', overflow: 'hidden'
-          //, whiteSpace: 'nowrap', textOverflow: 'ellipsis'
-        }
+          {backgroundColor: "yellow", height: '200px', overflow: 'hidden' }
           } onClick={moveToDetail}>
           <span>{project.title}</span>
           <br />
@@ -34,7 +32,6 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
           {project.content.map(stack => {
             return <span style={{ border: '2px solid black', margin: '2px 3px' }}> {stack} </span>
             })}   
-          <div dangerouslySetInnerHTML={{ __html: htmlString }} />
         </Col>
 
         {isEditable && (
