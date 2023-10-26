@@ -67,7 +67,7 @@ function App() {
             <Route path="*" element={<MyPage />} />
             <Route path= "/project" element={ <MyPage/>}/>
             <Route path= "/profile" element={<MyPage/>}/>
-            <Route path="/projects/:id" element={<ProjectDetail />} />
+            {/* <Route path="/projects/:id" element={<ProjectDetail />} /> */}
             {/* <Route><NotFoundPage /></Route> */}
             
           </Routes>
