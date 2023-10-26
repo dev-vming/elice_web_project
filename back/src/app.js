@@ -19,16 +19,14 @@ const app = express();
 require("./passport")();
 
 // CORS 에러 방지
-app.use(cors());
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-origin", "http://localhost:3000");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  ); // 모든 HTTP 메서드 허용
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  next();
-});
+app.use(
+  cors({
+    origin: true,
+    methods: "GET, POST, OPTIONS, PUT, PATCH, DELETE",
+    credentials: true,
+    optionsSuccessStatus: 200,
+  })
+);
 
 // express 기본 제공 middleware
 // express.json(): POST 등의 요청과 함께 오는 json형태의 데이터를 인식하고 핸들링할 수 있게 함.
@@ -39,20 +37,26 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
 
 // passport 로그인 기능 구현을 위한 패키지 연결
-app.use(
-  session({
-    secret: "elice",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 3600, secure: false, httpOnly: true, sameSite: "lax" },
-    // 세션 스토어 사용하기
-    store: MongoStore.create({
-      mongoUrl: "mongodb://localhost:27017/loginSession",
-    }),
-  })
-);
+// app.use(
+//   session({
+//     secret: "elice",
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//       maxAge: 3600,
+//       secure: true,
+//       httpOnly: true,
+//       sameSite: "none",
+//       domain: "localhost",
+//     },
+//     // 세션 스토어 사용하기
+//     store: MongoStore.create({
+//       mongoUrl: "mongodb://localhost:27017/loginSession",
+//     }),
+//   })
+// );
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 
 // 기본 페이지
 app.get("/", (req, res) => {

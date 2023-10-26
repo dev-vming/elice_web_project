@@ -35,7 +35,7 @@ userAuthRouter.post(
 
 userAuthRouter.post(
   "/user/login",
-  passport.authenticate("local"),
+  // passport.authenticate("local"),
   async function (req, res, next) {
     try {
       console.log("req.user", req.user);
@@ -48,6 +48,22 @@ userAuthRouter.post(
       if (user.errorMessage) {
         throw new Error(user.errorMessage);
       }
+
+      // const cookieConfig = {
+      //   maxAge: 3600,
+      //   secure: true,
+      //   httpOnly: true,
+      //   sameSite: "none",
+      //   domain: "localhost",
+      // };
+
+      // req.session.regenerate((err) => (err ? err : "session is generated"));
+      // res.cookie("sessionID", req.sessionID, cookieConfig);
+
+      // res.setHeader(
+      //   "set-cookie",
+      //   `sessionID=${req.sessionID};max-age=3600;secure;httpOnly;same-site=none;domain=local`
+      // );
       res.status(200).send(user);
     } catch (error) {
       res.send(error);
@@ -72,7 +88,6 @@ userAuthRouter.get(
 
 userAuthRouter.get(
   "/user/current",
-  is_logged_in,
   login_required,
   async function (req, res, next) {
     try {
@@ -95,7 +110,6 @@ userAuthRouter.get(
 
 userAuthRouter.put(
   "/users/:_id",
-  is_logged_in,
   login_required,
   async function (req, res, next) {
     try {
