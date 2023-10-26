@@ -28,8 +28,8 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing}) {
 
   const [title, setTitle] = useState(currentProject.title);
   const [content, setContent] = useState(currentProject.content);
-  const [startDate, setStartDate] = useState(currentProject.startDate);
-  const [endDate, setEndDate] = useState(currentProject.endDate);
+  const [startDate, setStartDate] = useState(currentProject.startDate.split("T")[0]);
+  const [endDate, setEndDate] = useState(currentProject.endDate.split("T")[0]);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [htmlString, setHtmlString] = useState(draftjsToHtml(currentProject.editorStateSave[0]));
   const [editorStateSave, setEditorStateSave] = useState(currentProject.editorStateSave);

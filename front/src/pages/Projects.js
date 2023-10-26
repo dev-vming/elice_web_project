@@ -30,7 +30,7 @@ function Projects({ portfolioOwnerId, isEditable }) {
           </Row>
         )}
 
-  
+      <Row className="justify-content-center">
         {projects.map((project) => (
           <Project
             portfolioOwnerId={portfolioOwnerId}
@@ -40,7 +40,8 @@ function Projects({ portfolioOwnerId, isEditable }) {
             isEditable={isEditable}
           />
         ))}
-       
+      </Row>
+      
         {isAdding && (
           <ProjectAddForm
             portfolioOwnerId={portfolioOwnerId}

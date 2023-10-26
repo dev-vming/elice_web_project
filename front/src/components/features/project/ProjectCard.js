@@ -1,4 +1,4 @@
-import { Card, Button, Row, Col, ListGroup } from "react-bootstrap";
+import { Card , Badge, Stack, ListGroup, Col, Row, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import draftjsToHtml from "draftjs-to-html";
 import * as Api from '../../../utils/api';
@@ -20,58 +20,47 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
 }
 
   return (
-    // <Card className="back-ground: yellow" >
-      <Card.Body className="project-body-content" >
-      <Row className="align-items-center">
-        <Col style={
-          {backgroundColor: "white", height: '150px', 
-          //, whiteSpace: 'nowrap', textOverflow: 'ellipsis'
-          }
-          } onClick={moveToDetail}>
-
-            <Card.Title> {project.title} </Card.Title>
-        
-          <ListGroup.Item className = "overflow-hidden">
-            <ListGroup.Item> {project.startDate} ~ {project.endDate}</ListGroup.Item>
-            <ListGroup.Item> {project.content.map(stack => {
-            return <span style={{ border: '1px solid gray', padding: '3px 6px' }}> {stack} </span>
-            })} </ListGroup.Item>
-         <ListGroup.Item><div dangerouslySetInnerHTML={{ __html: htmlString }} /></ListGroup.Item>
-            </ListGroup.Item>
-
-         
-         
-        </Col>
-        
-        {isEditable && (
-          <Col xs lg="1">
-            <Button
-              variant="outline-info"
-              size="sm"
-              onClick={() => setIsEditing((prev) => !prev)}
-              className="mr-3"
-            >
-              편집
-            </Button>
-            <Button
-              variant="outline-danger"
-              size="sm"
-              onClick={() => deletecard()}
-              className="mr-3"
-            >
-              삭제
-            </Button>
-          </Col>
-        )}
-      </Row>
-     {/* {!isEditable && (
-      <ProjectDetail 
-          style={{display: 'none' }}
-          project={project} 
-          htmlString={htmlString}
-        />)} */}
-        </Card.Body>
-    // </Card>
+    <Card className="mb-2 ms-3 mr-5" style={{ width: "25rem" }}>
+      <Card.Img onClick={moveToDetail} variant="top" src={project.imgs[0]}/>
+      <Card.Body>
+        <Card.Title onClick={moveToDetail}>{project.title}</Card.Title>
+        <Card.Text onClick={moveToDetail}>{project.editorStateSave[0].blocks[0].text}</Card.Text>
+      </Card.Body>
+        <ListGroup className="list-group-flush">
+          <ListGroup.Item onClick={moveToDetail}>
+            <Stack direction="horizontal" gap={1}>
+                <Badge bg="secondary">{project.content[0]}</Badge>
+                <Badge bg="secondary">{project.content[1]}</Badge>
+                <Badge bg="secondary">{project.content[3]}</Badge>
+            </Stack>
+          </ListGroup.Item>
+          <ListGroup.Item onClick={moveToDetail}>
+            {project.startDate.split('T')[0]}~{project.endDate.split('T')[0]}
+          </ListGroup.Item>
+          <ListGroup.Item>
+            {isEditable && (
+              <Stack direction="horizontal" gap={1} className="justify-content-center">
+                <Button
+                  variant="outline-info"
+                  size="sm"
+                  onClick={() => setIsEditing((prev) => !prev)}
+                  className="mr-3"
+                >
+                  편집
+                </Button>
+                <Button
+                  variant="outline-danger"
+                  size="sm"
+                  onClick={() => deletecard()}
+                  className="mr-3"
+                >
+                  삭제
+                </Button>
+              </Stack>
+              )}
+          </ListGroup.Item>
+        </ListGroup>
+    </Card>
   );
 }
 
