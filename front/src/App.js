@@ -55,7 +55,7 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/users/:userId" element={<MyPage />} />
             <Route path="/network" element={<SearchPortfolios />} />
-            <Route path="*" element={<MyPage />} />
+            <Route path="*" element={<NotFoundPage />} />
             <Route path= "/project" element={ <MyPage/>}/>
             <Route path= "/profile" element={<MyPage/>}/>           
           </Routes>

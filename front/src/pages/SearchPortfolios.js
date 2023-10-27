@@ -61,6 +61,3 @@ function SearchPortfolios() {
 }
 
 export default SearchPortfolios;
-
-
-
