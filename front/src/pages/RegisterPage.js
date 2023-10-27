@@ -82,7 +82,7 @@ function RegisterPage() {
               />
               {!isPasswordValid && (
                 <Form.Text className="text-success">
-                "비밀번호는 영문 소문자와 숫자 4-12자리로 입력해야합니다."            
+                  비밀번호는 영문 소문자와 숫자 4-12자리로 입력해야합니다.            
                 </Form.Text>
               )}
             </Form.Group>
