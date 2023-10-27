@@ -3,8 +3,6 @@ import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { userAuthService } from "../services/userService";
 import { is_request_body } from "../middlewares/is_request_body";
-import { is_logged_in } from "../middlewares/local_strategy/is_logged_in";
-import passport from "passport";
 
 const userAuthRouter = Router();
 
@@ -33,47 +31,41 @@ userAuthRouter.post(
   }
 );
 
-userAuthRouter.post(
-  "/user/login",
-  // passport.authenticate("local"),
-  async function (req, res, next) {
-    try {
-      console.log("req.user", req.user);
-      const email = req.body.email;
-      const password = req.body.password;
+userAuthRouter.post("/user/login", async function (req, res, next) {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
 
-      // 위 데이터를 이용하여 유저 db에서 유저 찾기
-      const user = await userAuthService.getUser({ email, password });
+    // 위 데이터를 이용하여 유저 db에서 유저 찾기
+    const user = await userAuthService.getUser({ email, password });
 
-      if (user.errorMessage) {
-        throw new Error(user.errorMessage);
-      }
-
-      // const cookieConfig = {
-      //   maxAge: 3600,
-      //   secure: true,
-      //   httpOnly: true,
-      //   sameSite: "none",
-      //   domain: "localhost",
-      // };
-
-      // req.session.regenerate((err) => (err ? err : "session is generated"));
-      // res.cookie("sessionID", req.sessionID, cookieConfig);
-
-      // res.setHeader(
-      //   "set-cookie",
-      //   `sessionID=${req.sessionID};max-age=3600;secure;httpOnly;same-site=none;domain=local`
-      // );
-      res.status(200).send(user);
-    } catch (error) {
-      res.send(error);
+    if (user.errorMessage) {
+      throw new Error(user.errorMessage);
     }
+
+    // const cookieConfig = {
+    //   maxAge: 3600,
+    //   secure: true,
+    //   httpOnly: true,
+    //   sameSite: "none",
+    //   domain: "localhost",
+    // };
+
+    // req.session.regenerate((err) => (err ? err : "session is generated"));
+    // res.cookie("sessionID", req.sessionID, cookieConfig);
+
+    // res.setHeader(
+    //   "set-cookie",
+    //   `sessionID=${req.sessionID};max-age=3600;secure;httpOnly;same-site=none;domain=local`
+    // );
+    res.status(200).send(user);
+  } catch (error) {
+    res.send(error);
   }
-);
+});
 
 userAuthRouter.get(
   "/userlist",
-  is_logged_in,
   login_required,
   async function (req, res, next) {
     try {

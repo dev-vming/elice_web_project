@@ -8,15 +8,11 @@ import { certificateRouter } from "./routers/certificateRouter";
 import { educationRouter } from "./routers/educationRouter";
 import { awardRouter } from "./routers/awardRouter";
 import { imageRouter } from "./routers/imageRouter";
-// passport 로그인 기능 구현을 위한 패키지들
-import passport from "passport";
+
 import cookieParser from "cookie-parser";
-import session from "express-session";
-import MongoStore from "connect-mongo";
 import path from "path";
 
 const app = express();
-require("./passport")();
 
 // CORS 에러 방지
 app.use(
@@ -35,28 +31,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
-
-// passport 로그인 기능 구현을 위한 패키지 연결
-// app.use(
-//   session({
-//     secret: "elice",
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: {
-//       maxAge: 3600,
-//       secure: true,
-//       httpOnly: true,
-//       sameSite: "none",
-//       domain: "localhost",
-//     },
-//     // 세션 스토어 사용하기
-//     store: MongoStore.create({
-//       mongoUrl: "mongodb://localhost:27017/loginSession",
-//     }),
-//   })
-// );
-app.use(passport.initialize());
-// app.use(passport.session());
 
 // 기본 페이지
 app.get("/", (req, res) => {
