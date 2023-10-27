@@ -9,7 +9,7 @@ import htmlToDraft from 'html-to-draftjs'
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import stacksList from "./ProjectStackList";
 
-function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing, setIsVisibility}) {
+function ProjectEditForm({ portfolioOwnerId, setProjects, currentProject, setIsEditing, setIsVisibility}) {
 
   const [title, setTitle] = useState(currentProject.title);
   const [content, setContent] = useState(currentProject.content);
@@ -36,7 +36,6 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing, setIs
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    e.stopPropagation(); 
 
     await Api.post(`${userId}/projects/${currentProject._id}`, {
       userId,
@@ -47,8 +46,9 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing, setIs
       editorStateSave, 
       imgs,
     });
-  
 
+    const res = await Api.get(`${userId}/projects`);
+    setProjects(res.data);
     setIsEditing(false);
   };
 
@@ -115,17 +115,17 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing, setIs
           return newContent; 
         })}>
           <div style={{ maxHeight: "300px", overflowY: "auto" }}>
-            {stacksList.map((stack)=>{
+            {stacksList.map((stack, index)=>{
               return (
-                <DropdownItem eventKey={stack}>{stack}</DropdownItem>
+                <DropdownItem key={`dropdown-stack-${index}`} eventKey={stack}>{stack}</DropdownItem>
               ) 
             })}
           </div>  
         </DropdownButton>
           <br/>
           <Stack direction="horizontal" gap={1}>
-            {content.map(stack => 
-              <Badge bg="secondary">{stack}</Badge>
+            {content.map((stack,index) => 
+              <Badge key={`badge-stack-${index}`} bg="secondary">{stack}</Badge>
               )}
             </Stack>
       </Form.Group>
@@ -171,7 +171,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing, setIs
 
       <Form.Group as={Row} className="mt-3 text-center mb-4">
         <Col sm={{ span: 20 }}>
-          <Button variant="primary" type="submit" className="me-3" onclick={()=>setIsVisibility(true)}>
+          <Button variant="primary" type="submit" className="me-3" onClick={()=>setIsVisibility(true)}>
             확인
           </Button>
           <Button variant="secondary" onClick={() => {

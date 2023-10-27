@@ -3,11 +3,9 @@ import { Button, Form, Card, Col, Row } from "react-bootstrap";
 import * as Api from "../../../utils/api";
 
 function UserEditForm({ user, setIsEditing, setUser }) {
-  //useState로 name 상태를 생성함.
+
   const [name, setName] = useState(user.name);
-  //useState로 description 상태를 생성함.
   const [description, setDescription] = useState(user.description);
-  //useState로 imgUrl 상태를 생성함.
   const [ imgUrl, setImgUrl ] = useState(user.imgUrl);
 
   const SubmitImg = async (e) => {
@@ -22,18 +20,15 @@ function UserEditForm({ user, setIsEditing, setUser }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // "users/유저id" 엔드포인트로 PUT 요청함.
     const res = await Api.put(`users/${user._id}`, {
       name,
       description,
       imgUrl,
     });
-    // 유저 정보는 response의 data임.
+
     const updatedUser = res.data;
-    // 해당 유저 정보로 user을 세팅함.
     setUser(updatedUser);
 
-    // isEditing을 false로 세팅함.
     setIsEditing(false);
   };
 

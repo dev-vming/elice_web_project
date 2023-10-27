@@ -1,7 +1,3 @@
-
-
-function SearchPortfolios() {
-
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form, InputGroup } from "react-bootstrap";
 import * as Api from "../utils/api";
@@ -63,8 +59,5 @@ function SearchPortfolios() {
       </Container>
       );
 }
-}
 
 export default SearchPortfolios;
-
-
