@@ -7,13 +7,9 @@ import * as Api from "../utils/api";
 function RegisterPage() {
   const navigate = useNavigate();
 
-  //useState로 email 상태를 생성함.
   const [email, setEmail] = useState("");
-  //useState로 password 상태를 생성함.
   const [password, setPassword] = useState("");
-  //useState로 confirmPassword 상태를 생성함.
   const [confirmPassword, setConfirmPassword] = useState("");
-  //useState로 name 상태를 생성함.
   const [name, setName] = useState("");
 
   const validateEmail = (email) => {
@@ -26,16 +22,12 @@ function RegisterPage() {
 
   const isEmailValid = validateEmail(email);
 
-
-  // const password1RegExp = 
-
   const validatePassword = (password) =>  {
     return  /^(([a-z0-9]{4,12}))$/.test(password)
   }
     
   const isPasswordValid = validatePassword(password)
 
-  // password.length >= 4
   const isPasswordSame = password === confirmPassword;
 
   const isNameValid = name.length >= 2;
@@ -54,7 +46,6 @@ function RegisterPage() {
         name,
       });
 
-      // 로그인 페이지로 이동함.
       navigate("/login");
     } catch (err) {
       console.log("회원가입에 실패하였습니다.", err);
