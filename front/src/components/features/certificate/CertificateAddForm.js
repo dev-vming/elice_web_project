@@ -8,7 +8,7 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding, se
   //useState로 description 상태를 생성함.
   const [issuingOrganization, setIssuingOrganization] = useState("");
   //useState로 certificatedDate 상태를 생성함.
-  const [certificatedDate, setCertificatedDate] = useState();
+  const [certificatedDate, setCertificatedDate] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
