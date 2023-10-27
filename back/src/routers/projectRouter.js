@@ -17,7 +17,7 @@ projectRouter.post(
       const { userId } = req.params;
       const { title, content, startDate, endDate, editorStateSave, imgs } =
         req.body;
-
+                             
       // DB에 데이터 추가
       const newProject = await projectService.addProject({
         userId,
@@ -60,7 +60,7 @@ projectRouter.get("/projects/", login_required, async (req, res, next) => {
   try {
     // //페이지네이션
     const page = Number(req.query.page || 1); //현재 페이지 번호
-    const perPage = Number(req.query.perPage || 5); //한 페이지 조회 항목 갯수
+    const perPage = Number(req.query.perPage || 10); //한 페이지 조회 항목 갯수
     const offset = (page - 1) * perPage; // 현재 페이지의 조회 시작 데이터
     const projects = await projectService.getProjectsPage({
       perPage,

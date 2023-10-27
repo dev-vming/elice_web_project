@@ -68,7 +68,7 @@ function MyPage() {
     <Container fluid>
     <Navbar className="navbar mb-4" expand="xl"  sticky="top" bg= "light" >
   <Container>
-    <Navbar.Brand placement="end" onClick={() => navigate("/main")}> {portfolioOwner.name}의 포트폴리오 </Navbar.Brand>
+    <Navbar.Brand placement="end" > {portfolioOwner.name}의 포트폴리오 </Navbar.Brand>
     <Navbar.Toggle aria-controls="navbar-nav" />
     <Navbar.Collapse id="navbar-nav">
       <Nav className="justify-content-md-end flex-grow-1 p-2 bd-highlight">

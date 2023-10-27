@@ -6,8 +6,6 @@ import { loginReducer } from "./reducer";
 
 import Header from "./components/common/Header";
 import { LoginPage, SearchPortfolios, RegisterPage , MyPage, ProjectDetail} from "./pages";
-import ProjectWrapper from "./pages/ProjectWrapper";
-import ProfileWrapper from "./pages/ProfileWrapper";
 import NotFoundPage from "./pages/NotFoundPage";
 // import Educations from "./components/education/Educations";
 
@@ -64,7 +62,7 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/users/:userId" element={<MyPage />} />
             <Route path="/network" element={<SearchPortfolios />} />
-            <Route path="*" element={<MyPage />} />
+            <Route path="*" element={<NotFoundPage />} />
             <Route path= "/project" element={ <MyPage/>}/>
             <Route path= "/profile" element={<MyPage/>}/>
             {/* <Route path="/projects/:id" element={<ProjectDetail />} /> */}

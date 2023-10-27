@@ -14,15 +14,15 @@ const [projects, setProjects] = useState([]); //프로젝트 data
 const [page, setPage] = useState(1);  //현재 페이지
 const [searchPage, setSearchPage] = useState(1);
 const [totalPage, setTotalPage] = useState(1)
-const listPerPage = 6;
+const listPerPage = 10;
 // const totalPage = Math.ceil(projects.length/listPerPage);
 
   const getProjects = () => {
-    const project = Api.get(`projects`)
+   Api.get(`projects`)
      .then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       setProjects(res.data);
-      setSearchResult(res.data);
+      // setSearchResult(res.data);
     });
     };
 
@@ -33,7 +33,7 @@ const listPerPage = 6;
 
   useEffect(() => {
     getProjects();
-  }, []);
+  }, [] );
 
   // const paginate = (pageNum) => setCurrentPage(pageNum); //현재 페이지를 변경하는 함수 
   
@@ -101,14 +101,14 @@ const listPerPage = 6;
             <Project 
             key={project._id} 
             project={project}
-            pagingProjects = {pagingProjects}
+           
              />
           ))
           
          :  pagingProjects.map((project) => (
             <Project key={project._id} 
             project={project} 
-            pagingProjects = {pagingProjects}
+          
             />
             )
           )
@@ -123,15 +123,6 @@ const listPerPage = 6;
           setPage={setPage}
           handlePageChange={handlePageChange}
           />
-
-{/* 
-      activePage={page} // 현재 페이지
-      itemsCountPerPage={10} // 한 페이지에 보여줄 아이템 갯수
-      totalItemsCount={450} // 총 아이템 갯수
-      pageRangeDisplayed={5} // paginator의 페이지 범위
-      prevPageText={"‹"} // "이전"을 나타낼 텍스트
-      nextPageText={"›"} // "다음"을 나타낼 텍스트
-      onChange={handlePageChange} // 페이지 변경을 핸들링하는 함수 */}
 
       </Container>
     );
