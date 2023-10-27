@@ -23,11 +23,11 @@ class Project {
     return createdNewProject;
   }
 
-  // Read Page
-  static async findPage({ perPage, offset }) {
-    const projects = await ProjectModel.find({}).limit(perPage).skip(offset);
-    return projects;
-  }
+  // // Read Page
+  // static async findPage({ perPage, offset }) {
+  //   const projects = await ProjectModel.find({}).limit(perPage).skip(offset);
+  //   return projects;
+  // }
 
   // Read by User
   static async findByUserId({ userId }) {

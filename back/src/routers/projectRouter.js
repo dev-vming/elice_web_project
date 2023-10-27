@@ -58,16 +58,7 @@ projectRouter.get(
 // 페이지에 따른 프로젝트 조회
 projectRouter.get("/projects", login_required, async (req, res, next) => {
   try {
-    // //페이지네이션
-    // const page = Number(req.query.page || 1); //현재 페이지 번호
-    // const perPage = Number(req.query.perPage || 5); //한 페이지 조회 항목 갯수
-    // const offset = (page - 1) * perPage; // 현재 페이지의 조회 시작 데이터
-    // const projects = await projectService.getProjectsPage({
-    //   perPage,
-    //   offset,
-    // });
-    const projects = await projectService.getProjects();
-    console.log(projects);
+    const projects = await projectService.getProjectsAll();
     res.status(200).json(projects);
   } catch (err) {
     next(err);
