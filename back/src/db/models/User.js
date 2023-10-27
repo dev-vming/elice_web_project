@@ -1,12 +1,13 @@
 import { UserModel } from "../schemas/user";
 
 class User {
+  // Create
   static async create({ newUser }) {
     const createdNewUser = await UserModel.create(newUser);
     return createdNewUser;
   }
 
-  //Read
+  // Read
   static async findByEmail({ email }) {
     const user = await UserModel.findOne({ email });
     return user;
@@ -15,12 +16,8 @@ class User {
     const user = await UserModel.findOne({ _id });
     return user;
   }
-  static async findAll() {
-    const users = await UserModel.find({});
-    return users;
-  }
 
-  //Update
+  // Update
   static async update({ _id }, toUpdate) {
     const filter = { _id };
     const option = { returnOriginal: false };

@@ -1,5 +1,5 @@
-import { User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
-import bcrypt, { hash } from "bcrypt";
+import { User } from "../db";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 class userAuthService {
@@ -15,13 +15,11 @@ class userAuthService {
     // 비밀번호 해쉬화
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // id 는 유니크 값 부여
-    // const id = uuidv4();
     const newUser = { name, email, password: hashedPassword };
 
     // db에 저장
     const createdNewUser = await User.create({ newUser });
-    createdNewUser.errorMessage = null; // 문제 없이 db 저장 완료되었으므로 에러가 없음.
+    createdNewUser.errorMessage = null;
 
     return createdNewUser;
   }
@@ -48,18 +46,16 @@ class userAuthService {
     }
 
     // 로그인 성공 -> JWT 웹 토큰 생성
-
     const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
     const token = jwt.sign({ user_id: user._id }, secretKey);
 
-    // 반환할 loginuser 객체를 위한 변수 설정
-    // const id = user.id;
+    // 반환할 loginuser 객체
     const name = user.name;
     const description = user.description;
 
     const loginUser = {
       token,
-      _id: user._id, //테스트를 위해, 임시로 넣어둠.
+      _id: user._id,
       email,
       name,
       description,
@@ -69,16 +65,10 @@ class userAuthService {
     return loginUser;
   }
 
-  static async getUsers() {
-    const users = await User.findAll();
-    return users;
-  }
-
   static async setUser({ _id }, { toUpdate }) {
-    // 우선 해당 id 의 유저가 db에 존재하는지 여부 확인
     let user = await User.findById({ _id });
 
-    // db에서 찾지 못한 경우, 에러 메시지 반환
+    // 정보를 수정하려는 유저의 id가 db에 없는 경우
     if (!user) {
       const errorMessage = "가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
       return { errorMessage };
@@ -87,11 +77,6 @@ class userAuthService {
     if (toUpdate.password) {
       const hashedPassword = await bcrypt.hash(toUpdate.password, 10);
       await User.update({ _id }, { password: hashedPassword });
-
-      // 비밀번호 바꾸기 막기
-      // delete toUpdate.password;
-      // const errorMessage = "이페이지에서는 비밀번호를 바꾸실 수 없습니다.";
-      // return { errorMessage };
     }
 
     const updatedUser = await User.update({ _id }, { ...toUpdate });
@@ -100,11 +85,9 @@ class userAuthService {
 
   static async getUserInfoById({ _id }) {
     const user = await User.findById({ _id });
-
-    // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!user) {
       const errorMessage =
-        "해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
+        "해당하는 유저가 없습니다. 다시 한 번 확인해 주세요.";
       return { errorMessage };
     }
 
