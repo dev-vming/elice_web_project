@@ -1,6 +1,9 @@
 import { User } from "../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+// import { compare } from "bcrypt";
+import hashPassword from "../utils/hash-password";
+import comparePassword from "../utils/compare-password";
 
 class userAuthService {
   static async addUser({ name, email, password }) {
@@ -14,7 +17,7 @@ class userAuthService {
     }
 
     // 비밀번호 해쉬화
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hashPassword(password, 10);
 
     const newUser = { name, email, password: hashedPassword };
 
@@ -37,7 +40,7 @@ class userAuthService {
 
     // 비밀번호 일치 여부 확인
     const correctPasswordHash = user.password;
-    const isPasswordCorrect = await bcrypt.compare(
+    const isPasswordCorrect = await comparePassword(
       password,
       correctPasswordHash
     );

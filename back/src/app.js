@@ -10,13 +10,24 @@ import { educationRouter } from "./routers/educationRouter";
 import { awardRouter } from "./routers/awardRouter";
 import { imageRouter } from "./routers/imageRouter";
 
+import cookieParser from "cookie-parser";
+import path from "path";
+
 const app = express();
 
 // CORS 에러 방지
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET, POST, OPTIONS, PUT, PATCH, DELETE",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "public")));
+app.use(cookieParser());
 
 // 기본 페이지
 app.get("/", (req, res) => {

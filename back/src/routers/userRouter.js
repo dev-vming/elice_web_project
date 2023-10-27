@@ -64,9 +64,13 @@ userAuthRouter.post("/user/login", async function (req, res, next) {
       }
     }
 
+    res.setHeader(
+      "Set-Cookie",
+      `jwtToken=${user.token};max-age=3600;same-site=Lax;path=/;httpOnly;secure=false;`
+    );
     res.status(200).send(user);
   } catch (error) {
-    next(error);
+    res.send(error);
   }
 });
 
