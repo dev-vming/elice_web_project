@@ -43,7 +43,7 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
       onClick={moveToDetail} 
       variant="top" 
       src={firstImg}
-      style={{ height:'100%', objectFit: 'cover'}} />
+      style={{ maxHeight:'20rem', height:'100%', objectFit: 'cover'}} />
       <Card.Body>
         <Card.Title onClick={moveToDetail}>{project.title}</Card.Title>
         <Card.Text onClick={moveToDetail}>{project.editorStateSave[0].blocks[0].text}</Card.Text>
