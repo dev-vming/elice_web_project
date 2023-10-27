@@ -43,20 +43,19 @@ userAuthRouter.post("/user/login", async function (req, res, next) {
       throw new Error(user.errorMessage);
     }
 
-    // const cookieConfig = {
-    //   maxAge: 3600,
-    //   secure: true,
-    //   httpOnly: true,
-    //   sameSite: "none",
-    //   domain: "localhost",
-    // };
+    const cookieConfig = {
+      maxAge: 36000,
+      httpOnly: true,
+      secure: false,
+      sameSite: "Lax",
+      domain: "localhost",
+    };
 
-    // req.session.regenerate((err) => (err ? err : "session is generated"));
-    // res.cookie("sessionID", req.sessionID, cookieConfig);
-
+    // res.setHeader("Content-Type", "text/html; charset=utf-8;");
+    res.cookie("jwtToken", user.token, cookieConfig);
     // res.setHeader(
-    //   "set-cookie",
-    //   `sessionID=${req.sessionID};max-age=3600;secure;httpOnly;same-site=none;domain=local`
+    //   "Set-Cookie",
+    //   `jwtToken=${user.token};MaxAge=3600;SameSite=Lax;path=/;httpOnly`
     // );
     res.status(200).send(user);
   } catch (error) {

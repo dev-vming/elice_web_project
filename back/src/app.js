@@ -17,10 +17,9 @@ const app = express();
 // CORS 에러 방지
 app.use(
   cors({
-    origin: true,
+    origin: "http://localhost:3000",
     methods: "GET, POST, OPTIONS, PUT, PATCH, DELETE",
     credentials: true,
-    optionsSuccessStatus: 200,
   })
 );
 
