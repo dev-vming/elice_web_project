@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { UserStateContext } from "../App.js";
 import { useContext } from "react";
 
-function ProjectDetailModal({show, onHide, project, htmlString }) {
+function ProjectDetailModal({show, onHide, project, htmlString, isEditable }) {
     const navigate = useNavigate();
     const params = useParams();
     const userState = useContext(UserStateContext);
@@ -41,7 +41,7 @@ function ProjectDetailModal({show, onHide, project, htmlString }) {
                         프로젝트 더 보기
                     </Button>
                 )}
-                {currentId === project.userId && (
+                {currentId === project.userId && !isEditable && (
                     <Button variant="success" disabled>
                         나의 프로젝트 입니다!
                     </Button>

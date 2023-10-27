@@ -37,6 +37,7 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
       onHide={()=> setModalShow(false)} 
       project={project}
       htmlString={htmlString}
+      isEditable={isEditable}
     />
     <Card className="mb-2 ms-3 mr-5" style={{ width: "25rem" }}>
       <Card.Img 
