@@ -1,7 +1,6 @@
 import { User } from "../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-// import { compare } from "bcrypt";
 import hashPassword from "../utils/hash-password";
 import comparePassword from "../utils/compare-password";
 

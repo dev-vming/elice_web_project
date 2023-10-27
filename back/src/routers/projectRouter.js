@@ -72,16 +72,6 @@ projectRouter.get("/projects", login_required, async (req, res, next) => {
   }
 });
 
-// 모든 프로젝트 조회
-// projectRouter.get("/projects", login_required, async (req, res, next) => {
-//   try {
-//     const projects = await projectService.getAllProjects({});
-//     res.status(200).json(projects);
-//   } catch (err) {
-//     next(err);
-//   }
-// });
-
 // 프로젝트 삭제
 projectRouter.delete(
   "/:userId/projects/:id",
