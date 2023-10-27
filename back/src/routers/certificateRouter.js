@@ -61,10 +61,10 @@ certificateRouter.delete(
   async function (req, res, next) {
     try {
       const { id } = req.params;
-      const certificates = await certificateService.deleteCertificate({
+      await certificateService.deleteCertificate({
         _id: id,
       });
-      res.status(200).json(certificates);
+      res.status(204).json();
     } catch (err) {
       next(err);
     }

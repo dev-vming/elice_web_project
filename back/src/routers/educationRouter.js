@@ -63,10 +63,10 @@ educationRouter.delete(
   async function (req, res, next) {
     try {
       const { id } = req.params;
-      const educations = await educationService.deleteEducation({
+      await educationService.deleteEducation({
         _id: id,
       });
-      res.status(200).json(educations);
+      res.status(204).json();
     } catch (err) {
       next(err);
     }

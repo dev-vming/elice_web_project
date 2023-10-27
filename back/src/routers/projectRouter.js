@@ -75,8 +75,8 @@ projectRouter.delete(
   async (req, res, next) => {
     try {
       const id = req.params.id;
-      const result = await projectService.deleteProject({ _id: id });
-      res.status(200).json(result);
+      await projectService.deleteProject({ _id: id });
+      res.status(204).json();
     } catch (err) {
       next(err);
     }

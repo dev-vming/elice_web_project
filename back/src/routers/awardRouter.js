@@ -60,10 +60,10 @@ awardRouter.delete(
   async function (req, res, next) {
     try {
       const { id } = req.params;
-      const awards = await awardService.deleteAward({
+      await awardService.deleteAward({
         _id: id,
       });
-      res.status(200).json(awards);
+      res.status(204).json();
     } catch (err) {
       next(err);
     }
