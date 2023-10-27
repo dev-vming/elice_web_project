@@ -10,7 +10,7 @@ const [isSearching , setIsSearching ] = useState(false);
 const [searchResult, setSearchResult] = useState([]);
 
 //paging 관련 state
-const [pagingProjects, setPagingProjects] = useState([]); //프로젝트 data
+const [projects, setProjects] = useState([]); //프로젝트 data
 const [page, setPage] = useState(1);  //현재 페이지
 const [searchPage, setSearchPage] = useState(1);
 const [totalPage, setTotalPage] = useState(1)
@@ -21,15 +21,15 @@ const listPerPage = 6;
     const project = Api.get(`projects`)
      .then((res) => {
       console.log(res.data);
-      setPagingProjects(res.data);
+      setProjects(res.data);
       setSearchResult(res.data);
     });
     };
 
   useEffect(() => {
-    const lastPage = Math.ceil(pagingProjects.length / listPerPage);
+    const lastPage = Math.ceil(projects.length / listPerPage);
     setTotalPage(lastPage ? lastPage : 1)
-  }, [pagingProjects])
+  }, [projects])
 
   useEffect(() => {
     getProjects();
@@ -42,7 +42,7 @@ const listPerPage = 6;
 } ,[]);
 
   // 한페이지에 보여주는 prj data 인덱스
-  const pagedProjects = pagingProjects.slice(
+  const pagingProjects = projects.slice(
     (page - 1) * listPerPage,
      page * listPerPage, 
   ); 
@@ -50,10 +50,10 @@ const listPerPage = 6;
   
   const searchHandler = (e) => {
     const input = e.target.value.toLowerCase();
-    if (input == '') setSearchResult(pagingProjects);
+    if (input == '') setSearchResult(projects);
 
     setSearchResult(() => {
-      const newResult = pagingProjects;
+      const newResult = projects;
       return newResult.filter(project => {
         const contentArray = project.content;
         return contentArray.some(stack => stack.toLowerCase().includes(input));;
@@ -100,16 +100,15 @@ const listPerPage = 6;
          ? searchPaging.map((project) => (
             <Project 
             key={project._id} 
-            // project={project}
-            // pagedProjects = {pagedProjects}
+            project={project}
+            pagingProjects = {pagingProjects}
              />
           ))
           
-         :  pagedProjects.map((project) => (
-            <Project 
-            key={project._id} 
-            // project={project} 
-            // pagedProjects = {pagedProjects}
+         :  pagingProjects.map((project) => (
+            <Project key={project._id} 
+            project={project} 
+            pagingProjects = {pagingProjects}
             />
             )
           )
