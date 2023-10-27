@@ -8,20 +8,6 @@ import draftjsToHtml from "draftjs-to-html";
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import stacksList from "./ProjectStackList";
 
-// //텍스트에디터 출력 확인 공간
-// const RowBox = styled.div`
-// width: 100%;
-// display: flex;
-// `;
-
-// const Viewer = styled.div` //test창
-// width: 50%;
-// height: 400px;
-// padding: 20px;
-// margin-top: 20px;
-// border: 2px solid gray;
-// `;
-
 function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisibility }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState([]);
