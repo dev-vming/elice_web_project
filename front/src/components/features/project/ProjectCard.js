@@ -27,13 +27,14 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
       onHide={()=> setModalShow(false)} 
       project={project}
       htmlString={htmlString}
+      isEditable={isEditable}
     />
     <Card className="mb-2 ms-3 mr-5" style={{ width: "25rem", padding: "10px" }}>
       <Card.Img 
         onClick={moveToDetail} 
         variant="top" 
         src={project.imgs[0]} 
-        style={{ height:'100%', objectFit: 'cover'}}/>
+        style={{ maxHeight:'20rem', height:'100%', objectFit: 'cover'}}/>
       <Card.Body>
         <Card.Title onClick={moveToDetail}>{project.title}</Card.Title>
         <Card.Text onClick={moveToDetail}>{project.editorStateSave[0].blocks[0].text}</Card.Text>
