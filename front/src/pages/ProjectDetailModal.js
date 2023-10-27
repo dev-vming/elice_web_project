@@ -1,8 +1,13 @@
 import { Button, Modal, Stack, Badge } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { UserStateContext } from "../App.js";
+import { useContext } from "react";
 
-function ProjectDetailModal({show, onHide, project, htmlString, isEditable }) {
+function ProjectDetailModal({show, onHide, project, htmlString }) {
     const navigate = useNavigate();
+    const params = useParams();
+    const userState = useContext(UserStateContext);
+    const currentId = userState.user._id;
 
     return (
         <Modal
@@ -31,13 +36,16 @@ function ProjectDetailModal({show, onHide, project, htmlString, isEditable }) {
                 <div dangerouslySetInnerHTML={{ __html: htmlString }} />
             </Modal.Body>
             <Modal.Footer>
-                {!isEditable && (
+                {currentId !== project.userId && !params.userId && (
                     <Button variant="primary" onClick={()=> navigate(`/users/${project.userId}`)}>
                         프로젝트 더 보기
                     </Button>
                 )}
-
-
+                {currentId === project.userId && (
+                    <Button variant="success" disabled>
+                        나의 프로젝트 입니다!
+                    </Button>
+                )}
             </Modal.Footer>
         </Modal>
     );
