@@ -1,5 +1,4 @@
 import { ProjectModel } from "../schemas/project";
-import is from "is";
 
 class Project {
   // Create

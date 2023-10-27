@@ -1,4 +1,3 @@
-// import crypto from "crypto";
 import bcrypt from "bcrypt";
 
 module.exports = async (password) => {

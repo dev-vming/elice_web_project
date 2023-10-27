@@ -18,7 +18,7 @@ function MyPage() {
   const navigate = useNavigate();
   const params = useParams();
   // useState 훅을 통해 portfolioOwner 상태를 생성함.
-  const [portfolioOwner, setPortfolioOwner] = useState('');
+  const [portfolioOwner, setPortfolioOwner] = useState(null);
   // fetchPorfolioOwner 함수가 완료된 이후에만 (isFetchCompleted가 true여야) 컴포넌트가 구현되도록 함.
   // 아래 코드를 보면, isFetchCompleted가 false이면 "loading..."만 반환되어서, 화면에 이 로딩 문구만 뜨게 됨.
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
@@ -68,7 +68,7 @@ function MyPage() {
     <Container fluid>
     <Navbar className="navbar mb-4" expand="xl"  sticky="top" bg= "light" >
   <Container>
-    <Navbar.Brand placement="end" > {portfolioOwner.name}의 포트폴리오 </Navbar.Brand>
+    <Navbar.Brand placement="end" onClick={() => navigate("/main")}> {portfolioOwner.name}의 포트폴리오 </Navbar.Brand>
     <Navbar.Toggle aria-controls="navbar-nav" />
     <Navbar.Collapse id="navbar-nav">
       <Nav className="justify-content-md-end flex-grow-1 p-2 bd-highlight">
@@ -98,36 +98,36 @@ function MyPage() {
 </Navbar>
       <Row>
           <Col md="3" lg="3">
-           <User
-             portfolioOwnerId={portfolioOwner._id}
-             isEditable={portfolioOwner._id === userState.user?._id}
-           />
-         </Col>
+          <User
+            portfolioOwnerId={portfolioOwner._id}
+            isEditable={portfolioOwner._id === userState.user?._id}
+          />
+        </Col>
 
             
-       {  selectedContent === "project" ? (
+        { selectedContent === "project" ? (
           <Col>
-           <ProjectWrapper
-             portfolioOwnerId={portfolioOwner._id}
-             portfolioOwner= {portfolioOwner}
-             userState={userState}
-             navigate={navigate}
-             />
+          <ProjectWrapper
+            portfolioOwnerId={portfolioOwner._id}
+            portfolioOwner= {portfolioOwner}
+            userState={userState}
+            navigate={navigate}
+            />
           </Col>
-         )  : (
+        )  : (
         <Col>
         <ProfileWrapper
           portfolioOwnerId={portfolioOwner._id}
           portfolioOwner= {portfolioOwner}
           userState={userState}
           navigate={navigate}
-           />
+          />
       </Col>
       
   )}
-     </Row>
+    </Row>
 </Container>
-     )
+    )
 ;}
 
 export default MyPage;

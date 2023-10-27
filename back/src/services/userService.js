@@ -1,7 +1,6 @@
 import { User } from "../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-// import { compare } from "bcrypt";
 import hashPassword from "../utils/hash-password";
 import comparePassword from "../utils/compare-password";
 
@@ -34,7 +33,7 @@ class userAuthService {
     if (!user) {
       const errorMessage =
         "해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
-      const errorType = "NotFoundError";
+      const errorType = "INVALID_USER_Error";
       return { errorType, errorMessage };
     }
 
@@ -76,8 +75,8 @@ class userAuthService {
 
     // 정보를 수정하려는 유저의 id가 db에 없는 경우
     if (!user) {
-      const errorMessage = "가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
-      const errorType = "NotFoundError";
+      const errorMessage = "해당하는 유저가 없습니다. 다시 확인해 주세요.";
+      const errorType = "INVALID_USER_Error";
       return { errorType, errorMessage };
     }
 
@@ -93,9 +92,8 @@ class userAuthService {
   static async getUserInfoById({ _id }) {
     const user = await User.findById({ _id });
     if (!user) {
-      const errorMessage =
-        "해당하는 유저가 없습니다. 다시 한 번 확인해 주세요.";
-      const errorType = "NotFoundError";
+      const errorMessage = "해당하는 유저가 없습니다. 다시 확인해 주세요.";
+      const errorType = "INVALID_USER_Error";
       return { errorType, errorMessage };
     }
 
