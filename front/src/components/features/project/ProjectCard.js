@@ -37,18 +37,18 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
       onHide={()=> setModalShow(false)} 
       project={project}
       htmlString={htmlString}
-      isEditable={isEditable}
     />
-    <Card className="mb-2 ms-3 mr-5" style={{ width: "25rem", padding: "10px" }}>
+    <Card className="mb-2 ms-3 mr-5" style={{ width: "25rem" }}>
       <Card.Img 
-        onClick={moveToDetail} 
-        variant="top" 
-        src={firstImg} 
-        style={{ maxHeight:'20rem', height:'100%', objectFit: 'cover'}}/>
+      onClick={moveToDetail} 
+      variant="top" 
+      src={firstImg}
+      style={{ height:'100%', objectFit: 'cover'}} />
       <Card.Body>
         <Card.Title onClick={moveToDetail}>{project.title}</Card.Title>
         <Card.Text onClick={moveToDetail}>{project.editorStateSave[0].blocks[0].text}</Card.Text>
       </Card.Body>
+
         <ListGroup className="list-group-flush">
           <ListGroup.Item onClick={moveToDetail}>
             <Stack direction="horizontal" gap={1}>
@@ -57,9 +57,11 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
                 <Badge bg="secondary">{project.content[2]}</Badge>
             </Stack>
           </ListGroup.Item>
+
           <ListGroup.Item onClick={moveToDetail}>
             {project.startDate.split('T')[0]}~{project.endDate.split('T')[0]}
           </ListGroup.Item>
+
           <ListGroup.Item>
             {isEditable && (
               <Stack direction="horizontal" gap={1} className="justify-content-center">
@@ -68,8 +70,9 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
                   size="sm"
                   onClick={() => {
                     setIsEditing((prev) => !prev)
-                    setIsVisibility(false)}}
-                  className="mr-3"
+                    setIsVisibility(false)
+                  }}  
+                  className="mr-3"       
                 >
                   편집
                 </Button>
