@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import * as Api from "../utils/api";
 import {Education, EducationAddForm} from "../components/features/education";
+import '../components/common/UI/MvpCardDesign.css'
 
 function Educations({portfolioOwnerId, isEditable}) {
     //useState로 educations 상태를 생성함.
@@ -20,9 +21,9 @@ function Educations({portfolioOwnerId, isEditable}) {
     }, [getUser, portfolioOwnerId]);
 
     return (
-        <Card>
-            <Card.Body>
-                <Card.Title>학력</Card.Title>
+        <Card className='Body'>
+            <Card.Body className="Mvps">
+                <Card.Title className="Title">학력</Card.Title>
                 {educations.map((education) => (
                     <Education
                         key={education._id}

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import * as Api from "../utils/api";
 import {Award,AwardAddForm} from "../components/features/award";
+import '../components/common/UI/MvpCardDesign.css'
 
 function Awards({ portfolioOwnerId, isEditable }) {
   //useState로 awards 상태를 생성함.
@@ -20,9 +21,9 @@ function Awards({ portfolioOwnerId, isEditable }) {
   }, [getUser, portfolioOwnerId]);
 
   return (
-    <Card>
-      <Card.Body>
-        <Card.Title>수상이력</Card.Title>
+    <Card className='Body'>
+      <Card.Body className="Mvps">
+        <Card.Title className="TitleText">수상이력</Card.Title>
         {awards.map((award) => (
           <Award
             key={award._id}

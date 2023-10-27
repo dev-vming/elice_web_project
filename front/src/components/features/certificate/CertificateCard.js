@@ -1,5 +1,6 @@
 import { Card, Button, Row, Col } from "react-bootstrap";
 import * as Api from '../../../utils/api';
+import '../../common/UI/MvpCardDesign.css'
 
 function CertificateCard({ portfolioOwnerId, setCertificates, certificate, isEditable, setIsEditing }) {
 
@@ -16,12 +17,14 @@ function CertificateCard({ portfolioOwnerId, setCertificates, certificate, isEdi
   return (
     <Card.Text>
       <Row className="align-items-center">
-        <Col>
-          <span>{certificate.name}</span>
+        <Col className='Cards'>
+
+          <span>자격증명: {certificate.name}</span>
           <br />
-          <span className="text-muted">{certificate.issuingOrganization}</span>
+          <span className="text-muted">발급기관: {certificate.issuingOrganization}</span>
           <br/>
-          <span className="text-muted">{certificate.certificatedDate.split('T')[0]}</span>
+          <span className="text-muted">획득일: {certificate.certificatedDate.split('T')[0]}</span>
+
         </Col>
         {isEditable && (
           <Col xs lg="1">
