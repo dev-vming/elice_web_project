@@ -1,20 +1,19 @@
 import React from "react";
-
 import { Button } from "react-bootstrap";
 
-function Pagination({ page, totalPosts, postPerPage, paginate }) {
-  const numPages = Math.ceil(totalPosts / postPerPage);
+function Pagination({ page, totalPage, setPage, listPerPage, handlePageChange  }) {
+  // const numPages = Math.ceil(totalPosts / postPerPage);
 
   const renderPageNumbers = () => {
     const pageNumbers = [];
-    for (let i = 1; i <= numPages; i++) {
+    for (let i = 1; i <= totalPage; i++) {
       pageNumbers.push(i);
     }
 
     return pageNumbers.map((number) => (
       <Button
         key={number}
-        onClick={() => paginate(number)}
+        onClick={() => handlePageChange(number)}
         variant={number === page ? "primary" : "outline-primary"}
       >
         {number}
@@ -25,7 +24,7 @@ function Pagination({ page, totalPosts, postPerPage, paginate }) {
   return (
     <div className="pagination">
       <Button
-        onClick={() => paginate(page - 1)}
+        onClick={() => setPage(page - 1)}
         disabled={page === 1}
         variant="outline-primary"
       >
@@ -33,8 +32,8 @@ function Pagination({ page, totalPosts, postPerPage, paginate }) {
       </Button>
       {renderPageNumbers()}
       <Button
-        onClick={() => paginate(page + 1)}
-        disabled={page === numPages}
+        onClick={() => setPage(page + 1)}
+        disabled={page === totalPage}
         variant="outline-primary"
       >
         &gt;
