@@ -5,6 +5,11 @@ const serverUrl =
   "http://" + window.location.hostname + ":" + backendPortNumber + "/";
 
 async function get(endpoint, params = "") {
+  const token =
+    document.cookie
+      .match("(^|;)\\s*" + "jwtToken" + "\\s*=\\s*([^;]+)")
+      ?.pop() || "";
+  console.log(token);
   try {
     console.log(
       `%cGET 요청 ${serverUrl + endpoint + "/" + params}`,
@@ -15,10 +20,10 @@ async function get(endpoint, params = "") {
   }
   return axios.get(serverUrl + endpoint + "/" + params, {
     // JWT 토큰을 헤더에 담아 백엔드 서버에 보냄.
-    headers: {
-      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
-      withCredentials: true,
-    },
+    // headers: {
+    //   Authorization: `Bearer ${token}`,
+    // },
+    withCredentials: true,
   });
 }
 
@@ -37,8 +42,8 @@ async function post(endpoint, data) {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
-      withCredentials: true,
     },
+    withCredentials: true,
   });
 }
 
@@ -57,8 +62,8 @@ async function put(endpoint, data) {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
-      withCredentials: true,
     },
+    withCredentials: true,
   });
 }
 
@@ -74,8 +79,8 @@ async function del(endpoint, params = "") {
   return axios.delete(serverUrl + endpoint + "/" + params, {
     headers: {
       Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
-      withCredentials: true,
     },
+    withCredentials: true,
   });
 }
 
