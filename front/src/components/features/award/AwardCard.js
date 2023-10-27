@@ -14,7 +14,7 @@ function AwardCard({ portfolioOwnerId, setAwards, award, isEditable, setIsEditin
   }
 
   return (
-    <Card.Text>
+    <>
       <Row className="align-items-center">
         <Col className='Cards'>
           <span>수상명: {award.name}</span>
@@ -47,7 +47,7 @@ function AwardCard({ portfolioOwnerId, setAwards, award, isEditable, setIsEditin
           </Col>
         )}
       </Row>
-    </Card.Text>
+    </>
   );
 }
 
