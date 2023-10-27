@@ -7,7 +7,7 @@ function ProjectDetailModal({show, onHide, project, htmlString, isEditable }) {
     const navigate = useNavigate();
     const params = useParams();
     const userState = useContext(UserStateContext);
-    const currentId = userState.user._id;
+    const currentId = userState.user ? userState.user._id : "";
 
     return (
         <Modal

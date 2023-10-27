@@ -18,7 +18,7 @@ projectRouter.post(
       const { userId } = req.params;
       const { title, content, startDate, endDate, editorStateSave, imgs } =
         req.body;
-                             
+
       // DB에 데이터 추가
       const newProject = await projectService.addProject({
         userId,
@@ -45,7 +45,6 @@ projectRouter.post(
 projectRouter.get(
   "/:userId/projects",
   login_required,
-  check_permission,
   async (req, res, next) => {
     try {
       const { userId } = req.params;
