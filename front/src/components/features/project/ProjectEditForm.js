@@ -121,15 +121,15 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
           <div style={{ maxHeight: "300px", overflowY: "auto" }}>
             {stacksList.map((stack, index)=>{
               return (
-                <DropdownItem key={`Dropdown-stack-${index}`} eventKey={stack}>{stack}</DropdownItem>
+                <DropdownItem key={`dropdown-stack-${index}`} eventKey={stack}>{stack}</DropdownItem>
               ) 
             })}
           </div>  
         </DropdownButton>
           <br/>
           <Stack direction="horizontal" gap={1}>
-            {content.map((stack, index) => 
-              <Badge key={`stackbadge-stack-${index}`} bg="secondary">{stack}</Badge>
+            {content.map((stack,index) => 
+              <Badge key={`badge-stack-${index}`} bg="secondary">{stack}</Badge>
               )}
             </Stack>
       </Form.Group>
@@ -174,10 +174,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
 
       <Form.Group as={Row} className="mt-3 text-center mb-4">
         <Col sm={{ span: 20 }}>
-          <Button variant="primary" type="submit" className="me-3" onclick={()=>{
-
-            setIsVisibility(true)
-            }}>
+          <Button variant="primary" type="submit" className="me-3" onClick={()=>setIsVisibility(true)}>
             확인
           </Button>
           <Button variant="secondary" onClick={() => {
