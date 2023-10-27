@@ -15,8 +15,6 @@ projectRouter.post(
   async (req, res, next) => {
     try {
       const { userId } = req.params;
-
-      // req (request) 에서 데이터 가져오기
       const { title, content, startDate, endDate, editorStateSave, imgs } =
         req.body;
 
@@ -42,32 +40,7 @@ projectRouter.post(
   }
 );
 
-// get 요청: 모든 프로젝트 조회
-projectRouter.get("/projects/", login_required, async (req, res, next) => {
-  try {
-    // console.log("전체 프로젝트 조회 실행");
-    // //페이지네이션
-    // console.log("페이지네이션 시작");
-    const page = Number(req.query.page || 1); //현재 페이지 번호
-    // console.log("페이지네이션 시작 2222222222222222222");
-    // console.log("page", page);
-    const perPage = Number(req.query.perPage || 5); //한 페이지 조회 항목 갯수
-    //const limit = 5;
-    //console.log("limit", limit);
-    // console.log("perPage(limit)", perPage);
-    const offset = (page - 1) * perPage; // 현재 페이지의 조회 시작 데이터
-    // console.log("offset", offset);
-    const projects = await projectService.getProjectsAll({
-      perPage,
-      offset,
-    });
-    res.status(201).json(projects);
-  } catch (err) {
-    next(err);
-  }
-});
-
-// get 요청: 특정 유저의 자격증 조회
+// 특정 유저의 프로젝트 조회
 projectRouter.get(
   "/:userId/projects",
   login_required,
@@ -81,6 +54,23 @@ projectRouter.get(
     }
   }
 );
+
+// 페이지에 따른 프로젝트 조회
+projectRouter.get("/projects/", login_required, async (req, res, next) => {
+  try {
+    // //페이지네이션
+    const page = Number(req.query.page || 1); //현재 페이지 번호
+    const perPage = Number(req.query.perPage || 5); //한 페이지 조회 항목 갯수
+    const offset = (page - 1) * perPage; // 현재 페이지의 조회 시작 데이터
+    const projects = await projectService.getProjectsPage({
+      perPage,
+      offset,
+    });
+    res.status(200).json(projects);
+  } catch (err) {
+    next(err);
+  }
+});
 
 // 모든 프로젝트 조회
 projectRouter.get("/projects", login_required, async (req, res, next) => {
