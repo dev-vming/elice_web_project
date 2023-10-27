@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import { UserStateContext, DispatchContext } from "../../App";
+import styles from './Header.module.css';
+
 
 function Header() {
   const navigate = useNavigate();
@@ -26,7 +28,7 @@ function Header() {
   return (
     <Nav activeKey={location.pathname}>
       <Nav.Item className="me-auto mb-5">
-        <Nav.Link disabled>안녕하세요, 포트폴리오 공유 서비스입니다.</Nav.Link>
+        <Nav.Item className={styles.logo}>에나박치</Nav.Item>
       </Nav.Item>
 
       {isLogin && (
