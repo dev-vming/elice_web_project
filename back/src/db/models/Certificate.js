@@ -3,7 +3,6 @@ import { CertificateModel } from "../schemas/certificate";
 class Certificate {
   // Create
   static async create({ newCertificate }) {
-    console.log("n ", newCertificate);
     const createdNewCertificate = await CertificateModel.create(newCertificate);
     return createdNewCertificate;
   }
