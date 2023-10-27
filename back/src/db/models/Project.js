@@ -22,6 +22,19 @@ class Project {
     return createdNewProject;
   }
 
+  // 모두 조회
+  static async findAll({ perPage, offset }) {
+    console.log("perPage(모델)", perPage);
+    console.log("offset(모델)", offset);
+    const projects = await ProjectModel.find({})
+      //.sort({ createdAt: -1 }) 생성 시간 역순정렬 === 최근 데이터 순
+      .limit(perPage)
+      .skip(offset);
+    return projects;
+  }
+
+
+
   // Read
   static async findByUserId({ userId }) {
     const project = await ProjectModel.find({ userId }).sort({

@@ -25,10 +25,14 @@ class projectService {
     return createdNewProject;
   }
 
-  static async getProjects(userId) {
-    const projects = await Project.findByUserId({ userId });
+  static async getProjectsAll({ perPage, offset }) {
+    console.log("perPage(서비스)", perPage);
+    console.log("offset(서비스)", offset);
+    // const findUser = await User.findById({ userId });
+    const projects = await Project.findAll({ perPage, offset });
     return projects;
   }
+
 
   static async getAllProjects() {
     const projects = await Project.findAll();
