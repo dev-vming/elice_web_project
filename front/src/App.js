@@ -6,8 +6,8 @@ import Header from "./components/common/Header";
 import { LoginPage, SearchPortfolios, RegisterPage , MyPage} from "./pages";
 import NotFoundPage from "./pages/NotFoundPage";
 
-export const UserStateContext = createContext(null);
-export const DispatchContext = createContext(null);
+export const UserStateContext = createContext('');
+export const DispatchContext = createContext('');
 
 
 function App() {

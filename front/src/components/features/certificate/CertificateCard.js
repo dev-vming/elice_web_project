@@ -16,16 +16,19 @@ function CertificateCard({ portfolioOwnerId, setCertificates, certificate, isEdi
 
   return (
     <>
+    <Card.Text>
       <Row className="align-items-center">
         <Col className='Cards'>
 
-          <span>자격증명: {certificate.name}</span>
+          <Row>자격증명: {certificate.name}</Row>
           <br />
-          <span className="text-muted">발급기관: {certificate.issuingOrganization}</span>
+          <Row className="text-muted">발급기관: {certificate.issuingOrganization}</Row>
           <br/>
-          <span className="text-muted">획득일: {certificate.certificatedDate.split('T')[0]}</span>
+          <Row className="text-muted">획득일: {certificate.certificatedDate.split('T')[0]}</Row>
 
         </Col>
+
+
         {isEditable && (
           <Col xs lg="1">
             <Button
@@ -47,6 +50,7 @@ function CertificateCard({ portfolioOwnerId, setCertificates, certificate, isEdi
           </Col>
         )}
       </Row>
+    </Card.Text>
     </>
   );
 }
