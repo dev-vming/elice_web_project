@@ -47,7 +47,7 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding, se
       <Form.Group controlId="formBasicIssuingOrganization" className="mt-3">
         <Form.Control
           type="text"
-          placeholder="상세 내역"
+          placeholder="발급기관"
           value={issuingOrganization}
           onChange={(e) => setIssuingOrganization(e.target.value)}
         />

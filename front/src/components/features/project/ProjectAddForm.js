@@ -29,7 +29,7 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
   const [endDate, setEndDate] = useState(null)
   const [editorState, setEditorState] = useState(EditorState.createEmpty()); 
   const [htmlString, setHtmlString] = useState(""); 
-  const [imgs, setImgs] = useState(["https://portfolio-ebak.s3.ap-northeast-2.amazonaws.com/Project/1698382857785_default_project_img.png"]);
+  const [imgs, setImgs] = useState(["https://portfolio-ebak.s3.ap-northeast-2.amazonaws.com/Public/project_default.png"]);
   const [editorStateSave, setEditorStateSave] = useState([]);
   const userId = portfolioOwnerId;
 

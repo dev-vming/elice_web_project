@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import * as Api from "../utils/api";
 import {CertificateAddForm, Certificate}  from "../components/features/certificate";
+import '../components/common/UI/MvpCardDesign.css'
 
 function Certificates({ portfolioOwnerId, isEditable }) {
   //useState로 awards 상태를 생성함.
@@ -21,9 +22,9 @@ function Certificates({ portfolioOwnerId, isEditable }) {
 
 
   return (
-    <Card>
-      <Card.Body>
-        <Card.Title>자격증 이력</Card.Title>
+    <Card className='Body'>
+      <Card.Body className="Mvps">
+        <Card.Title className="Title">자격증 이력</Card.Title>
         {certificates.map((certificate) => (
           <Certificate
             key={certificate._id}

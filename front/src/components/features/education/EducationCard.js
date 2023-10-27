@@ -1,5 +1,6 @@
 import { Card, Button, Row, Col } from "react-bootstrap";
 import * as Api from '../../../utils/api';
+import '../../common/UI/MvpCardDesign.css'
 
 function EducationCard({ portfolioOwnerId, setEducations, education, isEditable, setIsEditing }) {
 
@@ -16,10 +17,10 @@ function EducationCard({ portfolioOwnerId, setEducations, education, isEditable,
     return (
         <Card.Text>
             <Row className="align-items-center">
-                <Col>
-                    <span>{education.school}</span>
+                <Col className='Cards'>
+                    <span>학교명: {education.school}</span>
                     <br />
-                    <span>{education.major} ({education.educationLevel})</span>
+                    <span>전공/계열: {education.major} ({education.educationLevel})</span>
                     <br />
                     <span className="text-muted">{education.startDate.split('T')[0]}~{education.endDate.split('T')[0]}</span>
                 </Col>
