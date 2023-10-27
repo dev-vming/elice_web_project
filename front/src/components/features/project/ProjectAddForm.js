@@ -29,29 +29,13 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
   const [endDate, setEndDate] = useState(null)
   const [editorState, setEditorState] = useState(EditorState.createEmpty()); 
   const [htmlString, setHtmlString] = useState(""); 
-  const [imgs, setImgs] = useState([]);
+  const [imgs, setImgs] = useState(["https://portfolio-ebak.s3.ap-northeast-2.amazonaws.com/Project/1698382857785_default_project_img.png"]);
   const [editorStateSave, setEditorStateSave] = useState([]);
   const userId = portfolioOwnerId;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-  
-    // const contentState = editorState.getCurrentContent();
-  
-    // // 1) 업로드해놓고 혹시 삭제한 이미지가 있는지 조회 
-    // const content = {
-    //   text: contentState.getPlainText(),
-    //   // 이미지 엔티티만 가져옴
-    //   images: Object.values(contentState.getEntityMap())
-    //     .filter(entity => entity.getType() === 'IMAGE')
-    //     .map(entity => entity.getData().get('link')),
-    // };
-  
-    // // 2) 삭제한 이미지가 있다면 imgs에서 URL 삭제
-    // const newImgs = Object.values(contentState.getEntityMap())
-    //   .filter(entity => entity.getType() === 'IMAGE')
-    //   .map(entity => entity.getData().get('link'));
   
     await Api.post(`${userId}/projects`, {
       userId,
@@ -80,9 +64,9 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
   };
 
   const addImage = (imgUrl) => {
-    const newImgs = [...imgs];
-    newImgs.push(imgUrl);
-    setImgs(newImgs);
+    setImgs((prevImgs) => {
+      return [...prevImgs, imgUrl];
+      });
   };
 
   const isUrl = (str) => {
@@ -113,6 +97,8 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group controlId="formBasicTitle">
+        <br/>
+        <h2>프로젝트 제목을 입력하세요</h2>
         <Form.Control
           type="text"
           placeholder="프로젝트 제목"
@@ -163,7 +149,6 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
 
       <br />
       <div>프로젝트 상세내용</div>
-      <div className="text-muted">첫 번째 사진이 대표사진으로 등록됩니다.</div>
       <br />
       
       <Editor
@@ -171,7 +156,7 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
         editorState={editorState}
         onEditorStateChange={updateTextcontent}
         toolbar={{
-        image: { uploadCallback },
+        image: { uploadCallback, previewImage: true, },
         }}
         localization={{ locale: "ko" }}
         editorStyle={{

@@ -23,7 +23,7 @@ const UserSchema = new Schema(
       type: String,
       required: false,
       default:
-        "https://portfolio-ebak.s3.ap-northeast-2.amazonaws.com/User-img/1698158742450_corn.png",
+        "https://portfolio-ebak.s3.ap-northeast-2.amazonaws.com/Project/1698383098323_userdefaultimg.png",
     },
   },
   {

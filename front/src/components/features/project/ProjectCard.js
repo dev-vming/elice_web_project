@@ -1,15 +1,25 @@
 import { Card , Badge, Stack, ListGroup, Button } from "react-bootstrap";
 import draftjsToHtml from "draftjs-to-html";
 import * as Api from '../../../utils/api';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProjectDetailModal from "../../../pages/ProjectDetailModal";
 
 function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIsEditing, setIsVisibility }) { 
   const htmlString = draftjsToHtml(project.editorStateSave[0])
   const [modalshow, setModalShow] = useState(false);
+  const [firstImg, setFirstImg] = useState('');
+  
   const moveToDetail = () => {
     setModalShow(true)
   }
+
+  useEffect(() => {
+    setFirstImg(() => {
+      let newImg = project.imgs[0];
+      if (project.imgs[1]) newImg = project.imgs[1];
+      return newImg;
+    });
+  }, [])
 
   const deletecard = async () => {
     if(window.confirm('게시물을 삭제하시겠습니까?')) {
@@ -32,8 +42,8 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
       <Card.Img 
       onClick={moveToDetail} 
       variant="top" 
-      src={project.imgs[0] }
-      style={{ height:'100%', objectFit: 'cover'}} />
+      src={firstImg}
+      style={{ maxHeight:'20rem', height:'100%', objectFit: 'cover'}} />
       <Card.Body>
         <Card.Title onClick={moveToDetail}>{project.title}</Card.Title>
         <Card.Text onClick={moveToDetail}>{project.editorStateSave[0].blocks[0].text}</Card.Text>
