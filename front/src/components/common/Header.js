@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import { UserStateContext, DispatchContext } from "../../App";
-import styles from './Header.module.css';
 
 
 function Header() {
@@ -28,16 +27,20 @@ function Header() {
   return (
     <Nav activeKey={location.pathname}>
       <Nav.Item className="me-auto mb-5">
-        <Nav.Item className={styles.logo}>에나박치</Nav.Item>
+        <img 
+          src="https://portfolio-ebak.s3.ap-northeast-2.amazonaws.com/Public/logo.png" 
+          alt="로고"
+          style={{width:'9rem'}}
+          />
       </Nav.Item>
 
       {isLogin && (
       <>
         <Nav.Item>
-          <Nav.Link onClick={() => navigate("/")}>나의 페이지</Nav.Link>
+          <Nav.Link onClick={() => navigate("/network")}>홈</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link onClick={() => navigate("/network")}>네트워크</Nav.Link>
+          <Nav.Link onClick={() => navigate("/")}>나의 페이지</Nav.Link>
         </Nav.Item>
         <Nav.Item>
           <Nav.Link onClick={logout}>로그아웃</Nav.Link>

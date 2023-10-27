@@ -5,7 +5,7 @@ import * as Api from "./utils/api";
 import { loginReducer } from "./reducer";
 
 import Header from "./components/common/Header";
-import { LoginPage, SearchPortfolios, RegisterPage , MyPage, ProjectDetail} from "./pages";
+import { LoginPage, SearchPortfolios, RegisterPage , MyPage} from "./pages";
 import ProjectWrapper from "./pages/ProjectWrapper";
 import ProfileWrapper from "./pages/ProfileWrapper";
 import NotFoundPage from "./pages/NotFoundPage";

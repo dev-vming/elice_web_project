@@ -77,6 +77,11 @@ const listPerPage = 6;
 
     return (
       <Container fluid>
+        <Row>
+          <img 
+            src="https://portfolio-ebak.s3.ap-northeast-2.amazonaws.com/Public/main_banner.png"
+            alt='배너이미지' />
+        </Row>
         <Row xs="auto" className="justify-content-center align-items-center mt-4 mb-4" style={{ height: '200px', width: '100%' }}>
           <Form>
             <Row>
