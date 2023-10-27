@@ -17,13 +17,13 @@ function AwardCard({ portfolioOwnerId, setAwards, award, isEditable, setIsEditin
     <Card.Text>
       <Row className="align-items-center">
         <Col className='Cards'>
-          <span>수상명: {award.name}</span>
+          <Row>수상명: {award.name}</Row>
           <br />
-          <span>수여기관: {award.organization}</span>
+          <Row>수여기관: {award.organization}</Row>
           <br/>
-          <span className="text-muted">{award.awardedDate.split('T')[0]} 취득</span>
+          <Row className="text-muted">{award.awardedDate.split('T')[0]} 취득</Row>
           <br />
-          <span className="text-muted">추가사항: {award.Info}</span>
+          <Row className="text-muted">추가사항: {award.Info}</Row>
         </Col>
 
         {isEditable && (

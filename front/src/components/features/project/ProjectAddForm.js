@@ -12,8 +12,8 @@ import stacksList from "./ProjectStackList";
 function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisibility }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState([]);
-  const [startDate, setStartDate] = useState(null)
-  const [endDate, setEndDate] = useState(null)
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
   const [editorState, setEditorState] = useState(EditorState.createEmpty()); 
   const [htmlString, setHtmlString] = useState(""); 
   const [imgs, setImgs] = useState(["https://portfolio-ebak.s3.ap-northeast-2.amazonaws.com/Public/project_default.png"]);
