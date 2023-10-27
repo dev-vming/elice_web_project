@@ -1,4 +1,4 @@
-import { Card, Button, Row, Col } from "react-bootstrap";
+import { Button, Row, Col } from "react-bootstrap";
 import * as Api from '../../../utils/api';
 import '../../common/UI/MvpCardDesign.css'
 
@@ -17,13 +17,13 @@ function AwardCard({ portfolioOwnerId, setAwards, award, isEditable, setIsEditin
     <>
       <Row className="align-items-center">
         <Col className='Cards'>
-          <Row>수상명: {award.name}</Row>
+          <span>수상명: {award.name}</span>
           <br />
-          <Row>수여기관: {award.organization}</Row>
+          <span>수여기관: {award.organization}</span>
           <br/>
-          <Row className="text-muted">{award.awardedDate.split('T')[0]} 취득</Row>
+          <span className="text-muted">{award.awardedDate.split('T')[0]} 취득</span>
           <br />
-          <Row className="text-muted">추가사항: {award.Info}</Row>
+          <span className="text-muted">추가사항: {award.Info}</span>
         </Col>
 
         {isEditable && (

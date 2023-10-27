@@ -1,4 +1,4 @@
-import { Card, Button, Row, Col } from "react-bootstrap";
+import { Button, Row, Col } from "react-bootstrap";
 import * as Api from '../../../utils/api';
 import '../../common/UI/MvpCardDesign.css'
 
