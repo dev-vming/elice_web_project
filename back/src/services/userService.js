@@ -9,7 +9,8 @@ class userAuthService {
     if (user) {
       const errorMessage =
         "이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.";
-      return { errorMessage };
+      const errorType = "ConflictError";
+      return { errorType, errorMessage };
     }
 
     // 비밀번호 해쉬화
@@ -30,7 +31,8 @@ class userAuthService {
     if (!user) {
       const errorMessage =
         "해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
-      return { errorMessage };
+      const errorType = "NotFoundError";
+      return { errorType, errorMessage };
     }
 
     // 비밀번호 일치 여부 확인
@@ -42,7 +44,8 @@ class userAuthService {
     if (!isPasswordCorrect) {
       const errorMessage =
         "비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.";
-      return { errorMessage };
+      const errorType = "UnauthorizedError";
+      return { errorType, errorMessage };
     }
 
     // 로그인 성공 -> JWT 웹 토큰 생성
@@ -71,7 +74,8 @@ class userAuthService {
     // 정보를 수정하려는 유저의 id가 db에 없는 경우
     if (!user) {
       const errorMessage = "가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
-      return { errorMessage };
+      const errorType = "NotFoundError";
+      return { errorType, errorMessage };
     }
 
     if (toUpdate.password) {
@@ -88,7 +92,8 @@ class userAuthService {
     if (!user) {
       const errorMessage =
         "해당하는 유저가 없습니다. 다시 한 번 확인해 주세요.";
-      return { errorMessage };
+      const errorType = "NotFoundError";
+      return { errorType, errorMessage };
     }
 
     return user;

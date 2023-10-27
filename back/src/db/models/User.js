@@ -30,7 +30,7 @@ class User {
       }
     }
 
-    const updatedUser = await UserModel.updateMany(
+    const updatedUser = await UserModel.findOneAndUpdate(
       filter,
       realToUpdate,
       option

@@ -2,6 +2,12 @@ import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { userAuthService } from "../services/userService";
 import { is_request_body } from "../middlewares/is_request_body";
+import {
+  BadRequestError,
+  ConflictError,
+  NotFoundError,
+  UnauthorizedError,
+} from "../../libraries/custom-error";
 
 const userAuthRouter = Router();
 
@@ -12,7 +18,9 @@ userAuthRouter.post(
   async function (req, res, next) {
     try {
       const { name, email, password } = req.body;
-
+      if (!name || !email || !password) {
+        throw new BadRequestError("필수적인 값이 입력되지 않았습니다");
+      }
       // db에 데이터 추가
       const newUser = await userAuthService.addUser({
         name,
@@ -21,7 +29,11 @@ userAuthRouter.post(
       });
 
       if (newUser.errorMessage) {
-        throw new Error(newUser.errorMessage);
+        if (newUser.errorType === "ConflictError") {
+          throw new ConflictError(newUser.errorMessage);
+        } else {
+          throw new Error(newUser.errorMessage);
+        }
       }
 
       res.status(201).json(newUser);
@@ -41,7 +53,15 @@ userAuthRouter.post("/user/login", async function (req, res, next) {
     const user = await userAuthService.getUser({ email, password });
 
     if (user.errorMessage) {
-      throw new Error(user.errorMessage);
+      // 존재하지 않는 이메일
+      if (user.errorType === "NotFoundError") {
+        throw new NotFoundError(user.errorMessage);
+      } else if (user.errorType === "UnauthorizedError") {
+        // 비밀번호 불일치
+        throw new UnauthorizedError(user.errorMessage);
+      } else {
+        throw new Error(user.errorMessage);
+      }
     }
 
     res.status(200).send(user);
@@ -63,7 +83,11 @@ userAuthRouter.get(
       });
 
       if (currentUserInfo.errorMessage) {
-        throw new Error(currentUserInfo.errorMessage);
+        if (currentUserInfo.errorType === "NotFoundError") {
+          throw new NotFoundError(currentUserInfo.errorMessage);
+        } else {
+          throw new Error(currentUserInfo.errorMessage);
+        }
       }
 
       res.status(200).send(currentUserInfo);
@@ -88,11 +112,14 @@ userAuthRouter.put(
       const imgUrl = req.body.imgUrl ?? null;
       const toUpdate = { name, email, password, description, imgUrl };
 
-      await userAuthService.setUser({ _id }, { toUpdate });
-      const updatedUser = await userAuthService.getUserInfoById({ _id });
+      const updatedUser = await userAuthService.setUser({ _id }, { toUpdate });
 
       if (updatedUser.errorMessage) {
-        throw new Error(updatedUser.errorMessage);
+        if (updatedUser.errorType === "NotFoundError") {
+          throw new NotFoundError(updatedUser.errorMessage);
+        } else {
+          throw new Error(updatedUser.errorMessage);
+        }
       }
 
       res.status(200).json(updatedUser);
@@ -114,7 +141,11 @@ userAuthRouter.get(
       });
 
       if (currentUserInfo.errorMessage) {
-        throw new Error(currentUserInfo.errorMessage);
+        if (currentUserInfo.errorType === "NotFoundError") {
+          throw new NotFoundError(currentUserInfo.errorMessage);
+        } else {
+          throw new Error(currentUserInfo.errorMessage);
+        }
       }
 
       res.status(200).send(currentUserInfo);
