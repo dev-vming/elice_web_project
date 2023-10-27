@@ -113,17 +113,17 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
           return newContent; 
         })}>
           <div style={{ maxHeight: "300px", overflowY: "auto" }}>
-            {stacksList.map((stack)=>{
+            {stacksList.map((stack,index)=>{
               return (
-                <DropdownItem eventKey={stack}>{stack}</DropdownItem>
+                <DropdownItem key={`dropdown-stack-${index}`} eventKey={stack}>{stack}</DropdownItem>
               ) 
             })}
           </div>  
         </DropdownButton>
           <br/>
           <Stack direction="horizontal" gap={1}>
-            {content.map(stack => 
-              <Badge bg="secondary">{stack}</Badge>
+            {content.map((stack, index) => 
+              <Badge key={`badge-stack-${index}`} bg="secondary">{stack}</Badge>
               )}
             </Stack> 
       </Form.Group>

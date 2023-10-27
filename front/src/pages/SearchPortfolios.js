@@ -4,6 +4,7 @@ import * as Api from "../utils/api";
 import Project from "../components/features/project/Project";
 import Pagination from "../components/features/pagination/Pagination";
 
+
 export function SearchPortfolios() {
 //searching 관련 state
 const [isSearching , setIsSearching ] = useState(false);
@@ -77,9 +78,9 @@ const listPerPage = 6;
 
     return (
       <Container fluid>
-        <Row>
+        <Row >
           <img 
-            src="https://portfolio-ebak.s3.ap-northeast-2.amazonaws.com/Public/main_banner.png"
+            src="https://portfolio-ebak.s3.ap-northeast-2.amazonaws.com/Project/1698393779005_%C3%AB%C2%B0%C2%B0%C3%AB%C2%84%C2%88.png"
             alt='배너이미지' />
         </Row>
         <Row xs="auto" className="justify-content-center align-items-center mt-4 mb-4" style={{ height: '200px', width: '100%' }}>

@@ -19,15 +19,15 @@ function ProjectDetailModal({show, onHide, project, htmlString, isEditable }) {
             </Modal.Header>
             <Modal.Body>
                 <h2>{project.title}</h2>
-                <hr class="my-2"/>
+                <hr className="my-2"/>
                 <Stack direction="horizontal" gap={1}>
-                    {project.content.map(stack => 
-                    <Badge bg="secondary">{stack}</Badge>
+                    {project.content.map((stack,index) => 
+                    <Badge key={`stacks-badge-${index}`}bg="secondary">{stack}</Badge>
                     )}
                 </Stack>
-                <hr class="my-2"/>
+                <hr className="my-2"/>
                 {project.startDate.split('T')[0]}~{project.endDate.split('T')[0]}
-                <hr class="my-2"/>
+                <hr className="my-2"/>
                 <div dangerouslySetInnerHTML={{ __html: htmlString }} />
             </Modal.Body>
             <Modal.Footer>
