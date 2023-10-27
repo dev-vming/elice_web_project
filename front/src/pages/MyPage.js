@@ -1,18 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Col, Row,  Navbar, Nav } from "react-bootstrap";
-
 import { UserStateContext } from "../App";
 import * as Api from "../utils/api";
 import User from "../components/features/user/User";
 import ProfileWrapper from "./ProfileWrapper";
 import ProjectWrapper from "./ProjectWrapper";
 
-// import Educations from './Educations';
-// import Awards from "./Awards";
-// import Certificates from "./Certificates";
-// import Projects from './Projects'
-// import Project from './../components/features/project/Project';
 
 function MyPage() {
   const navigate = useNavigate();
@@ -66,68 +60,61 @@ function MyPage() {
 
   return (
     <Container fluid>
-    <Navbar className="navbar mb-4" expand="xl"  sticky="top" bg= "light" >
-  <Container>
-    <Navbar.Brand placement="end" onClick={() => navigate("/main")}> {portfolioOwner.name}의 포트폴리오 </Navbar.Brand>
-    <Navbar.Toggle aria-controls="navbar-nav" />
-    <Navbar.Collapse id="navbar-nav">
-      <Nav className="justify-content-md-end flex-grow-1 p-2 bd-highlight">
-        <Nav.Link 
-          onClick= {() => {
-          setSelectedContent("project")
-          navigate(`/users/${portfolioOwner._id}`) }
-        } 
-        id = "project"
-        > 
-          프로젝트 
-          </Nav.Link> 
-        
-        
-        <Nav.Link  
-          onClick= {() => { 
-          setSelectedContent("profile")
-          navigate(`/users/${portfolioOwner._id}`)} 
-              }
-              id = "profile"
-              >
-                개인 이력
-          </Nav.Link>
-        </Nav>
-    </Navbar.Collapse>
-    </Container>
-</Navbar>
-      <Row>
+      <Navbar className="navbar mb-4" expand="xl"  sticky="top" bg= "light" >
+        <Container>
+          <Navbar.Brand placement="end" onClick={() => navigate("/main")}> {portfolioOwner.name}의 포트폴리오 </Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbar-nav" />
+          <Navbar.Collapse id="navbar-nav">
+            <Nav className="justify-content-md-end flex-grow-1 p-2 bd-highlight">
+              <Nav.Link 
+                onClick= {() => {
+                  setSelectedContent("project")
+                  navigate(`/users/${portfolioOwner._id}`)}} 
+                id = "project"
+              > 프로젝트 
+              </Nav.Link> 
+              
+              <Nav.Link  
+                onClick= {() => { 
+                  setSelectedContent("profile")
+                  navigate(`/users/${portfolioOwner._id}`)}}
+                id = "profile"
+              > 개인 이력 
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+        <Row>
           <Col md="3" lg="3">
-          <User
-            portfolioOwnerId={portfolioOwner._id}
-            isEditable={portfolioOwner._id === userState.user?._id}
-          />
-        </Col>
-
-            
-        { selectedContent === "project" ? (
-          <Col>
-          <ProjectWrapper
-            portfolioOwnerId={portfolioOwner._id}
-            portfolioOwner= {portfolioOwner}
-            userState={userState}
-            navigate={navigate}
+            <User
+              portfolioOwnerId={portfolioOwner._id}
+              isEditable={portfolioOwner._id === userState.user?._id}
             />
           </Col>
-        )  : (
-        <Col>
-        <ProfileWrapper
-          portfolioOwnerId={portfolioOwner._id}
-          portfolioOwner= {portfolioOwner}
-          userState={userState}
-          navigate={navigate}
-          />
-      </Col>
-      
-  )}
-    </Row>
-</Container>
-    )
-;}
+
+        { selectedContent === "project" ? (
+          <Col>
+            <ProjectWrapper
+              portfolioOwnerId={portfolioOwner._id}
+              portfolioOwner= {portfolioOwner}
+              userState={userState}
+              navigate={navigate}
+            />
+          </Col>
+          )  : (
+          <Col>
+            <ProfileWrapper
+              portfolioOwnerId={portfolioOwner._id}
+              portfolioOwner= {portfolioOwner}
+              userState={userState}
+              navigate={navigate}
+            />
+          </Col>
+        )}
+        </Row>
+    </Container>
+  );
+}
 
 export default MyPage;
