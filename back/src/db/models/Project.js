@@ -27,7 +27,21 @@ class Project {
   // Read Page
   static async findPage({ perPage, offset }) {
     const projects = await ProjectModel.find({}).limit(perPage).skip(offset);
-    return projects;
+    //totalpage 총페이지 계산
+    var totalnum = await ProjectModel.count();
+    //$total_page = ceil($total_record / $list); // 페이징한 페이지 수
+    // const totalnum = await ProjectModel.countDocuments({});
+    // console.log(totalnum);
+
+    //const totalnum = ProjectModel.countDocuments({});
+    //const totalnum = ProjectModel.find({}).count({});
+    console.log("totalnum : ", totalnum);
+
+    const totalpage = Math.ceil(totalnum / perPage); // 페이징한 페이지 수
+    console.log("totalpage : ", totalpage);
+    const result = { data: projects, totalpage: totalpage };
+    //return projects;
+    return result;
   }
 
   // Read by User
