@@ -6,6 +6,7 @@ import { Project, ProjectAddForm } from '../components/features/project'
 function Projects({ portfolioOwnerId, isEditable }) {
   const [projects, setProjects] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
+  const [isVisibility, setIsVisibility ] = useState(true);
 
   const getUser = useCallback(() => {
     Api.get(`${portfolioOwnerId}/projects`).then((res) => setProjects(res.data));
@@ -22,10 +23,12 @@ function Projects({ portfolioOwnerId, isEditable }) {
       <Card.Body>
       <Card.Title>프로젝트</Card.Title>
         <Col >
-        {isEditable && !isAdding && (
+        {isEditable && isVisibility && (
           <Row className="mt-3 text-center mb-4">
             <Col sm={{ span: 20 }}>
-              <Button onClick={() => setIsAdding(true)} >+</Button>
+              <Button onClick={() => {
+                setIsAdding(true)
+                setIsVisibility(false)}} >+</Button>
             </Col>
           </Row>
         )}
@@ -38,6 +41,7 @@ function Projects({ portfolioOwnerId, isEditable }) {
             project={project}
             setProjects={setProjects}
             isEditable={isEditable}
+            setIsVisibility={setIsVisibility}
           />
         ))}
       </Row>
@@ -47,6 +51,7 @@ function Projects({ portfolioOwnerId, isEditable }) {
             portfolioOwnerId={portfolioOwnerId}
             setProjects={setProjects}
             setIsAdding={setIsAdding}
+            setIsVisibility={setIsVisibility}
           />
         )}
         </Col>

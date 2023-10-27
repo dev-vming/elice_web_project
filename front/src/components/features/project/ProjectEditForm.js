@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Col, Row, DropdownButton, Stack, Badge } from "react-bootstrap";
 import * as Api from "../../../utils/api";
-import styled from "styled-components";
 import { Editor } from "react-draft-wysiwyg"; 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"; 
 import { EditorState, convertToRaw, ContentState } from "draft-js"; 
@@ -10,21 +9,7 @@ import htmlToDraft from 'html-to-draftjs'
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import stacksList from "./ProjectStackList";
 
-// //텍스트에디터 출력 확인 공간
-// const RowBox = styled.div` 
-// width: 100%;
-// display: flex;
-// `;
-
-// const Viewer = styled.div` 
-// width: 50%;
-// height: 400px;
-// padding: 20px;
-// margin-top: 20px;
-// border: 2px solid gray;
-// `;
-
-function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing}) {
+function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing, setIsVisibility}) {
 
   const [title, setTitle] = useState(currentProject.title);
   const [content, setContent] = useState(currentProject.content);
@@ -52,17 +37,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing}) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation(); 
-  
-    // const contentState = editorState.getCurrentContent();
-  
-    //    // 1) 업로드해놓고 혹시 삭제한 이미지가 있는지 조회 
-    // const content = {
-    //   text: contentState.getPlainText(),
-    //   images: contentState.getEntityMap().get('IMAGE').map(entity => entity.getData().get('link')),
-    // };
 
-    // // 2) 삭제한 이미지가 있다면 imgs에서 url 삭제
-    // const newImgs = contentState.getEntityMap().get('IMAGE').map(entity => entity.getData().get('link'));
     await Api.post(`${userId}/projects/${currentProject._id}`, {
       userId,
       title,
@@ -73,8 +48,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing}) {
       imgs,
     });
   
-     // const res = await Api.get(`${userId}/projects`); 
-    // setProjects(res.data);
+
     setIsEditing(false);
   };
 
@@ -131,6 +105,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing}) {
           onChange={(e) => setTitle(e.target.value)}
         />
       </Form.Group>
+      <br/>
 
       <Form.Group controlId="formBasiccontent" className="mt-3">
         <DropdownButton id="Stacks" title={'기술 스택을 선택해주세요'} onSelect={(eventKey) => setContent((prevContent) => {
@@ -192,17 +167,15 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing}) {
         }}
       />
 
-      {/* <RowBox>
-        <Viewer dangerouslySetInnerHTML={{ __html: htmlString }} />
-        <Viewer>{htmlString}</Viewer>
-      </RowBox> */}
 
       <Form.Group as={Row} className="mt-3 text-center mb-4">
         <Col sm={{ span: 20 }}>
-          <Button variant="primary" type="submit" className="me-3">
+          <Button variant="primary" type="submit" className="me-3" onclick={()=>setIsVisibility(true)}>
             확인
           </Button>
-          <Button variant="secondary" onClick={() => setIsEditing(false)}>
+          <Button variant="secondary" onClick={() => {
+            setIsEditing(false)
+            setIsVisibility(true)}}>
             취소
           </Button>
         </Col>
