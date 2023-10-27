@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Container, Row, Col, Form, FloatingLabel, InputGroup } from "react-bootstrap";
+import { Container, Row, Col, Form, InputGroup } from "react-bootstrap";
 import * as Api from "../utils/api";
 import Project from "../components/features/project/Project";
 import Pagination from "../components/features/pagination/Pagination";

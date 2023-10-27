@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import ProjectDetailModal from "../../../pages/ProjectDetailModal";
 
 function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIsEditing, setIsVisibility }) { 
-  const htmlString = draftjsToHtml(project.editorStateSave[0])
+  const htmlString = draftjsToHtml(project.editorStateSave[0]);
   const [modalshow, setModalShow] = useState(false);
   const [firstImg, setFirstImg] = useState('');
   
