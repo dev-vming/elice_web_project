@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ProjectCard from "./ProjectCard";
 import ProjectEditForm from "./ProjectEditForm";
 
-function Project({ portfolioOwnerId, project, setProjects, isEditable , setIsVisibility }) {
+function Project({ portfolioOwnerId, project, setProjects, isEditable,  setIsVisibility, pagingProjects }) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
@@ -23,6 +23,7 @@ function Project({ portfolioOwnerId, project, setProjects, isEditable , setIsVis
           portfolioOwnerId={portfolioOwnerId}
           setProjects={setProjects}
           setIsVisibility={setIsVisibility}
+          pagingProjects={pagingProjects}
         />
       )}
     </>

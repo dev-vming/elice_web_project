@@ -64,9 +64,9 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing, setIs
   };
 
   const addImage = (imgUrl) => {
-    const newImgs = [...imgs];
-    newImgs.push(imgUrl);
-    setImgs(newImgs);
+    setImgs(prevImgs => {
+      return [...prevImgs, imgUrl];
+    });
   };
 
   const isUrl = (str) => {
@@ -98,6 +98,8 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing, setIs
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group controlId="formBasicTitle">
+        <br/>
+        <h2>프로젝트 제목을 입력하세요</h2>
         <Form.Control
           type="text"
           placeholder="프로젝트 제목"
@@ -149,7 +151,6 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing, setIs
 
       <br />
       <div>프로젝트 상세내용</div>
-      <div className="text-muted">첫 번째 사진이 대표사진으로 등록됩니다.</div>
       <br />
       
       <Editor
@@ -157,7 +158,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setIsEditing, setIs
         editorState={editorState}
         onEditorStateChange={updateTextDescription}
         toolbar={{
-        image: { uploadCallback },
+        image: { uploadCallback, previewImage: true, },
         }}
         localization={{ locale: "ko" }}
         editorStyle={{
