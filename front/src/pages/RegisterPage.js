@@ -16,7 +16,6 @@ function RegisterPage() {
   //useState로 name 상태를 생성함.
   const [name, setName] = useState("");
 
-  //이메일이 abc@example.com 형태인지 regex를 이용해 확인함.
   const validateEmail = (email) => {
     return email
       .toLowerCase()
@@ -25,16 +24,22 @@ function RegisterPage() {
       );
   };
 
-  //위 validateEmail 함수를 통해 이메일 형태 적합 여부를 확인함.
   const isEmailValid = validateEmail(email);
-  // 비밀번호가 4글자 이상인지 여부를 확인함.
-  const isPasswordValid = password.length >= 4;
-  // 비밀번호와 확인용 비밀번호가 일치하는지 여부를 확인함.
+
+
+  // const password1RegExp = 
+
+  const validatePassword = (password) =>  {
+    return  /^(([a-z0-9]{4,12}))$/.test(password)
+  }
+    
+  const isPasswordValid = validatePassword(password)
+
+  // password.length >= 4
   const isPasswordSame = password === confirmPassword;
-  // 이름이 2글자 이상인지 여부를 확인함.
+
   const isNameValid = name.length >= 2;
 
-  // 위 4개 조건이 모두 동시에 만족되는지 여부를 확인함.
   const isFormValid =
     isEmailValid && isPasswordValid && isPasswordSame && isNameValid;
 
@@ -86,7 +91,7 @@ function RegisterPage() {
               />
               {!isPasswordValid && (
                 <Form.Text className="text-success">
-                  비밀번호는 4글자 이상으로 설정해 주세요.
+                "비밀번호는 영문 소문자와 숫자 4-12자리로 입력해야합니다."            
                 </Form.Text>
               )}
             </Form.Group>
