@@ -22,7 +22,23 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-  
+
+    const entity = editorStateSave[0].entityMap;
+    const deletedImgs = [];
+    const entityUrls = Object.values(entity).map(entityItem => entityItem.data.src);
+
+    for (let url of imgs) {
+      let found = false;
+      // Check if the base URL is present in the entityUrls
+      if (entityUrls.includes(url)) {
+        found = true;
+      }
+      if (!found) deletedImgs.push(url);
+    }
+
+    console.log(JSON.stringify(convertToRaw(editorState.getCurrentContent()).entityMap))
+    console.log(deletedImgs);
+
     await Api.post(`${userId}/projects`, {
       userId,
       title,
@@ -47,6 +63,8 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
       newEditorStateSave[0] = convertToRaw(editorState.getCurrentContent());
       return newEditorStateSave;
     })
+    console.log(JSON.stringify(editorStateSave))
+    console.log(JSON.stringify(convertToRaw(editorState.getCurrentContent())));
   };
 
   const addImage = (imgUrl) => {
@@ -78,7 +96,7 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
             }
         } 
       });
-    };
+    };  
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -151,11 +169,6 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
         border: "3px solid lightgray",
         }}
       />
-
-      {/* <RowBox>
-        <Viewer dangerouslySetInnerHTML={{ __html: htmlString }} />
-        <Viewer>{htmlString}</Viewer>
-      </RowBox> */}
 
       <Form.Group as={Row} className="mt-3 text-center">
         <Col sm={{ span: 20 }}>

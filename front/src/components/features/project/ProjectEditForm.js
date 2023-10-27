@@ -37,6 +37,20 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation(); 
+
+    const entity = editorStateSave[0].entityMap;
+    const deletedImgs = [];
+    const entityUrls = Object.values(entity).map(entityItem => entityItem.data.src);
+
+    for (let url of imgs) {
+      let found = false;
+      // Check if the base URL is present in the entityUrls
+      if (entityUrls.includes(url)) {
+        found = true;
+      }
+      if (!found) deletedImgs.push(url);
+    }
+
     try {
       await Api.post(`${userId}/projects/${currentProject._id}`, {
         userId,

@@ -98,6 +98,21 @@ async function del(endpoint, params = "") {
   });
 }
 
+async function delImg(endpoint, data) {
+  try{
+    console.log(`DELETE 요청 ${serverUrl + endpoint + "/" + data}`);
+  }
+  catch(err) {
+    console.log('DELETE 요청에 실패했습니다\n',err);
+  }
+
+  return axios.delete(serverUrl + endpoint + "/" + data, {
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+    },
+  });
+}
+
 async function imgpost(endpoint, img) {
   const formData = new FormData();
   formData.append('image', img );
@@ -120,4 +135,4 @@ async function imgpost(endpoint, img) {
 
 // 아래처럼 export한 후, import * as A 방식으로 가져오면,
 // A.get, A.post 로 쓸 수 있음.
-export { get, post, postImg, put, del as delete, imgpost };
+export { get, post, postImg, put, delImg, del as delete, imgpost };
