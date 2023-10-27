@@ -1,14 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Container, Row, Col, Form, FloatingLabel, InputGroup } from "react-bootstrap";
 import * as Api from "../utils/api";
 import Project from "../components/features/project/Project";
 import Pagination from "../components/features/pagination/Pagination";
+import {useLocation} from "react-router-dom";
 
 
 export function SearchPortfolios() {
 //searching 관련 state
 const [isSearching , setIsSearching ] = useState(false);
 const [searchResult, setSearchResult] = useState([]);
+
 
 //paging 관련 state
 const [projects, setProjects] = useState([]); //프로젝트 data
@@ -21,7 +23,6 @@ const listPerPage = 6;
   const getProjects = () => {
     const project = Api.get(`projects`)
      .then((res) => {
-      console.log(res.data);
       setProjects(res.data);
       setSearchResult(res.data);
     });
@@ -87,15 +88,16 @@ const listPerPage = 6;
           <Form>
             <Row>
               <Col className="d-flex">
-                <Form.Control
-                  style={{ width: '400px' }}
-                  type="text"
-                  placeholder="Search"
-                  className="me-2"
-                  onChange={searchHandler} 
-                  onClick={()=> {setIsSearching(true)}}
-                  
-                  />
+                <InputGroup>
+                  <InputGroup.Text>🔍</InputGroup.Text>
+                    <Form.Control
+                        type="text"
+                        placeholder="기술 스택으로 프로젝트를 검색하세요."
+                        style={{width:'40rem'}}
+                        onChange={searchHandler} 
+                        onClick={()=> {setIsSearching(true)}}
+                        />
+                </InputGroup>
               </Col>
             </Row>
           </Form>
