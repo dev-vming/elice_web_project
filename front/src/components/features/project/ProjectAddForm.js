@@ -11,33 +11,38 @@ import stacksList from "./ProjectStackList";
 function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisibility }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState([]);
-  const [startDate, setStartDate] = useState(null)
-  const [endDate, setEndDate] = useState(null)
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
   const [editorState, setEditorState] = useState(EditorState.createEmpty()); 
   const [htmlString, setHtmlString] = useState(""); 
   const [imgs, setImgs] = useState(["https://portfolio-ebak.s3.ap-northeast-2.amazonaws.com/Public/project_default.png"]);
   const [editorStateSave, setEditorStateSave] = useState([]);
   const userId = portfolioOwnerId;
+  const deletedImgs = [];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-
     const entity = editorStateSave[0].entityMap;
-    const deletedImgs = [];
-    const entityUrls = Object.values(entity).map(entityItem => entityItem.data.src);
 
-    for (let url of imgs) {
-      let found = false;
-      // Check if the base URL is present in the entityUrls
-      if (entityUrls.includes(url)) {
-        found = true;
+    if (Object.keys(entity).length != 0)  {
+      const entityUrls = Object.values(entity).map(entityItem => entityItem.data.src);
+
+      for (let url of imgs) {
+        let found = false;
+        if (entityUrls.includes(url)) {
+          found = true;
+        }
+        if (!found) deletedImgs.push(url);
       }
-      if (!found) deletedImgs.push(url);
-    }
+      console.log(deletedImgs)
+      const newImgs = imgs.filter(img => !deletedImgs.includes(img))
+      setImgs(newImgs);
+      console.log(imgs)
 
-    console.log(JSON.stringify(convertToRaw(editorState.getCurrentContent()).entityMap))
-    console.log(deletedImgs);
+     }
+
+    // await Api.delImg(`projects/delete`, { deletedImgs }); 
 
     await Api.post(`${userId}/projects`, {
       userId,
@@ -48,7 +53,7 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
       editorStateSave, 
       imgs,
     });
-  
+    
     const res = await Api.get(`${userId}/projects`);
     setProjects(res.data);
     setIsAdding(false);

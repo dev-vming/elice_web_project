@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import ProjectDetailModal from "../../../pages/ProjectDetailModal";
 
 function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIsEditing, setIsVisibility }) { 
-  const htmlString = draftjsToHtml(project.editorStateSave[0])
+  const htmlString = draftjsToHtml(project.editorStateSave[0]);
   const [modalshow, setModalShow] = useState(false);
   const [firstImg, setFirstImg] = useState('');
   
@@ -37,6 +37,7 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
       onHide={()=> setModalShow(false)} 
       project={project}
       htmlString={htmlString}
+      isEditable={isEditable}
     />
     <Card className="mb-2 ms-3 mr-5" style={{ width: "25rem" }}>
       <Card.Img 

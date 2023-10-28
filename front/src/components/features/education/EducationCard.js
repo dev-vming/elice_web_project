@@ -15,7 +15,7 @@ function EducationCard({ portfolioOwnerId, setEducations, education, isEditable,
     }
 
     return (
-        <Card.Text>
+        <>
             <Row className="align-items-center">
                 <Col className='Cards'>
                     <span>학교명: {education.school}</span>
@@ -45,7 +45,7 @@ function EducationCard({ portfolioOwnerId, setEducations, education, isEditable,
                     </Col>
                 )}
             </Row>
-        </Card.Text>
+        </>
     );
 }
 

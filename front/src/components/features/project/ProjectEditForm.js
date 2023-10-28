@@ -37,19 +37,34 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation(); 
-
     const entity = editorStateSave[0].entityMap;
-    const deletedImgs = [];
-    const entityUrls = Object.values(entity).map(entityItem => entityItem.data.src);
 
-    for (let url of imgs) {
-      let found = false;
-      // Check if the base URL is present in the entityUrls
-      if (entityUrls.includes(url)) {
-        found = true;
+    if (entity != {})  {
+      const deletedImgs = [];
+      const entityUrls = Object.values(entity).map(entityItem => entityItem.data.src);
+
+      for (let url of imgs) {
+        let found = false;
+        if (entityUrls.includes(url)) {
+          found = true;
+        }
+        if (!found) deletedImgs.push(url);
       }
-      if (!found) deletedImgs.push(url);
-    }
+
+      console.log(deletedImgs)
+
+      // const newImgs = [...imgs];
+      // if (imgs) {
+      //   for (let img of imgs) {
+      //     if (deletedImgs.includes(img)) {
+      //       newImgs.push(img);
+      //     }
+      //   }
+      // }
+      // setImgs(newImgs);
+      // console.log(imgs)
+      //   await Api.delImg(`projects/delete`, { deletedImgs });
+     }
 
     try {
       await Api.post(`${userId}/projects/${currentProject._id}`, {
@@ -79,6 +94,7 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
       newStateSave[0] = convertToRaw(editorState.getCurrentContent())
       return newStateSave;
     })
+    console.log(JSON.stringify(convertToRaw(editorState.getCurrentContent())));
   };
 
   const addImage = (imgUrl) => {

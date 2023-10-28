@@ -15,7 +15,7 @@ function CertificateCard({ portfolioOwnerId, setCertificates, certificate, isEdi
   }
 
   return (
-    <Card.Text>
+    <>
       <Row className="align-items-center">
         <Col className='Cards'>
 
@@ -47,7 +47,7 @@ function CertificateCard({ portfolioOwnerId, setCertificates, certificate, isEdi
           </Col>
         )}
       </Row>
-    </Card.Text>
+    </>
   );
 }
 
