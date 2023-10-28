@@ -68,7 +68,7 @@ function LoginPage() {
               <Form.Label>이메일 주소</Form.Label>
               <Form.Control
                 type="email"
-                autoComplete="on"
+                autoComplete="off"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
