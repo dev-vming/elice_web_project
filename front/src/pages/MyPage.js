@@ -30,7 +30,7 @@ function MyPage() {
       // fetchPorfolioOwner 과정이 끝났으므로, isFetchCompleted를 true로 바꿈.
       setIsFetchCompleted(true);
     }catch(err) {
-      setIsFetchCompleted(true);
+      navigate('/login');
     }
 
   };
