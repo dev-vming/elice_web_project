@@ -9,7 +9,6 @@ function SearchPortfolios() {
 
   const getProjects = () => {
     Api.get("projects").then((res) => {
-      console.log("res", res);
       setProjects(res.data);
       setSearchResult(res.data);
     });
