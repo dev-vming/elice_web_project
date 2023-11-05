@@ -2,6 +2,7 @@ import { Router } from "express";
 import multer from "multer";
 import { DeleteObjectsCommand, S3Client } from "@aws-sdk/client-s3";
 import multerS3 from "multer-s3";
+import { v4 } from "uuid";
 
 const imageRouter = Router();
 const bucketName = "portfolio-ebak";
@@ -23,7 +24,7 @@ const imageUpload_user = multer({
       if (!["png", "jpg", "jpeg", "gif", "bmp"].includes(extention)) {
         return cb(new Error("이미지 파일이 아닙니다."));
       }
-      cb(null, `User-img/${Date.now() + Math.random()}`);
+      cb(null, `User-img/${v4()}.${extention}`);
     },
   }),
   acl: "public-read",
@@ -39,7 +40,7 @@ const imageUpload_project = multer({
       if (!["png", "jpg", "jpeg", "gif", "bmp"].includes(extention)) {
         return cb(new Error("이미지 파일이 아닙니다."));
       }
-      cb(null, `Project/${Date.now() + Math.random()} `);
+      cb(null, `Project/${v4()}.${extention} `);
     },
   }),
   acl: "public-read",
