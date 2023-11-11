@@ -31,6 +31,7 @@ function Header() {
           src="https://portfolio-ebak.s3.ap-northeast-2.amazonaws.com/Public/logo.png" 
           alt="로고"
           style={{width:'9rem'}}
+          onClick= {() => navigate("/network")} 
           />
       </Nav.Item>
 

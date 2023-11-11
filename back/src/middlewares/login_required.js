@@ -21,7 +21,9 @@ function login_required(req, res, next) {
       next(err);
     } else {
       err.message = "정상적인 토큰이 아닙니다. 다시 한 번 확인해 주세요. 0_o";
-      next(err);
+      console.log(err.message);
+      res.send(err.message);
+      // next(err);
     }
   }
 }

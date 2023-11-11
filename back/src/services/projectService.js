@@ -30,12 +30,12 @@ class projectService {
     return projects;
   }
 
-  static async getProjectsPage({ perPage, offset }) {
-    const projects = await Project.findPage({ perPage, offset });
-    return projects;
-  }
+  // static async getProjectsPage({ perPage, offset }) {
+  //   const projects = await Project.findPage({ perPage, offset });
+  //   return projects;
+  // }
 
-  static async getAllProjects() {
+  static async getProjectsAll() {
     const projects = await Project.findAll();
     return projects;
   }

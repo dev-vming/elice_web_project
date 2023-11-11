@@ -18,7 +18,7 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
   const [imgs, setImgs] = useState(["https://portfolio-ebak.s3.ap-northeast-2.amazonaws.com/Public/project_default.png"]);
   const [editorStateSave, setEditorStateSave] = useState([]);
   const userId = portfolioOwnerId;
-  const deletedImgs = [];
+  const [deletedImgs, setDeletedImgs] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,30 +33,45 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
         if (entityUrls.includes(url)) {
           found = true;
         }
-        if (!found) deletedImgs.push(url);
+        if (!found) {
+          setDeletedImgs(() => {
+            const newDeleted = [...deletedImgs];
+            newDeleted.push(url);
+            return newDeleted;
+          })
+        }
       }
       console.log(deletedImgs)
-      const newImgs = imgs.filter(img => !deletedImgs.includes(img))
-      setImgs(newImgs);
-      console.log(imgs)
-
+      setImgs(()=> {
+        const newImgs = [...imgs]
+        newImgs.filter(img => !deletedImgs.includes(img));
+        return newImgs;
+      });
+      console.log(imgs);
      }
 
-    // await Api.delImg(`projects/delete`, { deletedImgs }); 
+    try {
+      if(deletedImgs.length != 0){
+        await Api.delImg('projects/delete',  { deleteItems: deletedImgs });
+      };
 
-    await Api.post(`${userId}/projects`, {
-      userId,
-      title,
-      content,
-      startDate,
-      endDate,
-      editorStateSave, 
-      imgs,
-    });
-    
-    const res = await Api.get(`${userId}/projects`);
-    setProjects(res.data);
-    setIsAdding(false);
+      await Api.post(`${userId}/projects`, {
+        userId,
+        title,
+        content,
+        startDate,
+        endDate,
+        editorStateSave, 
+        imgs,
+      });
+      
+      const res = await Api.get(`${userId}/projects`);
+      setProjects(res.data);
+      setIsAdding(false);
+    }
+    catch(err) {
+      console.log('추가요청에 실패했습니다.')
+    }
   };
   
   const updateTextcontent = async (state) => {

@@ -1,4 +1,4 @@
-import { Card, Button, Row, Col } from "react-bootstrap";
+import { Button, Row, Col } from "react-bootstrap";
 import * as Api from '../../../utils/api';
 import '../../common/UI/MvpCardDesign.css'
 
@@ -26,6 +26,8 @@ function CertificateCard({ portfolioOwnerId, setCertificates, certificate, isEdi
           <span className="text-muted">획득일: {certificate.certificatedDate.split('T')[0]}</span>
 
         </Col>
+
+
         {isEditable && (
           <Col xs lg="1">
             <Button

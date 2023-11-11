@@ -8,7 +8,7 @@ function User({ portfolioOwnerId, isEditable }) {
   // useState 훅을 통해 isEditing 상태를 생성함.
   const [isEditing, setIsEditing] = useState(false);
   // useState 훅을 통해 user 상태를 생성함.
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState('');
 
   const getUser = useCallback(() => {
     Api.get("users", portfolioOwnerId).then((res) => setUser(res.data));

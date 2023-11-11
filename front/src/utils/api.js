@@ -104,17 +104,17 @@ async function del(endpoint, params = "") {
 
 async function delImg(endpoint, data) {
   try{
-    console.log(`DELETE 요청 ${serverUrl + endpoint, data}`);
+    console.log(`DELETE 요청 ${serverUrl + endpoint, JSON.stringify(data)}`);
+    return axios.delete(serverUrl + endpoint, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data, 
+    });
   }
   catch(err) {
     console.log('DELETE 요청에 실패했습니다\n', data, err);
   }
-
-  return axios.delete(serverUrl + endpoint, data, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
 }
 
 async function imgpost(endpoint, img) {

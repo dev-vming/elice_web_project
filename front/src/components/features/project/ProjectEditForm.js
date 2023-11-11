@@ -18,10 +18,15 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [htmlString, setHtmlString] = useState(draftjsToHtml(currentProject.editorStateSave[0]));
   const [editorStateSave, setEditorStateSave] = useState(currentProject.editorStateSave);
+  const entity = editorStateSave[0].entityMap;
   const [imgs, setImgs] = useState(currentProject.imgs);
   const userId = portfolioOwnerId;
+  const [deletedImgs, setDeletedImgs] = useState([]);
 
   useEffect(() => {
+    if (imgs.length>1) {
+      setImgs(Object.values(entity).map(entityItem => entityItem.data.src));
+    }
     const blocksFromHtml = htmlToDraft(htmlString);
     if (blocksFromHtml) {
       const { contentBlocks, entityMap } = blocksFromHtml;
@@ -37,10 +42,8 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation(); 
-    const entity = editorStateSave[0].entityMap;
 
-    if (entity != {})  {
-      const deletedImgs = [];
+    if (Object.keys(entity).length != 0)  {
       const entityUrls = Object.values(entity).map(entityItem => entityItem.data.src);
 
       for (let url of imgs) {
@@ -48,25 +51,28 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
         if (entityUrls.includes(url)) {
           found = true;
         }
-        if (!found) deletedImgs.push(url);
+        if (!found) {
+          setDeletedImgs(() => {
+            const newDeleted = [...deletedImgs];
+            newDeleted.push(url);
+            return newDeleted;
+          })
+        }
       }
-
       console.log(deletedImgs)
-
-      // const newImgs = [...imgs];
-      // if (imgs) {
-      //   for (let img of imgs) {
-      //     if (deletedImgs.includes(img)) {
-      //       newImgs.push(img);
-      //     }
-      //   }
-      // }
-      // setImgs(newImgs);
-      // console.log(imgs)
-      //   await Api.delImg(`projects/delete`, { deletedImgs });
+      setImgs(()=> {
+        const newImgs = [...imgs]
+        newImgs.filter(img => !deletedImgs.includes(img));
+        return newImgs;
+      });
+      console.log(imgs);
      }
 
     try {
+      if(deletedImgs.length != 0){
+      await Api.delImg('projects/delete',  { deleteItems: deletedImgs });
+      };
+
       await Api.post(`${userId}/projects/${currentProject._id}`, {
         userId,
         title,
@@ -76,13 +82,14 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
         editorStateSave, 
         imgs,
       });
+
+      const res = await Api.get(`${userId}/projects`);
+      setProjects(res.data);
+      setIsEditing(false);
     }
     catch(err) {
       console.log('편집요청에 실패했습니다. ')
     }
-    const res = await Api.get(`${userId}/projects`);
-    setProjects(res.data);
-    setIsEditing(false);
   };
 
   const updateTextDescription = (state) => {

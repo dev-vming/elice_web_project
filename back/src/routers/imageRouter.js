@@ -23,7 +23,7 @@ const imageUpload_user = multer({
       if (!["png", "jpg", "jpeg", "gif", "bmp"].includes(extention)) {
         return cb(new Error("이미지 파일이 아닙니다."));
       }
-      cb(null, `User-img/${Date.now()}_${file.originalname}`);
+      cb(null, `User-img/${Date.now() + Math.random()}`);
     },
   }),
   acl: "public-read",
@@ -35,14 +35,11 @@ const imageUpload_project = multer({
     s3: s3,
     bucket: bucketName,
     key: function (req, file, cb) {
-      console.log(" req: ", req);
-      console.log(" file: ", file);
-      console.log(" cb: ", cb);
       const extention = file.mimetype.split("/")[1];
       if (!["png", "jpg", "jpeg", "gif", "bmp"].includes(extention)) {
         return cb(new Error("이미지 파일이 아닙니다."));
       }
-      cb(null, `Project/${Date.now()}_${file.originalname}`);
+      cb(null, `Project/${Date.now() + Math.random()} `);
     },
   }),
   acl: "public-read",
@@ -112,11 +109,7 @@ imageRouter.delete("/projects/delete", getFilename, async (req, res, next) => {
   });
 
   try {
-    const { Deleted } = await s3.send(command);
-    console.log(
-      'delete success'
-    );
-    // console.log(Deleted.map((d) => ` • ${d.Key}`).join("\n"));
+    await s3.send(command);
     res.status(200).json("이미지 삭제 성공");
   } catch (err) {
     console.error(err);
