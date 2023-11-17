@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form, Col, Row, DropdownButton, Stack, Badge } from "react-bootstrap";
 import * as Api from "../../../utils/api";
 import { Editor } from "react-draft-wysiwyg"; 
@@ -15,44 +15,41 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
   const [endDate, setEndDate] = useState('')
   const [editorState, setEditorState] = useState(EditorState.createEmpty()); 
   const [htmlString, setHtmlString] = useState(""); 
-  const [imgs, setImgs] = useState(["https://portfolio-ebak.s3.ap-northeast-2.amazonaws.com/Public/project_default.png"]);
+  const [imgs, setImgs] = useState([]);
   const [editorStateSave, setEditorStateSave] = useState([]);
   const userId = portfolioOwnerId;
-  const [deletedImgs, setDeletedImgs] = useState([]);
+
+
+  const handleImageDelete = () => {
+    const entity = editorStateSave[0].entityMap;
+    let deletedImgs = [];
+
+    if (Object.keys(entity).length != 0)  {
+      const entityUrls = Object.values(entity).map(entityItem => entityItem.data.src); //entityUrls = 현재 에디터에 있는 이미지
+      
+      deletedImgs = imgs.filter(url => !entityUrls.includes(url));
+
+      console.log('entityUrls: ' , entityUrls)
+      console.log('imgs (삭제 이전):', imgs)
+      console.log('deletedIms: ', deletedImgs)
+    }
+    return deletedImgs
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     const entity = editorStateSave[0].entityMap;
 
-    if (Object.keys(entity).length != 0)  {
+    try {
+      const deletedImgs = handleImageDelete()
+
       const entityUrls = Object.values(entity).map(entityItem => entityItem.data.src);
 
-      for (let url of imgs) {
-        let found = false;
-        if (entityUrls.includes(url)) {
-          found = true;
-        }
-        if (!found) {
-          setDeletedImgs(() => {
-            const newDeleted = [...deletedImgs];
-            newDeleted.push(url);
-            return newDeleted;
-          })
-        }
-      }
-      console.log(deletedImgs)
-      setImgs(()=> {
-        const newImgs = [...imgs]
-        newImgs.filter(img => !deletedImgs.includes(img));
-        return newImgs;
-      });
-      console.log(imgs);
-     }
+      console.log('imgs (삭제 확인):', imgs)
 
-    try {
       if(deletedImgs.length != 0){
-        await Api.delImg('projects/delete',  { deleteItems: deletedImgs });
+        await Api.delImg('projects/uploads',  { deleteItems: deletedImgs });
       };
 
       await Api.post(`${userId}/projects`, {
@@ -62,15 +59,16 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
         startDate,
         endDate,
         editorStateSave, 
-        imgs,
-      });
-      
+        imgs : entityUrls,
+      })
+
       const res = await Api.get(`${userId}/projects`);
       setProjects(res.data);
       setIsAdding(false);
     }
+
     catch(err) {
-      console.log('추가요청에 실패했습니다.')
+        console.log('추가요청에 실패했습니다.')
     }
   };
   
@@ -84,7 +82,7 @@ function ProjectAddForm({ portfolioOwnerId, setProjects, setIsAdding, setIsVisib
       return newEditorStateSave;
     })
     console.log(JSON.stringify(editorStateSave))
-    console.log(JSON.stringify(convertToRaw(editorState.getCurrentContent())));
+    console.log(`imgs : ${imgs}`)
   };
 
   const addImage = (imgUrl) => {

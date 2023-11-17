@@ -39,38 +39,36 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
     }
   }, []);
   
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    e.stopPropagation(); 
+  const handleImageDelete = () => {
+    const entity = editorStateSave[0].entityMap;
+    let deletedImgs = [];
 
     if (Object.keys(entity).length != 0)  {
-      const entityUrls = Object.values(entity).map(entityItem => entityItem.data.src);
+      const entityUrls = Object.values(entity).map(entityItem => entityItem.data.src); //entityUrls = 현재 에디터에 있는 이미지
+      
+      deletedImgs = imgs.filter(url => !entityUrls.includes(url));
 
-      for (let url of imgs) {
-        let found = false;
-        if (entityUrls.includes(url)) {
-          found = true;
-        }
-        if (!found) {
-          setDeletedImgs(() => {
-            const newDeleted = [...deletedImgs];
-            newDeleted.push(url);
-            return newDeleted;
-          })
-        }
-      }
-      console.log(deletedImgs)
-      setImgs(()=> {
-        const newImgs = [...imgs]
-        newImgs.filter(img => !deletedImgs.includes(img));
-        return newImgs;
-      });
-      console.log(imgs);
-     }
+      console.log('entityUrls: ' , entityUrls)
+      console.log('imgs (삭제 이전):', imgs)
+      console.log('deletedIms: ', deletedImgs)
+    }
+    return deletedImgs
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const entity = editorStateSave[0].entityMap;
 
     try {
+      const deletedImgs = handleImageDelete()
+
+      const entityUrls = Object.values(entity).map(entityItem => entityItem.data.src);
+
+      console.log('imgs (삭제 확인):', imgs)
+
       if(deletedImgs.length != 0){
-      await Api.delImg('projects/delete',  { deleteItems: deletedImgs });
+        await Api.delImg('projects/uploads',  { deleteItems: deletedImgs });
       };
 
       await Api.post(`${userId}/projects/${currentProject._id}`, {
@@ -80,8 +78,8 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
         startDate,
         endDate,
         editorStateSave, 
-        imgs,
-      });
+        imgs : entityUrls,
+      })
 
       const res = await Api.get(`${userId}/projects`);
       setProjects(res.data);
@@ -102,6 +100,8 @@ function ProjectEditForm({ portfolioOwnerId, currentProject, setProjects, setIsE
       return newStateSave;
     })
     console.log(JSON.stringify(convertToRaw(editorState.getCurrentContent())));
+    console.log(`deletedImgs: ${deletedImgs}`);
+    console.log(`imgs : ${imgs}`)
   };
 
   const addImage = (imgUrl) => {

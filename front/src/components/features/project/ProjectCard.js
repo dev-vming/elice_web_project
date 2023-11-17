@@ -15,8 +15,8 @@ function ProjectCard({ portfolioOwnerId, setProjects, project, isEditable, setIs
 
   useEffect(() => {
     setFirstImg(() => {
-      let newImg = project.imgs[0];
-      if (project.imgs[1]) newImg = project.imgs[1];
+      let newImg = "https://portfolio-ebak.s3.ap-northeast-2.amazonaws.com/User-img/cde45ce0-bafd-43e8-a05b-734f8754d407.png";
+      if (project.imgs[0]) newImg = project.imgs[0];
       return newImg;
     });
   }, [])
