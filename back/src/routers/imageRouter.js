@@ -5,14 +5,15 @@ import multerS3 from "multer-s3";
 import { v4 } from "uuid";
 
 const imageRouter = Router();
-const bucketName = "portfolio-ebak";
+const bucketName = process.env.S3_BUCKET_NAME;
+const bucketRegion = process.env.S3_REGION;
 
 const s3 = new S3Client({
   credentials: {
     accessKeyId: process.env.S3_ACCESS_KEY_ID,
     secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
   },
-  region: "ap-northeast-2",
+  region: bucketRegion,
 });
 
 const imageUpload_user = multer({
@@ -83,7 +84,7 @@ imageRouter.post(
 function getFilename(req, res, next) {
   try {
     const { deleteItems } = req.body;
-    const urlHead = `https://${bucketName}.s3.ap-northeast-2.amazonaws.com/`;
+    const urlHead = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/`;
     let convert = [];
     for (let i = 0; i < deleteItems.length; i++) {
       convert.push({ Key: deleteItems[i].replace(urlHead, "") });
